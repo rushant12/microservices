@@ -1,2 +1,18 @@
-Paste here
-https://statics.teams.cdn.office.net/evergreen-assets/safelinks/1/atp-safelinks.html?url=https%3A%2F%2Fdev.azure.com%2FNedbank-Limited%2FECM_Exstream%2F_library%3FitemType%3DVariableGroups%26view%3DVariableGroupView%26variableGroupId%3D3455%26path%3DStorage-Account-nsndvextr01&locale=en-gb&dest=https%3A%2F%2Fteams.microsoft.com%2Fapi%2Fmt%2Fapac%2Fbeta%2Fatpsafelinks%2Fgeturlreputationsitev2%2F&pc=R8t2Zd1XDsNi3PQXC2PDIf82%252b4gHPWsl3cL0RpLWhwvGEospy%252bcq1GuDjJBnQV5jIJQ04%252f%252fyx47xoTWMGy7CfRznSQajgIkWdLxlh604qjFZttkEMCH4BPlC1sIKsedwTb%252fvxGI%252fDepdZ22PQfKVa0aWTvqXncmHVC3Yi%252fK%252bLIhrA5KDOTYIsp7cv1JcxDEzmoonbwFRcDbu6dbVfJHpsEecqGluNQ5TYP23bwx4AtY7P1JYdRq6Xm4pGG%252fYg1EjHsU1bHVZfUF04PYgvXEUjZ2n8xIfuPyVOqvefQk7rZzHO2yBkFl%252fT%252f2P3vzFO5JvHLpTN27hnmSptgt2WbyEGnQCbfjGXEm76a2VX1ug%252fkceDsdu29Tixp1xhAUPe3IteUHOGvY0AESWdHYNl7k8pN8Xh7vz6zN%252fzaYOR57csAODYaJQeC8hqQNk%252flpZNO8DLVfsLbcOcg5EuOcj3wt4W9hXWttafVIVdAUoByM5mHohPqO%252b1%252fcOz8u7M2sSMjpEi9GNr18bsJQFot43itTW6y8OOrHzXByvptbGsObZ%252bmZSGf7uqFMaUVrN8xeuMGwKzrQ%252fp7mfv3LubmExXz0wf%252fqgaXVsJ3zUdtKgYkIvpPvKXG8jpN6MYkxCNyyEeHhz%252bDaRHsZH93%252fIcK5fiXVFU%252fUOFUPd2qa3izIgMiSALcxmqLwSOKFCbl2yE5pRNnvswVGzB6VzShsx6T1FwGMsX7U7d5dlqgzNUfWUyNNvkAdTAO4p%252bqMJsJCl66JAB6gOFcmXfpTCikd8zHC8IrSo6Lq8M69bryN1zgtcht0jf5PEbiQZPtI9l6roJnexhinq%252fD2JVV5MdqMu8u%252fh%252b5IWpkxUMGHV4zuFPpRgp%252b97z548jI6msUg3ueexT1Yv%252frutxA%252bogu2mWcHJBKPgYGvB5vuZBv1fxmE8qdtytKWOBZO0wjwDyTG1tdkFvjSa4bipA3sZ4IJRdHfvt%252f%252byW9xw79spiy2SwvQAAewvDymuHqtFYqD4hhrBRD8%252bNYdYHbt73CL%252fXkxB4epipzGMD%252fL89KLK0QCLiMWCqAQDHIXNgDOTpVWHZuGeoQiYnFOlHe8oc3NDSbxmqINaftR%252fcVe3TTP2Cb%252bst%252bv6XADfjoCmxS4%252fVEXjwNTQ48ZH5TbqMH%252bcgxxpWcp9douAJvsTwCKGfdVc5q3q6jyTZARWoyVrK4CazaZwTwNbyGT5FhSk%252fVkj9ksyyWHiyU3buJUTDwJYx%252baT%252fZllK3vi91xXahV9Nm3%252fb%252fjos939%252fXzZRT9GohTCLv%252f01Acme9HiGrxd9KIA3u%252fD6qxSOqVKGVzBiIdL9SYsIavuH5GoRdfvsUMLOSozP7e9W%252f9ffOTh%252bUjP%252by729m352VWAUfYzDlNhwdP76%252feXjZPoJdxbHGV%252b%252bJlbQjfY%3B%20expires%3DFri%2C%2028%20Mar%202025%2010%3A12%3A24%20GMT%3B%20path%3D%2F%3B%20SameSite%3DNone%3B%20secure%3B%20httponly&wau=https%3A%2F%2FIND01.safelinks.protection.outlook.com%2FGetUrlReputation&si=1742980052046%3B1742980052046%3B19%3Ameeting_ZTRmZDlmMjQtYzIzMC00YjllLTlmMzEtZjVkNjZkODJkNjlk%40thread.v2&sd=%7BconvId%3A%2019%3Ameeting_ZTRmZDlmMjQtYzIzMC00YjllLTlmMzEtZjVkNjZkODJkNjlk%40thread.v2%2C%20messageId%3A%201742980052046%7D&ce=prod&cv=49%2F25030201008&ssid=d76bc6f0-9d85-403c-8113-4bd775fb5158&ring=ring3_6&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiI0OS8yNTAzMDIwMTAwOCIsIkhhc0ZlZGVyYXRlZFVzZXIiOnRydWV9&bg=%23f0f0f0&fg=%23242424&fg2=%239092c1
+There are two Option to get the access key from Azure Storage:
+ 
+If it can be add to secure environment variable - We can read from System environment variable.
+2. a) We need to write the code to get the key from Azure Storage Pipeline.
+    b) We would required below details:
+         Set your Azure credentials
+         tenantId = "your-tenant-id";
+         clientId = "your-client-id";
+         clientSecret = "your-client-secret";
+         subscriptionId = "your-subscription-id";
+         resourceGroupName = "your-resource-group-name";
+         storageAccountName = "your-storage-account-name";
+     c) Below Dependency we would required: (FYI - This is not available in nexus)
+<dependency>
+<groupId>com.azure</groupId>
+<artifactId>azure-resourcemanager</artifactId>
+<version>2.21.0</version> <!-- Make sure you are using the latest version -->
+</dependency>
