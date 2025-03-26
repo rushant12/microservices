@@ -1,14 +1,2 @@
-groupId=str-ecp-batch*] Connection with nbpinelpdev01.africa.nedcor.net/10.58.150.59 (channelId=-3) disconnected
-
-java.io.EOFException: null
-	at org.apache.kafka.common.network.NetworkReceive.readFrom(NetworkReceive.java:120) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.common.network.KafkaChannel.receive(KafkaChannel.java:452) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.common.network.KafkaChannel.read(KafkaChannel.java:402) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.common.network.Selector.attemptRead(Selector.java:674) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.common.network.Selector.pollSelectionKeys(Selector.java:576) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.common.network.Selector.poll(Selector.java:481) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.clients.NetworkClient.poll(NetworkClient.java:560) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:280) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:251) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:242) ~[kafka-clients-3.3.1.jar:na]
-	at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.awaitMetadataUpdate(ConsumerNetworkClient.java:164) ~[kafka-clients-3.3.1.jar:na]
+I think you can use any string for client id, not really needed for reading from kafka
+Also as far as I recall the group id agreed to was ECP-BATCH but you can use any value, and then communicate it to the kafka team along with the certificate subject that will be reading the topic
