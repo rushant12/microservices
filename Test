@@ -1,2 +1,17 @@
-I think you can use any string for client id, not really needed for reading from kafka
-Also as far as I recall the group id agreed to was ECP-BATCH but you can use any value, and then communicate it to the kafka team along with the certificate subject that will be reading the topic
+bootstrap.servers=localhost:9093
+group.id=my-consumer-group
+enable.auto.commit=true
+auto.offset.reset=earliest
+ 
+# SSL Configuration
+security.protocol=SSL
+ssl.keystore.location=/path/to/keystore.jks
+ssl.keystore.password=your-keystore-password
+ssl.key.password=your-key-password
+ssl.truststore.location=/path/to/truststore.jks
+ssl.truststore.password=your-truststore-password
+ssl.protocol=TLSv1.2
+ 
+# Deserializers
+key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
