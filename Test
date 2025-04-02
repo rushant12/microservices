@@ -1,17 +1,48 @@
-bootstrap.servers=localhost:9093
-group.id=my-consumer-group
-enable.auto.commit=true
-auto.offset.reset=earliest
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import java.util.Properties;
+import java.util.List;
  
-# SSL Configuration
-security.protocol=SSL
-ssl.keystore.location=/path/to/keystore.jks
-ssl.keystore.password=your-keystore-password
-ssl.key.password=your-key-password
-ssl.truststore.location=/path/to/truststore.jks
-ssl.truststore.password=your-truststore-password
-ssl.protocol=TLSv1.2
+public class KafkaSslConsumer {
  
-# Deserializers
-key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+    public static void main(String[] args) {
+        // Create a Properties object to configure the consumer
+        Properties properties = new Properties();
+ 
+        // Kafka broker list
+        properties.put("bootstrap.servers", "localhost:9093"); // Use the appropriate broker URL for SSL
+ 
+        // Consumer group ID
+        properties.put("group.id", "ssl-consumer-group");
+ 
+        // Offset reset behavior when no offset is found
+        properties.put("auto.offset.reset", "earliest");
+ 
+        // SSL configurations
+        properties.put("security.protocol", "SSL");  // Enable SSL
+        properties.put("ssl.keystore.location", "/path/to/keystore.jks");  // Path to keystore (for client authentication, if needed)
+        properties.put("ssl.keystore.password", "your-keystore-password");  // Keystore password
+        properties.put("ssl.key.password", "your-key-password");  // Key password (if different from keystore password)
+        properties.put("ssl.truststore.location", "/path/to/truststore.jks");  // Path to truststore (for broker verification)
+        properties.put("ssl.truststore.password", "your-truststore-password");  // Truststore password
+        properties.put("ssl.protocol", "TLSv1.2");  // SSL/TLS protocol version
+ 
+        // Set the deserializers for the key and value of the messages
+        properties.put("key.deserializer", StringDeserializer.class.getName());
+        properties.put("value.deserializer", StringDeserializer.class.getName());
+ 
+        // Create the Kafka consumer
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
+ 
+        // Subscribe to the desired topic(s)
+        consumer.subscribe(List.of("my-topic"));
+ 
+        // Consume messages
+        while (true) {
+            var records = consumer.poll(java.time.Duration.ofMillis(1000));  // Poll for messages every second
+            for (var record : records) {
+                System.out.printf("Consumed record with key: %s, value: %s%n", record.key(), record.value());
+            }
+        }
+    }
+}
