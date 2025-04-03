@@ -1,3 +1,31 @@
-1. winpty openssl pkcs12 -in <filename>.pfx -nocerts -out key.pem
-2. winpty openssl pkcs12 -in <filename>.pfx -clcerts -nokeys -out cert.pem
-3. winpty openssl rsa -in key.pem -out server.key
+Subject: Request for Azure Blob Storage and Key Vault Access Details
+ 
+I am currently working on a File Manger project that requires access to Azure Blob Storage and the Azure Key Vault. To proceed, I would like to request the following details to ensure that I can set up the necessary connections and retrieve the required data securely:
+ 
+1. Azure Blob Storage:
+Storage Account Name: To connect to the Blob Storage.
+ 
+Container Name: The specific container within the storage account that I will be interacting with.
+ 
+Azure Active Directory (AAD) Credentials: For authentication via Service Principal, please provide:
+ 
+Client ID (Application ID)
+ 
+Client Secret
+ 
+Tenant ID
+ 
+2. Azure Key Vault (If applicable):
+Key Vault URL: The endpoint to access the Key Vault.
+ 
+Secret Name: The names of any secrets I need to retrieve (e.g., storage keys, account keys, or other sensitive information).
+ 
+Access Permissions: Ensure the appropriate permissions are granted to the service principal to access the secrets.
+ 
+Additionally, if you have any recommended access policies or configurations that should be in place, kindly share that information as well.
+ 
+We are also planning to deploy the application in Azure Kubernetes Service (AKS), so it would be helpful if the necessary configurations and permissions are aligned with the AKS deployment.
+ 
+Once I have the above details, I will be able to configure the necessary connections securely and begin working with the Azure services.
+ 
+Thank you for your support and assistance. I look forward to your response. Please let me know if you need any further information from my side.
