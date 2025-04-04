@@ -31,3 +31,21 @@ public class KeyVaultExample {
         System.out.println("Secret Value: " + secretValue);
     }
 }
+
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob</artifactId>
+    <version>12.11.0</version> <!-- Check for latest version -->
+</dependency>
+
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.5.0</version> <!-- Check for latest version -->
+</dependency>
+
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-security-keyvault-secrets</artifactId>
+    <version>4.0.0</version> <!-- Check for latest version -->
+</dependency>
