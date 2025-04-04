@@ -1,31 +1,25 @@
-Subject: Request for Azure Blob Storage and Key Vault Access Details
- 
-I am currently working on a File Manger project that requires access to Azure Blob Storage and the Azure Key Vault. To proceed, I would like to request the following details to ensure that I can set up the necessary connections and retrieve the required data securely:
- 
-1. Azure Blob Storage:
-Storage Account Name: To connect to the Blob Storage.
- 
-Container Name: The specific container within the storage account that I will be interacting with.
- 
-Azure Active Directory (AAD) Credentials: For authentication via Service Principal, please provide:
- 
-Client ID (Application ID)
- 
-Client Secret
- 
-Tenant ID
- 
-2. Azure Key Vault (If applicable):
-Key Vault URL: The endpoint to access the Key Vault.
- 
-Secret Name: The names of any secrets I need to retrieve (e.g., storage keys, account keys, or other sensitive information).
- 
-Access Permissions: Ensure the appropriate permissions are granted to the service principal to access the secrets.
- 
-Additionally, if you have any recommended access policies or configurations that should be in place, kindly share that information as well.
- 
-We are also planning to deploy the application in Azure Kubernetes Service (AKS), so it would be helpful if the necessary configurations and permissions are aligned with the AKS deployment.
- 
-Once I have the above details, I will be able to configure the necessary connections securely and begin working with the Azure services.
- 
-Thank you for your support and assistance. I look forward to your response. Please let me know if you need any further information from my side.
+File Manager application will be attempting to connect when deployed in Azure Kubernetes Service (AKS), here is a detailed overview:
+
+Kafka Cluster (Bootstrap Servers):
+
+The File Manager application will connect to the Kafka cluster to consume messages from the specified Kafka topic(s). It will utilize the bootstrap servers for initial connection to the Kafka brokers.
+
+Azure Storage (Blob Storage or File Storage):
+
+The application will also need to connect to Azure Storage (either Blob Storage or File Storage) to store processed files. This will require the proper access credentials to authenticate and perform operations within the Azure Storage service.
+
+Azure Kubernetes Service (AKS):
+
+The application will be deployed to AKS, and as part of this deployment, it will interact with Kubernetes resources such as ConfigMaps, Secrets, and containerized environments within the AKS cluster.
+
+External Services/Applications (if applicable):
+
+If there are additional services integrated with the File Manager, such as microservices or external APIs, the application would also attempt to connect to those services during its operation.
+
+In summary, at the moment of deployment to AKS, the File Manager will primarily be connecting to:
+
+The Kafka cluster for consuming messages from the relevant topics.
+
+Azure Storage to store the processed files.
+
+Please ensure that the necessary credentials for both Kafka and Azure Storage are securely provided to the application, potentially through environment variables, Kubernetes Secrets, or other secure mechanisms.
