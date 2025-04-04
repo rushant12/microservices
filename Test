@@ -1,25 +1,33 @@
-File Manager application will be attempting to connect when deployed in Azure Kubernetes Service (AKS), here is a detailed overview:
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.core.credential.TokenCredential;
 
-Kafka Cluster (Bootstrap Servers):
+public class KeyVaultExample {
+    public static void main(String[] args) {
+        // Azure Key Vault URL
+        String keyVaultUrl = "<your-keyvault-url>";
 
-The File Manager application will connect to the Kafka cluster to consume messages from the specified Kafka topic(s). It will utilize the bootstrap servers for initial connection to the Kafka brokers.
+        // Use Managed Identity (for example in Azure VM or App Service)
+        TokenCredential credential = new ManagedIdentityCredentialBuilder().build();
 
-Azure Storage (Blob Storage or File Storage):
+        // If using a Service Principal with Client ID and Secret, use the below instead:
+        // TokenCredential credential = new ClientSecretCredentialBuilder()
+        //     .clientId("<your-client-id>")
+        //     .clientSecret("<your-client-secret>")
+        //     .tenantId("<your-tenant-id>")
+        //     .build();
 
-The application will also need to connect to Azure Storage (either Blob Storage or File Storage) to store processed files. This will require the proper access credentials to authenticate and perform operations within the Azure Storage service.
+        // Create the SecretClient to interact with the Key Vault
+        SecretClient secretClient = new SecretClientBuilder()
+            .vaultUrl(keyVaultUrl)
+            .credential(credential)
+            .buildClient();
 
-Azure Kubernetes Service (AKS):
-
-The application will be deployed to AKS, and as part of this deployment, it will interact with Kubernetes resources such as ConfigMaps, Secrets, and containerized environments within the AKS cluster.
-
-External Services/Applications (if applicable):
-
-If there are additional services integrated with the File Manager, such as microservices or external APIs, the application would also attempt to connect to those services during its operation.
-
-In summary, at the moment of deployment to AKS, the File Manager will primarily be connecting to:
-
-The Kafka cluster for consuming messages from the relevant topics.
-
-Azure Storage to store the processed files.
-
-Please ensure that the necessary credentials for both Kafka and Azure Storage are securely provided to the application, potentially through environment variables, Kubernetes Secrets, or other secure mechanisms.
+        // Example: Retrieve a secret from the Key Vault
+        String secretName = "<your-secret-name>";
+        String secretValue = secretClient.getSecret(secretName).getValue();
+        System.out.println("Secret Value: " + secretValue);
+    }
+}
