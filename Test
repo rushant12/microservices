@@ -1,79 +1,84 @@
-package com.broadridge.pdf2print.dataprep.models;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class FileCoordinate {
-    private double x1Pos;
-    private double y1Pos;
-    private double x2Pos;
-    private double y2Pos;
-    private int iOrientation;
-    private int pagenum;
-    
-    
-	public FileCoordinate(double x1Pos, double y1Pos, double x2Pos, double y2Pos, int iOrientation, int pagenum) {
-		super();
-		this.x1Pos = x1Pos;
-		this.y1Pos = y1Pos;
-		this.x2Pos = x2Pos;
-		this.y2Pos = y2Pos;
-		this.iOrientation = iOrientation;
-		this.pagenum = pagenum;
-	}
-	   
-		public FileCoordinate(double x1Pos, double y1Pos, double x2Pos, double y2Pos, int iOrientation) {
-			super();
-			this.x1Pos = x1Pos;
-			this.y1Pos = y1Pos;
-			this.x2Pos = x2Pos;
-			this.y2Pos = y2Pos;
-			this.iOrientation = iOrientation;
-		}
-	public double getX1Pos() {
-		return x1Pos;
-	}
-	public void setX1Pos(double x1Pos) {
-		this.x1Pos = x1Pos;
-	}
-	public double getY1Pos() {
-		return y1Pos;
-	}
-	public void setY1Pos(double y1Pos) {
-		this.y1Pos = y1Pos;
-	}
-	public double getX2Pos() {
-		return x2Pos;
-	}
-	public void setX2Pos(double x2Pos) {
-		this.x2Pos = x2Pos;
-	}
-	public double getY2Pos() {
-		return y2Pos;
-	}
-	public void setY2Pos(double y2Pos) {
-		this.y2Pos = y2Pos;
-	}
-	public int getiOrientation() {
-		return iOrientation;
-	}
-	public void setiOrientation(int iOrientation) {
-		this.iOrientation = iOrientation;
-	}
-	public int getPagenum() {
-		return pagenum;
-	}
-	public void setPagenum(int pagenum) {
-		this.pagenum = pagenum;
-	}
-	@Override
-	public String toString() {
-		return "FileCoordinate [x1Pos=" + x1Pos + ", y1Pos=" + y1Pos + ", x2Pos=" + x2Pos + ", y2Pos=" + y2Pos
-				+ ", iOrientation=" + iOrientation + ", pagenum=" + pagenum + "]";
-	}
-   
-}
+ public void removeTextAt(List<List<AfpRec>> listOflistOfPages, FileCoordinate fileCoordinates) throws Exception {
+        double pageDPI = 300.0;
+        int bpgCounter =0;
+        boolean isDeleted = false;
+ 
+ 
+        for(List<AfpRec> listOfPages: listOflistOfPages) {
+            int recPos = -1;
+            for (AfpRec inputRec : listOfPages) {  
+                isDeleted = false;
+                ArrayList<AfpPtxDataItem> newPtxDataItems = new ArrayList<>();
+                recPos++;
+                
+                if (inputRec.getTla().equalsIgnoreCase("BPG")) {
+                    bpgCounter = bpgCounter + 1;
+                }
+              
+                if (bpgCounter == fileCoordinates.getPagenum()) {
+                    AfpCmdRaw afpCmdRaw = new AfpCmdRaw(inputRec);
+                    AfpCmdType afpCmdType = afpCmdRaw.getCmdType();
+                    if (afpCmdType == AfpCmdType.PTX) {
+                        double xPos = 0;
+                        double yPos = 0;
+                        isDeleted = false;
+                        int currentIOrientation = 0;
+ 
+                        PrintStream printStreamOriginal = textServiceUtils.hideSystemout();
+                        AfpCmdPTX afpCmdPTX = ((AfpCmdPTX) inputRec.parse());
+                        System.setOut(printStreamOriginal);
+ 
+ 
+                        List<AfpPtxDataItem> ptxDataItems = afpCmdPTX.getDataItems();
+                        createCtrlSeqPrefix(newPtxDataItems);
+                        for (AfpPtxDataItem dataItem : ptxDataItems) {
+                            if (dataItem instanceof AfpPtxCtrlSeq) {
+                                AfpPtxCtrlSeq newCtrlSeq = new AfpPtxCtrlSeq();
+                                AfpPtxCtrlSeq ctrlSeq = (AfpPtxCtrlSeq) dataItem;
+ 
+                                for (AfpPtxCtrl ctrl : ctrlSeq.getControls()) {
+                                    AfpPtxCtrlType ctrlType = ctrl.getType();
+                                    if (ctrlType == AfpPtxCtrlType.AMB) {
+                                        AfpPtxCtrlAMB ambPtxCtrl = (AfpPtxCtrlAMB) ctrl;
+                                        xPos = ambPtxCtrl.getDisplacement();
+                                        xPos = textServiceUtils.round(xPos, 4, pageDPI);
+                                    }
+                                    if (ctrlType == AfpPtxCtrlType.STO) {
+                                        AfpPtxCtrlSTO stoPtxCtrl = (AfpPtxCtrlSTO) ctrl;
+                                        currentIOrientation = stoPtxCtrl.getIorntion().asInt();        
+                                        String orientationInDegrees = stoPtxCtrl.getIorntion().degreestoEnglish(); 
+                                        System.out.println("Orientation value (degrees) is: " + orientationInDegrees + "for Page " + fileCoordinates.getPagenum());
+                                         currentIOrientation = Integer.parseInt(orientationInDegrees.replaceAll("[^\\d]", ""));
+                                         
+                                    }
+                                    if (ctrlType == AfpPtxCtrlType.AMI) {
+                                        AfpPtxCtrlAMI amiPtxCtrl = (AfpPtxCtrlAMI) ctrl;
+                                        yPos = amiPtxCtrl.getDisplacement();
+                                        yPos = textServiceUtils.round(yPos, 4, pageDPI);
+                                    }
+                                    if (ctrlType == AfpPtxCtrlType.TRN) {                                  
+                                        if (textServiceUtils.isInsideTheBox(xPos, yPos, fileCoordinates)&& currentIOrientation == fileCoordinates.getiOrientation()) {
+                                            AfpPtxCtrlTRN trnPtxCtrl = (AfpPtxCtrlTRN) ctrl;
+                                            System.out.print(trnPtxCtrl.getTrnString());
+                                            if (Constants.debug)
+                                                System.err.println("[debug] Removing from Input: XY=" + xPos + ", " + yPos + ", Orientation=" + currentIOrientation + ", Text=" + trnPtxCtrl.getTrnString());
+ 
+                                            trnPtxCtrl = new AfpPtxCtrlTRN("", true);  
+                                            ctrl = trnPtxCtrl;
+                                            isDeleted = true;
+                                        }
+                                    }
+                                    newCtrlSeq.addCtrl(ctrl);
+                                }
+                                newPtxDataItems.add(newCtrlSeq);
+                            }
+                        }
+                    }
+                }
+                if (isDeleted) {
+                    AfpRec rec = new AfpCmdPTX(newPtxDataItems).toAfpRec((short) 0, 0);
+                    listOfPages.set(recPos, rec);
+                }
+            }
+        }
+    }
