@@ -1,84 +1,320 @@
- public void removeTextAt(List<List<AfpRec>> listOflistOfPages, FileCoordinate fileCoordinates) throws Exception {
-        double pageDPI = 300.0;
-        int bpgCounter =0;
-        boolean isDeleted = false;
- 
- 
-        for(List<AfpRec> listOfPages: listOflistOfPages) {
-            int recPos = -1;
-            for (AfpRec inputRec : listOfPages) {  
-                isDeleted = false;
-                ArrayList<AfpPtxDataItem> newPtxDataItems = new ArrayList<>();
-                recPos++;
-                
-                if (inputRec.getTla().equalsIgnoreCase("BPG")) {
-                    bpgCounter = bpgCounter + 1;
-                }
-              
-                if (bpgCounter == fileCoordinates.getPagenum()) {
-                    AfpCmdRaw afpCmdRaw = new AfpCmdRaw(inputRec);
-                    AfpCmdType afpCmdType = afpCmdRaw.getCmdType();
-                    if (afpCmdType == AfpCmdType.PTX) {
-                        double xPos = 0;
-                        double yPos = 0;
-                        isDeleted = false;
-                        int currentIOrientation = 0;
- 
-                        PrintStream printStreamOriginal = textServiceUtils.hideSystemout();
-                        AfpCmdPTX afpCmdPTX = ((AfpCmdPTX) inputRec.parse());
-                        System.setOut(printStreamOriginal);
- 
- 
-                        List<AfpPtxDataItem> ptxDataItems = afpCmdPTX.getDataItems();
-                        createCtrlSeqPrefix(newPtxDataItems);
-                        for (AfpPtxDataItem dataItem : ptxDataItems) {
-                            if (dataItem instanceof AfpPtxCtrlSeq) {
-                                AfpPtxCtrlSeq newCtrlSeq = new AfpPtxCtrlSeq();
-                                AfpPtxCtrlSeq ctrlSeq = (AfpPtxCtrlSeq) dataItem;
- 
-                                for (AfpPtxCtrl ctrl : ctrlSeq.getControls()) {
-                                    AfpPtxCtrlType ctrlType = ctrl.getType();
-                                    if (ctrlType == AfpPtxCtrlType.AMB) {
-                                        AfpPtxCtrlAMB ambPtxCtrl = (AfpPtxCtrlAMB) ctrl;
-                                        xPos = ambPtxCtrl.getDisplacement();
-                                        xPos = textServiceUtils.round(xPos, 4, pageDPI);
-                                    }
-                                    if (ctrlType == AfpPtxCtrlType.STO) {
-                                        AfpPtxCtrlSTO stoPtxCtrl = (AfpPtxCtrlSTO) ctrl;
-                                        currentIOrientation = stoPtxCtrl.getIorntion().asInt();        
-                                        String orientationInDegrees = stoPtxCtrl.getIorntion().degreestoEnglish(); 
-                                        System.out.println("Orientation value (degrees) is: " + orientationInDegrees + "for Page " + fileCoordinates.getPagenum());
-                                         currentIOrientation = Integer.parseInt(orientationInDegrees.replaceAll("[^\\d]", ""));
-                                         
-                                    }
-                                    if (ctrlType == AfpPtxCtrlType.AMI) {
-                                        AfpPtxCtrlAMI amiPtxCtrl = (AfpPtxCtrlAMI) ctrl;
-                                        yPos = amiPtxCtrl.getDisplacement();
-                                        yPos = textServiceUtils.round(yPos, 4, pageDPI);
-                                    }
-                                    if (ctrlType == AfpPtxCtrlType.TRN) {                                  
-                                        if (textServiceUtils.isInsideTheBox(xPos, yPos, fileCoordinates)&& currentIOrientation == fileCoordinates.getiOrientation()) {
-                                            AfpPtxCtrlTRN trnPtxCtrl = (AfpPtxCtrlTRN) ctrl;
-                                            System.out.print(trnPtxCtrl.getTrnString());
-                                            if (Constants.debug)
-                                                System.err.println("[debug] Removing from Input: XY=" + xPos + ", " + yPos + ", Orientation=" + currentIOrientation + ", Text=" + trnPtxCtrl.getTrnString());
- 
-                                            trnPtxCtrl = new AfpPtxCtrlTRN("", true);  
-                                            ctrl = trnPtxCtrl;
-                                            isDeleted = true;
-                                        }
-                                    }
-                                    newCtrlSeq.addCtrl(ctrl);
-                                }
-                                newPtxDataItems.add(newCtrlSeq);
-                            }
-                        }
-                    }
-                }
-                if (isDeleted) {
-                    AfpRec rec = new AfpCmdPTX(newPtxDataItems).toAfpRec((short) 0, 0);
-                    listOfPages.set(recPos, rec);
-                }
-            }
+{
+    "INSERT_BNG_ENG_RECS": "Y",
+    "TRANSLATE_IMM_RECS": [
+        { "KJCNHFC1": "CISC0000" },
+        { "DOCD0370": "AFPBIN2S" },
+        { "DESD0011": "F2CLM159" }
+    ],
+    "SET_IMM_RECS": [
+        { "1": "TRAY02DP" },
+        { "5": "TRAY03DP" }
+    ],
+    "DELETE_TEXT": [
+    {
+    "page_num": 1,
+    "x1": 1.40,
+    "y1": 0.48,
+    "x2": 3.25,
+    "y2": 2.4,
+    "orientation": 180
+        },
+        {
+            "page_num": 2,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 3,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 4,
+            "x1": 2.515,
+            "y1": 1.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 270
+        },
+        {
+            "page_num": 5,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 270
+        },
+        {
+            "page_num": 6,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 270
+        },
+        {
+            "page_num": 7,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 8,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 9,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 10,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 11,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 12,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 13,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
+        },
+        {
+            "page_num": 14,
+            "x1": 1.515,
+            "y1": 0.645,
+            "x2": 7.645,
+            "y2": 5.645,
+            "orientation": 0
         }
+    ]
+,
+    "INSERT_FILE_LEVEL_NOPS": [
+        "This AFP file is output from the following BASEPATH: /dsto/cbu/<stage>/pfg/pdf2print",
+        "BLAH BLAH"
+    ],
+    "INSERT_FILE_LEVEL_NAMED_NOPS": [
+        { "UR_PRODUCT_ID": "NWMI/BILLS" },
+        { "UR_CLIENT_ID": "NWMI" }
+    ],
+    "INSERT_MAIL_PIECE_LEVEL_TLES": [
+        { "DOC_PRODUCT_CODE": "PS,QV" },
+        { "DOC_SPECIAL_HANDLING_CODE": "99" },
+        { "DOC_ACCOUNT_NUMBER": "FROM_METADATA:infact_account_number" },
+        { "UC_DOCUMENT_CLASSIFICATION_01": "late payment letter" }
+    ],
+    "INSERT_MAIL_PIECE_LEVEL_NAMED_NOPS": [
+        { "DOC_PRODUCT_CODE": "PS,QV" },
+        { "DOC_SPECIAL_HANDLING_CODE": "99" },
+        { "DOC_ACCOUNT_NUMBER": "FROM_METADATA:infact_account_number" },
+        { "UC_DOCUMENT_CLASSIFICATION_01": "late payment letter" }
+    ],
+    "INSERT_OVERLAYS": [
+        { "01": "S1NWTL01" },
+        { "08": "S1NWTL08" },
+        { "21": "S1NWTL21" }
+    ],
+        "INSERT_PSEGS": [
+    {
+      "02": "S1NWLG02",
+      "x_offset": 0.82,
+      "y_offset": 0.8
+    },
+    {
+      "03": "S1NWLG03",
+      "x_offset": 0.82,
+      "y_offset": 0.8
+    },
+    {
+      "18": "S1NWLG18",
+      "x_offset": 0.82,
+      "y_offset": 0.8
     }
+  ],
+    "SCRAPE_SEND_ADDRESS": {
+        "x1": 8.2533,
+        "y1": 1.0,
+        "x2": 8.4145,
+        "y2": 1.4881,
+        "orientation": 90,
+        "foreign_sh_code": "78"
+    },
+    "SCRAPE_AND_MOVE_SEND_ADDRESS": {
+        "from": {
+            "x1": 8.2533,
+            "y1": 1.0,
+            "x2": 8.4145,
+            "y2": 1.4881,
+            "orientation": 34560
+        },
+        "to": {
+            "x1": 8.2533,
+            "y1": 1.0,
+            "orientation": 0
+        },
+        "foreign_sh_code": "78"
+    },
+    "INSERT_NEW_PAGES": [
+        {
+            "page_num": 3,
+            "imm_rec": "",
+            "bpg_rec": "FRNTCOVR",
+            "pgd_rec": {
+                "type": "portrait",
+                "width": 8.5,
+                "height": 11,
+                "dot_per_inches": 300
+            },
+            "ptd_rec": {
+                "type": "portrait",
+                "width": 8.5,
+                "height": 11
+            },
+            "mcf_rec": [
+                {
+                    "id": 1,
+                    "coded_font_name": "X0AMJE04",
+                    "font_description": "Arial CFL Mono 8pt"
+                },
+                {
+                    "id": 2,
+                    "coded_font_name": "XZFRPAA0",
+                    "font_description": "Frutiger CFL 11pt"
+                }
+            ],
+            "ptx_recs": [
+                {
+                    "x_offset": 0.82,
+                    "y_offset": 1.8,
+                    "orientation": 0,
+                    "font_id": 2,
+                    "trn_text": "label1:"
+                },
+                {
+                    "x_offset": 0.305,
+                    "y_offset": 1.8,
+                    "orientation": 0,
+                    "font_id": 1,
+                    "trn_text": "FROM_DERIVED_DATA:department"
+                }
+            ],
+            "ips_recs": [
+                {
+                    "x_offset": 0.82,
+                    "y_offset": 0.8,
+                    "pseg_name": "S1NWTLG0"
+                },
+                {
+                    "x_offset": 0.305,
+                    "y_offset": 6.132,
+                    "orientation": 0,
+                    "pseg_name": "S1NWMN01"
+                }
+            ],
+            "epg_rec": "FRNTCOVR"
+        },
+        {
+            "page_num": 3,
+            "bpg_rec": "BACKCOVR",
+            "epg_rec": "BACKCOVR"
+        }
+    ],
+    "ADD_TEXT_TO_PAGES": [
+        {
+            "page_num": 3,
+            "mcf_rec": [
+                {
+                    "id": 1,
+                    "coded_font_name": "X0AMJE04",
+                    "font_description": "Arial CFL Mono 8pt"
+                },
+                {
+                    "id": 2,
+                    "coded_font_name": "XZFRPAA0",
+                    "font_description": "Frutiger CFL 11pt"
+                }
+            ],
+            "bpt_rec": "ATTNBLK",
+            "trn_recs": [
+                {
+                    "x_offset": 0.82,
+                    "y_offset": 1.8,
+                    "orientation": 0,
+                    "font_id": 2,
+                    "trn_text": "ATTN:"
+                },
+                {
+                    "x_offset": 0.305,
+                    "y_offset": 1.8,
+                    "orientation": 0,
+                    "font_id": 1,
+                    "trn_text": "FROM_DERIVED_DATA:billing_department"
+                }
+            ],
+            "ept_rec": "ATTNBLK"
+        },
+        {
+            "page_num": 5,
+            "mcf_rec": [
+                {
+                    "id": 1,
+                    "coded_font_name": "X0AMJE04",
+                    "font_description": "Arial CFL Mono 8pt"
+                }
+            ],
+            "bpt_rec": "",
+            "trn_recs": [
+                {
+                    "x_offset": 2.0,
+                    "y_offset": 2.0,
+                    "orientation": 0,
+                    "font_id": 2,
+                    "trn_text": "FOR OFFICIAL USE ONLY!"
+                }
+            ],
+            "ept_rec": ""
+        }
+    ],
+    "CDFS": {
+        "1": "jack  ",
+        "2": "  and ",
+        "3": "  jill",
+        "4": null
+    }
+}
+
