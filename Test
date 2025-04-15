@@ -1,1 +1,7 @@
-NA
+As per my research, to connect to Azure Blob Storage, we’ll need the following information:
+
+Storage Account Name (accountName) – This is the name of your Azure Storage account, available on the storage account overview page in the Azure Portal.
+
+Access Key (accountKey) – This can be found under your storage account’s Access keys section. Either of the two keys (key1 or key2) will work.
+
+Blob Container Name (containerName) – This refers to the specific blob container within your storage account where the files are stored. You can find or create containers under the Containers section of the storage account.
