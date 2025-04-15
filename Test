@@ -1,38 +1,19 @@
-2025-04-15T09:48:29.6095018Z ##[section]Starting: Kubectl Commands 2
-2025-04-15T09:48:29.6098465Z ==============================================================================
-2025-04-15T09:48:29.6098588Z Task         : Command line
-2025-04-15T09:48:29.6098653Z Description  : Run a command line script using Bash on Linux and macOS and cmd.exe on Windows
-2025-04-15T09:48:29.6098757Z Version      : 2.250.1
-2025-04-15T09:48:29.6098829Z Author       : Microsoft Corporation
-2025-04-15T09:48:29.6098900Z Help         : https://docs.microsoft.com/azure/devops/pipelines/tasks/utility/command-line
-2025-04-15T09:48:29.6099019Z ==============================================================================
-2025-04-15T09:48:29.7632102Z Generating script.
-2025-04-15T09:48:29.7636727Z Script contents:
-2025-04-15T09:48:29.7637375Z kubectl describe pvc exstream-deployment-shared-storage-pvc -n dev-exstream
-2025-04-15T09:48:29.7637678Z ========================== Starting Command Output ===========================
-2025-04-15T09:48:29.7647309Z [command]/usr/bin/bash --noprofile --norc /work/agent/_work/_temp/27e168b1-8e46-41d2-9295-7224cef92737.sh
-2025-04-15T09:48:30.0686113Z Name:          exstream-deployment-shared-storage-pvc
-2025-04-15T09:48:30.0686960Z Namespace:     dev-exstream
-2025-04-15T09:48:30.0687605Z StorageClass:  azureblob-fuse-premium
-2025-04-15T09:48:30.0688146Z Status:        Bound
-2025-04-15T09:48:30.0689052Z Volume:        dev-exstream-shared-pv
-2025-04-15T09:48:30.0692229Z Labels:        app.kubernetes.io/managed-by=Helm
-2025-04-15T09:48:30.0692519Z                app.kubernetes.io/name=sharedstorage
-2025-04-15T09:48:30.0692876Z                app.kubernetes.io/part-of=exstream-deployment
-2025-04-15T09:48:30.0693122Z                app.kubernetes.io/version=24.4.6_59452
-2025-04-15T09:48:30.0693376Z Annotations:   helm.sh/resource-policy: keep
-2025-04-15T09:48:30.0693705Z                meta.helm.sh/release-name: exstream-deployment
-2025-04-15T09:48:30.0693959Z                meta.helm.sh/release-namespace: dev-exstream
-2025-04-15T09:48:30.0694207Z                pv.kubernetes.io/bind-completed: yes
-2025-04-15T09:48:30.0694538Z Finalizers:    [kubernetes.io/pvc-protection]
-2025-04-15T09:48:30.0694716Z Capacity:      10Gi
-2025-04-15T09:48:30.0694873Z Access Modes:  RWX
-2025-04-15T09:48:30.0695033Z VolumeMode:    Filesystem
-2025-04-15T09:48:30.0695422Z Used By:       exstream-deployment-batch-5c5b75b85b-w2cfv
-2025-04-15T09:48:30.0695693Z                exstream-deployment-batch-cleanup-cron-29078480-pc8ct
-2025-04-15T09:48:30.0696023Z                exstream-deployment-ondemand-76b9b9cdf4-6cpp9
-2025-04-15T09:48:30.0696603Z                exstream-deployment-orchestration-5d8566984c-l5r78
-2025-04-15T09:48:30.0696978Z                exstream-deployment-orchestration-5d8566984c-v7qq2
-2025-04-15T09:48:30.0697259Z                exstream-deployment-orchestration-janitor-cron-29078460-d2v5s
-2025-04-15T09:48:30.0697465Z Events:        <none>
-2025-04-15T09:48:30.0768705Z ##[section]Finishing: Kubectl Commands 2
+Subject: Blob Storage Access from Local – Not Feasible via PVC
+
+Hi [Manager's Name],
+
+Just a quick update — it's not possible to store files in Azure Blob Storage from a local machine using the Kubernetes PVC (azureblob-fuse-premium), as PVCs are only accessible inside the cluster.
+
+For local file uploads, we can use the Azure Blob Storage SDK instead.
+Steps include:
+
+Add the Azure Blob SDK to the project.
+
+Use the storage account connection string.
+
+Upload files directly via the SDK.
+
+Let me know if you’d like help setting this up.
+
+Best,
+[Your Name]
