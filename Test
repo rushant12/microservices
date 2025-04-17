@@ -1,1 +1,27 @@
-please advise on how your process on Azure will access the blob storage on Azure and how the secrets will be retrieved from the KV.
+Please find below the process to retrieve values from Azure Key Vault and connect to Azure Blob Storage in a Java application, along with the required libraries.
+
+Process Overview:
+
+Use Managed Identity for authentication with Azure.
+
+Retrieve the following secrets from Azure Key Vault:
+
+Storage Account Name
+
+Storage Account Key
+
+Container Name
+
+Construct the Blob Storage connection string using the retrieved account name and key.
+
+Connect to Azure Blob Storage using the Azure Blob SDK and access the required container.
+
+Required Java Libraries:
+
+com.azure:azure-identity
+
+com.azure:azure-security-keyvault-secrets
+
+com.azure:azure-storage-blob
+
+Let me know if you need further details or a sample implementation.
