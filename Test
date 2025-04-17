@@ -1,7 +1,1 @@
-Yes, we will be able to connect to Azure Blob Storage as long as we have the required connection details, which include:
-
-Storage Account Name (accountName)
-
-Access Key (accountKey)
-
-Container Name (containerName)
+please advise on how your process on Azure will access the blob storage on Azure and how the secrets will be retrieved from the KV.
