@@ -1,1 +1,1 @@
-NA
+We are planning to use DefaultAzureCredential to authenticate with Azure services, which will use the System-Assigned Managed Identity by default
