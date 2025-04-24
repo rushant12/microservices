@@ -1,63 +1,8 @@
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.core.credential.TokenCredential;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.BlobContainerClient;
+Could you please share the Azure Key Vault URL (Ex: https://myvault.vault.azure.net/) with us? We need it to fetch secrets like storage account info for our application.
 
-public class BlobStorageFromKeyVault {
-    public static void main(String[] args) {
-        // 🔐 Key Vault URL (just replace with your actual vault name)
-        String keyVaultUrl = "https://myvault123.vault.azure.net/";
+We’re planning to use DefaultAzureCredential for authentication, which will use the System-Assigned Managed Identity by default.
 
-        // ✅ Use DefaultAzureCredential
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+Also, we’re currently unable to download the required Azure SDK JARs (e.g., azure-identity and azure-security-keyvault-secrets) from Nexus due to a trust anchor issue:
 
-        // 🔐 Access Key Vault
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(keyVaultUrl)
-            .credential(credential)
-            .buildClient();
-
-        // 🔑 Get secrets (Account Name, Account Key, Container Name)
-        String accountName = secretClient.getSecret("blob-storage-account-name").getValue();
-        String accountKey = secretClient.getSecret("blob-storage-account-key").getValue();
-        String containerName = secretClient.getSecret("blob-storage-container-name").getValue();
-
-        // 📦 Build connection string
-        String connectionString = String.format(
-            "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
-            accountName, accountKey
-        );
-
-        // ☁️ Connect to Blob Storage
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
-
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-
-        // 📃 List blobs in the container
-        System.out.println("Blobs in container: " + containerName);
-        containerClient.listBlobs().forEach(blobItem -> {
-            System.out.println("- " + blobItem.getName());
-        });
-    }
-}
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-identity</artifactId>
-    <version>1.10.4</version>
-</dependency>
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.6.3</version>
-</dependency>
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
-    <version>12.25.0</version>
-</dependency>
+java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+Please advise if there's a workaround or if we can fetch dependencies directly from Maven Central.
