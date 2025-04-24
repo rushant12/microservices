@@ -1,1 +1,1 @@
-We are planning to use DefaultAzureCredential to authenticate with Azure services, which will use the System-Assigned Managed Identity by default
+Could not transfer artifact com.azure:azure-identity:pom:1.5.0 from/to nexus (https://nexus.devops.nednet.co.za/repository/maven-group/): Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
