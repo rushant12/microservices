@@ -1,9 +1,5 @@
-secretClient --com.azure.security.keyvault.secrets.SecretClient@6c0d9d86
-Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher.Mono.subscriberContext(reactor.util.context.Context)'
-	at com.azure.core.http.rest.RestProxy.handleRestReturnType(RestProxy.java:502)
-	at com.azure.core.http.rest.RestProxy.invoke(RestProxy.java:137)
-	at com.azure.security.keyvault.secrets.$Proxy3.getSecret(Unknown Source)
-	at com.azure.security.keyvault.secrets.SecretAsyncClient.getSecretWithResponse(SecretAsyncClient.java:259)
-	at com.azure.security.keyvault.secrets.SecretClient.getSecretWithResponse(SecretClient.java:171)
-	at com.azure.security.keyvault.secrets.SecretClient.getSecret(SecretClient.java:150)
-	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:28)
+<dependency>
+    <groupId>io.projectreactor</groupId>
+    <artifactId>reactor-core</artifactId>
+    <version>3.4.0</version> <!-- Ensure version 3.4.0 or higher -->
+</dependency>
