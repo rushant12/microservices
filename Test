@@ -1,3 +1,16 @@
+Hi @Van Vuuren, L. (Lizelle),
+
+Dependencies were not available on nexus on yesterday , but today I can see those dependencies , able to be downloaded successfully after adding updated certification on my local JDK.
+
+Now I am getting below issue due to incompatible version for azure-identity
+with azure-core , checking on it.
+
+Hi @Rimer, R. (Raphael),
+ Could you please help us to upload higher versions or all available versions on nexus for below dependencies.
+
+Azure-core – 1.12.0 – downloaded by default
+Expected compatible versions(azure-identity-1.5.1 or higher and azure-security-keyvault-secrets-4.1.2)
+
 13:34:34.886 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: 
 Exception in thread "main" java.lang.NoSuchMethodError: 'void com.azure.core.util.logging.ClientLogger.log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier)'
 	at com.azure.identity.implementation.util.LoggingUtil.logError(LoggingUtil.java:99)
@@ -5,3 +18,4 @@ Exception in thread "main" java.lang.NoSuchMethodError: 'void com.azure.core.uti
 	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:155)
 	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:150)
 	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:17)
+
