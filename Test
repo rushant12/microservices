@@ -1,8 +1,7 @@
-Could you please share the Azure Key Vault URL (Ex: https://myvault.vault.azure.net/) with us? We need it to fetch secrets like storage account info for our application.
-
-We’re planning to use DefaultAzureCredential for authentication, which will use the System-Assigned Managed Identity by default.
-
-Also, we’re currently unable to download the required Azure SDK JARs (e.g., azure-identity and azure-security-keyvault-secrets) from Nexus due to a trust anchor issue:
-
-java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
-Please advise if there's a workaround or if we can fetch dependencies directly from Maven Central.
+13:34:34.886 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: 
+Exception in thread "main" java.lang.NoSuchMethodError: 'void com.azure.core.util.logging.ClientLogger.log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier)'
+	at com.azure.identity.implementation.util.LoggingUtil.logError(LoggingUtil.java:99)
+	at com.azure.identity.EnvironmentCredential.<init>(EnvironmentCredential.java:119)
+	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:155)
+	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:150)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:17)
