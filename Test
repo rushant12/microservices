@@ -1,19 +1,9 @@
-Hi @Van Vuuren, L. (Lizelle),
-
-Yesterday, the required dependencies were not available on Nexus. However, today I was able to download them successfully after updating the certification in my local JDK.
-
-That said, I'm now encountering an issue caused by an incompatible version of azure-identity with azure-core. I'm currently investigating this.
-
-Hi @Rimer, R. (Raphael),
-
-Could you please assist in uploading higher versions (or all available versions) of the following dependencies to Nexus?
-
-azure-core – Currently defaulting to version 1.12.0
-
-Expected compatible versions:
-
-azure-identity: 1.5.1 or higher
-
-azure-security-keyvault-secrets: 4.1.2
-
-This would help us avoid the current runtime issue, shown below:
+secretClient --com.azure.security.keyvault.secrets.SecretClient@6c0d9d86
+Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher.Mono.subscriberContext(reactor.util.context.Context)'
+	at com.azure.core.http.rest.RestProxy.handleRestReturnType(RestProxy.java:502)
+	at com.azure.core.http.rest.RestProxy.invoke(RestProxy.java:137)
+	at com.azure.security.keyvault.secrets.$Proxy3.getSecret(Unknown Source)
+	at com.azure.security.keyvault.secrets.SecretAsyncClient.getSecretWithResponse(SecretAsyncClient.java:259)
+	at com.azure.security.keyvault.secrets.SecretClient.getSecretWithResponse(SecretClient.java:171)
+	at com.azure.security.keyvault.secrets.SecretClient.getSecret(SecretClient.java:150)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:28)
