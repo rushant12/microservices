@@ -1,5 +1,4 @@
-DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-    .excludeEnvironmentCredential() // disable if not using env vars
-    .excludeIntelliJCredential()    // disable if not using IntelliJ auth
-    .excludeSharedTokenCacheCredential()
-    .build();
+// List all secret names in the Key Vault
+secretClient.listPropertiesOfSecrets().forEach(secretProperty -> {
+    System.out.println("Secret name: " + secretProperty.getName());
+});
