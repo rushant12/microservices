@@ -1,11 +1,6 @@
-System.out.println("Connected to Key Vault: " + keyVaultUrl);
-System.out.println("Listing secrets...");
-
-try {
-    secretClient.listPropertiesOfSecrets().forEach(secretProperty -> {
-        System.out.println("🔐 Secret name: " + secretProperty.getName());
-    });
-} catch (Exception e) {
-    System.err.println("❌ Failed to list secrets: " + e.getMessage());
-    e.printStackTrace();
-}
+Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.util.context.ContextView reactor.core.publisher.MonoSink.contextView()'
+	at reactor.netty.http.client.HttpClientConnect$HttpObserver.<init>(HttpClientConnect.java:329)
+	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.lambda$subscribe$0(HttpClientConnect.java:259)
+	at reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:57)
+	at reactor.core.publisher.FluxRetryWhen.subscribe(FluxRetryWhen.java:76)
+	at reactor.core.publisher.MonoRetryWhen.subscribeOrReturn(MonoRetryWhen.java:46)
