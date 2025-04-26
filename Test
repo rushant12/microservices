@@ -1,5 +1,186 @@
-<dependency>
-    <groupId>io.projectreactor</groupId>
-    <artifactId>reactor-core</artifactId>
-    <version>3.4.0</version> <!-- Ensure version 3.4.0 or higher -->
-</dependency>
+C:\Users\CC437236\jdk-17.0.12_windows-x64_bin\jdk-17.0.12\bin\java.exe "-javaagent:C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 2024.2.3\lib\idea_rt.jar=62929:C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 2024.2.3\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\CC437236\Documents\file-manager\target\classes;C:\Users\CC437236\.m2\repository\za\co\nedbank\spring-nedbank-kafka-sb3\1.0.0-RELEASE\spring-nedbank-kafka-sb3-1.0.0-RELEASE.jar;C:\Users\CC437236\.m2\repository\org\springframework\kafka\spring-kafka\3.0.11\spring-kafka-3.0.11.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-context\6.0.2\spring-context-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-expression\6.0.2\spring-expression-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-messaging\6.0.2\spring-messaging-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-tx\6.0.2\spring-tx-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\retry\spring-retry\2.0.0\spring-retry-2.0.0.jar;C:\Users\CC437236\.m2\repository\org\apache\kafka\kafka-clients\3.3.1\kafka-clients-3.3.1.jar;C:\Users\CC437236\.m2\repository\com\github\luben\zstd-jni\1.5.2-1\zstd-jni-1.5.2-1.jar;C:\Users\CC437236\.m2\repository\org\lz4\lz4-java\1.8.0\lz4-java-1.8.0.jar;C:\Users\CC437236\.m2\repository\org\xerial\snappy\snappy-java\1.1.8.4\snappy-java-1.1.8.4.jar;C:\Users\CC437236\.m2\repository\org\slf4j\slf4j-api\2.0.4\slf4j-api-2.0.4.jar;C:\Users\CC437236\.m2\repository\io\micrometer\micrometer-observation\1.10.2\micrometer-observation-1.10.2.jar;C:\Users\CC437236\.m2\repository\io\micrometer\micrometer-commons\1.10.2\micrometer-commons-1.10.2.jar;C:\Users\CC437236\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.0.0\spring-boot-starter-web-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter\3.0.0\spring-boot-starter-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot\3.0.0\spring-boot-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.0.0\spring-boot-autoconfigure-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.0.0\spring-boot-starter-logging-3.0.0.jar;C:\Users\CC437236\.m2\repository\ch\qos\logback\logback-classic\1.4.5\logback-classic-1.4.5.jar;C:\Users\CC437236\.m2\repository\ch\qos\logback\logback-core\1.4.5\logback-core-1.4.5.jar;C:\Users\CC437236\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.19.0\log4j-to-slf4j-2.19.0.jar;C:\Users\CC437236\.m2\repository\org\apache\logging\log4j\log4j-api\2.19.0\log4j-api-2.19.0.jar;C:\Users\CC437236\.m2\repository\org\slf4j\jul-to-slf4j\2.0.4\jul-to-slf4j-2.0.4.jar;C:\Users\CC437236\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\CC437236\.m2\repository\org\yaml\snakeyaml\1.33\snakeyaml-1.33.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.0.0\spring-boot-starter-json-3.0.0.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.14.1\jackson-datatype-jdk8-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.14.1\jackson-datatype-jsr310-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.14.1\jackson-module-parameter-names-2.14.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.0.0\spring-boot-starter-tomcat-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.1\tomcat-embed-core-10.1.1.jar;C:\Users\CC437236\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.1\tomcat-embed-el-10.1.1.jar;C:\Users\CC437236\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.1\tomcat-embed-websocket-10.1.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-web\6.0.2\spring-web-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-webmvc\6.0.2\spring-webmvc-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-integration\3.0.0\spring-boot-starter-integration-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-aop\3.0.0\spring-boot-starter-aop-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\aspectj\aspectjweaver\1.9.9.1\aspectjweaver-1.9.9.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\integration\spring-integration-core\6.0.0\spring-integration-core-6.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\batch\spring-batch-core\5.0.0\spring-batch-core-5.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\batch\spring-batch-infrastructure\5.0.0\spring-batch-infrastructure-5.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-aop\6.0.2\spring-aop-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-beans\6.0.2\spring-beans-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-jdbc\6.0.2\spring-jdbc-6.0.2.jar;C:\Users\CC437236\.m2\repository\io\micrometer\micrometer-core\1.10.2\micrometer-core-1.10.2.jar;C:\Users\CC437236\.m2\repository\org\hdrhistogram\HdrHistogram\2.1.12\HdrHistogram-2.1.12.jar;C:\Users\CC437236\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\CC437236\.m2\repository\org\springframework\ws\spring-ws-core\4.0.0\spring-ws-core-4.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\ws\spring-xml\4.0.0\spring-xml-4.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-oxm\6.0.2\spring-oxm-6.0.2.jar;C:\Users\CC437236\.m2\repository\jakarta\xml\soap\jakarta.xml.soap-api\3.0.0\jakarta.xml.soap-api-3.0.0.jar;C:\Users\CC437236\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.0\jakarta.activation-api-2.1.0.jar;C:\Users\CC437236\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\CC437236\.m2\repository\com\sun\xml\bind\jaxb-impl\4.0.1\jaxb-impl-4.0.1.jar;C:\Users\CC437236\.m2\repository\com\sun\xml\bind\jaxb-core\4.0.1\jaxb-core-4.0.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-core\6.0.2\spring-core-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-jcl\6.0.2\spring-jcl-6.0.2.jar;C:\Users\CC437236\.m2\repository\com\sun\xml\messaging\saaj\saaj-impl\3.0.0\saaj-impl-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\eclipse\angus\angus-activation\1.0.0\angus-activation-1.0.0.jar;C:\Users\CC437236\.m2\repository\org\jvnet\staxex\stax-ex\2.1.0\stax-ex-2.1.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-storage-blob\12.10.0\azure-storage-blob-12.10.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-core\1.12.0\azure-core-1.12.0.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-xml\2.14.1\jackson-dataformat-xml-2.14.1.jar;C:\Users\CC437236\.m2\repository\org\codehaus\woodstox\stax2-api\4.2.1\stax2-api-4.2.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\woodstox\woodstox-core\6.4.0\woodstox-core-6.4.0.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-classes\2.0.54.Final\netty-tcnative-classes-2.0.54.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-linux-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-linux-aarch_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-osx-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-osx-aarch_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-windows-x86_64.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-storage-common\12.10.0\azure-storage-common-12.10.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-storage-internal-avro\12.0.2\azure-storage-internal-avro-12.0.2.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-identity\1.2.3\azure-identity-1.2.3.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-core-http-netty\1.8.0\azure-core-http-netty-1.8.0.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-handler\4.1.85.Final\netty-handler-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-common\4.1.85.Final\netty-common-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver\4.1.85.Final\netty-resolver-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport\4.1.85.Final\netty-transport-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec\4.1.85.Final\netty-codec-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-handler-proxy\4.1.85.Final\netty-handler-proxy-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-socks\4.1.85.Final\netty-codec-socks-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-buffer\4.1.85.Final\netty-buffer-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-http\4.1.85.Final\netty-codec-http-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-http2\4.1.85.Final\netty-codec-http2-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-native-unix-common\4.1.85.Final\netty-transport-native-unix-common-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-native-epoll\4.1.85.Final\netty-transport-native-epoll-4.1.85.Final-linux-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-classes-epoll\4.1.85.Final\netty-transport-classes-epoll-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-native-kqueue\4.1.85.Final\netty-transport-native-kqueue-4.1.85.Final-osx-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-classes-kqueue\4.1.85.Final\netty-transport-classes-kqueue-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\reactor-netty\1.1.0\reactor-netty-1.1.0.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\reactor-netty-core\1.1.0\reactor-netty-core-1.1.0.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver-dns\4.1.85.Final\netty-resolver-dns-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-dns\4.1.85.Final\netty-codec-dns-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver-dns-native-macos\4.1.85.Final\netty-resolver-dns-native-macos-4.1.85.Final-osx-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver-dns-classes-macos\4.1.85.Final\netty-resolver-dns-classes-macos-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\reactor-netty-http\1.1.0\reactor-netty-http-1.1.0.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\incubator\reactor-netty-incubator-quic\0.1.0\reactor-netty-incubator-quic-0.1.0.jar;C:\Users\CC437236\.m2\repository\io\netty\incubator\netty-incubator-codec-native-quic\0.0.33.Final\netty-incubator-codec-native-quic-0.0.33.Final-linux-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\incubator\netty-incubator-codec-classes-quic\0.0.33.Final\netty-incubator-codec-classes-quic-0.0.33.Final.jar;C:\Users\CC437236\.m2\repository\net\minidev\json-smart\2.4.8\json-smart-2.4.8.jar;C:\Users\CC437236\.m2\repository\net\minidev\accessors-smart\2.4.8\accessors-smart-2.4.8.jar;C:\Users\CC437236\.m2\repository\org\ow2\asm\asm\9.1\asm-9.1.jar;C:\Users\CC437236\.m2\repository\com\microsoft\azure\msal4j\1.8.1\msal4j-1.8.1.jar;C:\Users\CC437236\.m2\repository\com\microsoft\azure\msal4j-persistence-extension\1.0.0\msal4j-persistence-extension-1.0.0.jar;C:\Users\CC437236\.m2\repository\net\java\dev\jna\jna\5.5.0\jna-5.5.0.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\oauth2-oidc-sdk\7.1.1\oauth2-oidc-sdk-7.1.1.jar;C:\Users\CC437236\.m2\repository\com\github\stephenc\jcip\jcip-annotations\1.0-1\jcip-annotations-1.0-1.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\content-type\2.0\content-type-2.0.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\lang-tag\1.4.4\lang-tag-1.4.4.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\nimbus-jose-jwt\8.8\nimbus-jose-jwt-8.8.jar;C:\Users\CC437236\.m2\repository\com\sun\mail\javax.mail\1.6.1\javax.mail-1.6.1.jar;C:\Users\CC437236\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Users\CC437236\.m2\repository\net\java\dev\jna\jna-platform\5.6.0\jna-platform-5.6.0.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2\2.1.4\KeePassJava2-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-kdb\2.1.4\KeePassJava2-kdb-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\database\2.1.4\database-2.1.4.jar;C:\Users\CC437236\.m2\repository\com\google\guava\guava\19.0\guava-19.0.jar;C:\Users\CC437236\.m2\repository\com\madgag\spongycastle\core\1.54.0.0\core-1.54.0.0.jar;C:\Users\CC437236\.m2\repository\org\jetbrains\annotations\15.0\annotations-15.0.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-dom\2.1.4\KeePassJava2-dom-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-kdbx\2.1.4\KeePassJava2-kdbx-2.1.4.jar;C:\Users\CC437236\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-jaxb\2.1.4\KeePassJava2-jaxb-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-simple\2.1.4\KeePassJava2-simple-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\simpleframework\simple-xml\2.7.1\simple-xml-2.7.1.jar;C:\Users\CC437236\.m2\repository\stax\stax-api\1.0.1\stax-api-1.0.1.jar;C:\Users\CC437236\.m2\repository\stax\stax\1.2.0\stax-1.2.0.jar;C:\Users\CC437236\.m2\repository\xpp3\xpp3\1.1.3.3\xpp3-1.1.3.3.jar;C:\Users\CC437236\.m2\repository\org\apache\httpcomponents\httpcore\4.4.15\httpcore-4.4.15.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\aalto-xml\1.0.0\aalto-xml-1.0.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-security-keyvault-secrets\4.1.2\azure-security-keyvault-secrets-4.1.2.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\reactor-core\3.4.0\reactor-core-3.4.0.jar;C:\Users\CC437236\.m2\repository\org\reactivestreams\reactive-streams\1.0.4\reactive-streams-1.0.4.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.14.1\jackson-databind-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.14.1\jackson-annotations-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.14.1\jackson-core-2.14.1.jar com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault
+17:00:33.921 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: 
+17:00:33.928 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable AZURE_CLIENT_ID
+17:00:35.183 [main] DEBUG reactor.util.Loggers$LoggerFactory - Using Slf4j logging framework
+17:00:35.202 [main] DEBUG com.azure.identity.ManagedIdentityCredential - Azure Identity => Found the following environment variables: 
+17:00:35.204 [main] DEBUG com.azure.identity.SharedTokenCacheCredential - Azure Identity => Found the following environment variables: 
+17:00:35.233 [main] ERROR com.azure.identity.implementation.IntelliJCacheAccessor - IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+com.azure.identity.CredentialUnavailableException: IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+	at com.azure.identity.implementation.IntelliJCacheAccessor.getAuthDetailsIfAvailable(IntelliJCacheAccessor.java:243)
+	at com.azure.identity.IntelliJCredential.<init>(IntelliJCredential.java:51)
+	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:132)
+	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:17)
+17:00:35.609 [main] DEBUG io.netty.util.internal.logging.InternalLoggerFactory - Using SLF4J as the default logging framework
+17:00:35.615 [main] DEBUG io.netty.util.internal.PlatformDependent0 - -Dio.netty.noUnsafe: false
+17:00:35.615 [main] DEBUG io.netty.util.internal.PlatformDependent0 - Java version: 17
+17:00:35.623 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.theUnsafe: available
+17:00:35.625 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.copyMemory: available
+17:00:35.630 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.storeFence: available
+17:00:35.632 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.Buffer.address: available
+17:00:35.634 [main] DEBUG io.netty.util.internal.PlatformDependent0 - direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+17:00:35.635 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.Bits.unaligned: available, true
+17:00:35.644 [main] DEBUG io.netty.util.internal.PlatformDependent0 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @72ef8d15
+17:00:35.647 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.DirectByteBuffer.<init>(long, int): unavailable
+17:00:35.647 [main] DEBUG io.netty.util.internal.PlatformDependent - sun.misc.Unsafe: available
+17:00:35.667 [main] DEBUG io.netty.util.internal.PlatformDependent - maxDirectMemory: 4273995776 bytes (maybe)
+17:00:35.667 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.tmpdir: C:\Users\CC437236\AppData\Local\Temp (java.io.tmpdir)
+17:00:35.667 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+17:00:35.668 [main] DEBUG io.netty.util.internal.PlatformDependent - Platform: Windows
+17:00:35.702 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.maxDirectMemory: -1 bytes
+17:00:35.702 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+17:00:35.704 [main] DEBUG io.netty.util.internal.CleanerJava9 - java.nio.ByteBuffer.cleaner(): available
+17:00:35.705 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.noPreferDirect: false
+17:00:35.873 [main] DEBUG io.netty.util.internal.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+17:00:35.874 [main] DEBUG io.netty.util.internal.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+17:00:35.989 [main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.level: simple
+17:00:35.989 [main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.targetRecords: 4
+secretClient --com.azure.security.keyvault.secrets.SecretClient@535779e4
+17:00:36.286 [main] INFO com.azure.security.keyvault.secrets.SecretAsyncClient - Retrieving secret - blob-storage-account-name
+17:00:36.337 [main] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv4Stack: false
+17:00:36.337 [main] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv6Addresses: false
+17:00:36.358 [main] DEBUG io.netty.util.NetUtilInitializations - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+17:00:36.364 [main] DEBUG io.netty.util.NetUtil - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+17:00:36.457 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.workdir: C:\Users\CC437236\AppData\Local\Temp (io.netty.tmpdir)
+17:00:36.458 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.deleteLibAfterLoading: true
+17:00:36.458 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.tryPatchShadedId: true
+17:00:36.458 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.detectNativeLibraryDuplicates: true
+17:00:37.018 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - Successfully loaded the library C:\Users\CC437236\AppData\Local\Temp\netty_tcnative_windows_x86_6413092277445609671051.dll
+17:00:37.019 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - Loaded library with name 'netty_tcnative_windows_x86_64'
+17:00:37.019 [main] DEBUG io.netty.handler.ssl.OpenSsl - Initialize netty-tcnative using engine: 'default'
+17:00:37.020 [main] DEBUG io.netty.handler.ssl.OpenSsl - netty-tcnative using native library: BoringSSL
+17:00:37.566 [main] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkAccessible: true
+17:00:37.566 [main] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkBounds: true
+17:00:37.570 [main] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@63648ee9
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numHeapArenas: 8
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numDirectArenas: 8
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.pageSize: 8192
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxOrder: 9
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.chunkSize: 4194304
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.smallCacheSize: 256
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.normalCacheSize: 64
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+17:00:37.612 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimInterval: 8192
+17:00:37.613 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+17:00:37.613 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.useCacheForAllThreads: false
+17:00:37.613 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+17:00:37.650 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.allocator.type: pooled
+17:00:37.650 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.threadLocalDirectBufferSize: 0
+17:00:37.650 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+17:00:37.722 [main] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@53ab0286
+17:00:37.777 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.maxCapacityPerThread: 4096
+17:00:37.778 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.ratio: 8
+17:00:37.779 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.chunkSize: 32
+17:00:37.780 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.blocking: false
+17:00:37.833 [main] DEBUG io.netty.util.internal.PlatformDependent - org.jctools-core.MpscChunkedArrayQueue: available
+17:00:37.886 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 => ECDHE-ECDSA-AES128-GCM-SHA256
+17:00:37.886 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 => ECDHE-ECDSA-AES128-GCM-SHA256
+17:00:37.887 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 => ECDHE-RSA-AES128-GCM-SHA256
+17:00:37.887 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_128_GCM_SHA256 => ECDHE-RSA-AES128-GCM-SHA256
+17:00:37.887 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 => ECDHE-ECDSA-AES256-GCM-SHA384
+17:00:37.888 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 => ECDHE-ECDSA-AES256-GCM-SHA384
+17:00:37.888 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 => ECDHE-RSA-AES256-GCM-SHA384
+17:00:37.888 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_256_GCM_SHA384 => ECDHE-RSA-AES256-GCM-SHA384
+17:00:37.888 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-ECDSA-CHACHA20-POLY1305
+17:00:37.888 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-ECDSA-CHACHA20-POLY1305
+17:00:37.889 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-RSA-CHACHA20-POLY1305
+17:00:37.889 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-RSA-CHACHA20-POLY1305
+17:00:37.889 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-PSK-CHACHA20-POLY1305
+17:00:37.890 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-PSK-CHACHA20-POLY1305
+17:00:37.892 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA => ECDHE-ECDSA-AES128-SHA
+17:00:37.893 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_128_CBC_SHA => ECDHE-ECDSA-AES128-SHA
+17:00:37.893 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA => ECDHE-RSA-AES128-SHA
+17:00:37.893 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA => ECDHE-RSA-AES128-SHA
+17:00:37.893 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA => ECDHE-PSK-AES128-CBC-SHA
+17:00:37.894 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_AES_128_CBC_SHA => ECDHE-PSK-AES128-CBC-SHA
+17:00:37.894 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA => ECDHE-ECDSA-AES256-SHA
+17:00:37.894 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA => ECDHE-ECDSA-AES256-SHA
+17:00:37.894 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA => ECDHE-RSA-AES256-SHA
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA => ECDHE-RSA-AES256-SHA
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA => ECDHE-PSK-AES256-CBC-SHA
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_AES_256_CBC_SHA => ECDHE-PSK-AES256-CBC-SHA
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_128_GCM_SHA256 => AES128-GCM-SHA256
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_128_GCM_SHA256 => AES128-GCM-SHA256
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_256_GCM_SHA384 => AES256-GCM-SHA384
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_256_GCM_SHA384 => AES256-GCM-SHA384
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_128_CBC_SHA => AES128-SHA
+17:00:37.895 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_128_CBC_SHA => AES128-SHA
+17:00:37.896 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_PSK_WITH_AES_128_CBC_SHA => PSK-AES128-CBC-SHA
+17:00:37.896 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_PSK_WITH_AES_128_CBC_SHA => PSK-AES128-CBC-SHA
+17:00:37.897 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_256_CBC_SHA => AES256-SHA
+17:00:37.897 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_256_CBC_SHA => AES256-SHA
+17:00:37.897 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_PSK_WITH_AES_256_CBC_SHA => PSK-AES256-CBC-SHA
+17:00:37.897 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_PSK_WITH_AES_256_CBC_SHA => PSK-AES256-CBC-SHA
+17:00:37.898 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_3DES_EDE_CBC_SHA => DES-CBC3-SHA
+17:00:37.898 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_3DES_EDE_CBC_SHA => DES-CBC3-SHA
+17:00:37.899 [main] DEBUG io.netty.handler.ssl.OpenSsl - Supported protocols (OpenSSL): [SSLv2Hello, TLSv1, TLSv1.1, TLSv1.2, TLSv1.3] 
+17:00:37.904 [main] DEBUG io.netty.handler.ssl.OpenSsl - Default cipher suites (OpenSSL): [TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256]
+Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.util.context.ContextView reactor.core.publisher.MonoSink.contextView()'
+	at reactor.netty.http.client.HttpClientConnect$HttpObserver.<init>(HttpClientConnect.java:329)
+	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.lambda$subscribe$0(HttpClientConnect.java:259)
+	at reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:57)
+	at reactor.core.publisher.FluxRetryWhen.subscribe(FluxRetryWhen.java:76)
+	at reactor.core.publisher.MonoRetryWhen.subscribeOrReturn(MonoRetryWhen.java:46)
+	at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:57)
+	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:272)
+	at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
+	at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:52)
+	at reactor.core.publisher.Mono.subscribe(Mono.java:3987)
+	at reactor.core.publisher.Mono.block(Mono.java:1678)
+	at com.azure.security.keyvault.secrets.SecretClient.getSecretWithResponse(SecretClient.java:171)
+	at com.azure.security.keyvault.secrets.SecretClient.getSecret(SecretClient.java:150)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:28)
+
+Process finished with exit code 1
+
+package com.nedbank.kafka.filemanage.service;
+
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+
+public class BlobStorageFromKeyVault {
+    public static void main(String[] args) {
+        //  Key Vault URL (just replace with your actual vault name)
+        String keyVaultUrl = "https://nsn-dev-ecm-kva-001.vault.azure.net/";
+
+        // Use DefaultAzureCredential
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        //  Access Key Vault
+        SecretClient secretClient = new SecretClientBuilder()
+                .vaultUrl(keyVaultUrl)
+                .credential(credential)
+                .buildClient();
+
+        System.out.println("secretClient --" + secretClient.toString());
+
+        //  Get secrets (Account Name, Account Key, Container Name)
+        String accountName = secretClient.getSecret("blob-storage-account-name").getValue();
+        String accountKey = secretClient.getSecret("blob-storage-account-key").getValue();
+        String containerName = secretClient.getSecret("blob-storage-container-name").getValue();
+
+        // 📦 Build connection string
+        String connectionString = String.format(
+                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
+                accountName, accountKey
+        );
+
+        // ☁️ Connect to Blob Storage
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .connectionString(connectionString)
+                .buildClient();
+
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
+
+        // 📃 List blobs in the container
+        System.out.println("Blobs in container: " + containerName);
+        containerClient.listBlobs().forEach(blobItem -> {
+            System.out.println("- " + blobItem.getName());
+        });
+    }
+}
