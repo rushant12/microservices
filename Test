@@ -1,4 +1,11 @@
-// List all secret names in the Key Vault
-secretClient.listPropertiesOfSecrets().forEach(secretProperty -> {
-    System.out.println("Secret name: " + secretProperty.getName());
-});
+System.out.println("Connected to Key Vault: " + keyVaultUrl);
+System.out.println("Listing secrets...");
+
+try {
+    secretClient.listPropertiesOfSecrets().forEach(secretProperty -> {
+        System.out.println("🔐 Secret name: " + secretProperty.getName());
+    });
+} catch (Exception e) {
+    System.err.println("❌ Failed to list secrets: " + e.getMessage());
+    e.printStackTrace();
+}
