@@ -1,7 +1,36 @@
-Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher.Mono.subscriberContext(reactor.util.context.Context)'
-	at com.azure.core.http.rest.RestProxy.handleRestReturnType(RestProxy.java:502)
-	at com.azure.core.http.rest.RestProxy.invoke(RestProxy.java:137)
-	at com.azure.security.keyvault.secrets.$Proxy3.getSecrets(Unknown Source)
-	at com.azure.security.keyvault.secrets.SecretAsyncClient.listSecretsFirstPage(SecretAsyncClient.java:764)
-	at com.azure.security.keyvault.secrets.SecretAsyncClient.lambda$listPropertiesOfSecrets$64(SecretAsyncClient.java:734)
-	at co
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core</artifactId>
+    <version>1.24.0</version>  <!-- Update to the latest version -->
+</dependency>
+
+
+<dependencies>
+    <!-- Azure Key Vault Secrets SDK -->
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-secrets</artifactId>
+        <version>4.6.0</version>  <!-- Ensure the latest version -->
+    </dependency>
+
+    <!-- Azure Identity SDK (for credentials) -->
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>1.10.0</version>  <!-- Ensure the latest version -->
+    </dependency>
+
+    <!-- Reactor Core Dependency -->
+    <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>3.4.0</version>  <!-- Ensure the latest version -->
+    </dependency>
+
+    <!-- Optional: For logging -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.0-alpha1</version>
+    </dependency>
+</dependencies>
