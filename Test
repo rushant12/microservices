@@ -1,12 +1,7 @@
-
-        try {
-            // Use Iterator to loop over the secrets
-            Iterator<SecretProperties> secretsIterator = secretClient.listPropertiesOfSecrets().iterator();
-            while (secretsIterator.hasNext()) {
-                SecretProperties secretProperty = secretsIterator.next();
-                System.out.println("🔐 Secret name: " + secretProperty.getName());
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Failed to list secrets: " + e.getMessage());
-            e.printStackTrace();
-        }
+Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher.Mono.subscriberContext(reactor.util.context.Context)'
+	at com.azure.core.http.rest.RestProxy.handleRestReturnType(RestProxy.java:502)
+	at com.azure.core.http.rest.RestProxy.invoke(RestProxy.java:137)
+	at com.azure.security.keyvault.secrets.$Proxy3.getSecrets(Unknown Source)
+	at com.azure.security.keyvault.secrets.SecretAsyncClient.listSecretsFirstPage(SecretAsyncClient.java:764)
+	at com.azure.security.keyvault.secrets.SecretAsyncClient.lambda$listPropertiesOfSecrets$64(SecretAsyncClient.java:734)
+	at co
