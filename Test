@@ -1,17 +1,15 @@
-Exception in thread "main" java.lang.NoSuchMethodError: 'reactor.util.context.ContextView reactor.core.publisher.MonoSink.contextView()'
-	at reactor.netty.http.client.HttpClientConnect$HttpObserver.<init>(HttpClientConnect.java:329)
-	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.lambda$subscribe$0(HttpClientConnect.java:259)
-	at reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:57)
-	at reactor.core.publisher.FluxRetryWhen.subscribe(FluxRetryWhen.java:76)
-	at reactor.core.publisher.MonoRetryWhen.subscribeOrReturn(MonoRetryWhen.java:46)
-	at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:57)
-	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect.subscribe(HttpClientConnect.java:272)
-	at reactor.core.publisher.InternalMonoOperator.subscribe(InternalMonoOperator.java:64)
-	at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:52)
-	at reactor.core.publisher.Flux.subscribe(Flux.java:8156)
-	at reactor.core.publisher.Flux.blockLast(Flux.java:2518)
-	at com.azure.core.util.paging.ContinuablePagedByIteratorBase.requestPage(ContinuablePagedByIteratorBase.java:94)
-	at com.azure.core.util.paging.ContinuablePagedByItemIterable$ContinuablePagedByItemIterator.<init>(ContinuablePagedByItemIterable.java:50)
-	at com.azure.core.util.paging.ContinuablePagedByItemIterable.iterator(ContinuablePagedByItemIterable.java:37)
-	at com.azure.core.util.paging.ContinuablePagedIterable.iterator(ContinuablePagedIterable.java:106)
-	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:33)
+09:42:57.749 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: 
+09:42:57.755 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable AZURE_CLIENT_ID
+Exception in thread "main" java.lang.NoClassDefFoundError: reactor/core/publisher/ReplayProcessor
+	at com.azure.identity.implementation.SynchronizedAccessor.<init>(SynchronizedAccessor.java:21)
+	at com.azure.identity.implementation.IdentityClient.<init>(IdentityClient.java:167)
+	at com.azure.identity.implementation.IdentityClientBuilder.build(IdentityClientBuilder.java:113)
+	at com.azure.identity.ManagedIdentityCredential.<init>(ManagedIdentityCredential.java:39)
+	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:129)
+	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:20)
+Caused by: java.lang.ClassNotFoundException: reactor.core.publisher.ReplayProcessor
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	... 7 more
