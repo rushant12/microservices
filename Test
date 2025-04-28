@@ -1,6 +1,4 @@
-com.azure.identity.CredentialUnavailableException: IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
-	at com.azure.identity.implementation.IntelliJCacheAccessor.getAuthDetailsIfAvailable(IntelliJCacheAccessor.java:243)
-	at com.azure.identity.IntelliJCredential.<init>(IntelliJCredential.java:51)
-	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:132)
-	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
-	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:20)
+11:59:23.265 [reactor-http-nio-1] DEBUG com.azure.core.http.policy.RetryPolicy - [Error Resume] Try count: 0, Error: {}
+java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
+	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
