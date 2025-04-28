@@ -1,8 +1,1 @@
-C:\Users\CC437236>nslookup nsn-dev-ecm-kva-001.vault.azure.net
-Server:  DOCJHBSNT01.africa.nedcor.net
-Address:  10.50.10.10
-
-Non-authoritative answer:
-Name:    nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net
-Address:  10.245.74.104
-Aliases:  nsn-dev-ecm-kva-001.vault.azure.net
+Method threw 'com.azure.core.http.rest.MissingRequiredAnnotationException' exception. Cannot evaluate com.azure.security.keyvault.secrets.$Proxy3.toString()
