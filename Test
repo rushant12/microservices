@@ -1,29 +1,12 @@
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.security.keyvault.secrets.KeyVaultSecret;
-
-public class ListSecretsFromKeyVault {
-
-    public static void main(String[] args) {
-        // Build the SecretClient using DefaultAzureCredential
-        SecretClient secretClient = new SecretClientBuilder()
-                .vaultUrl("<YourKeyVaultURL>") // Replace with your KeyVault URL
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
-
-        // List all secrets in the KeyVault
-        secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
-            // For each secret, get its value
-            try {
-                KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
-                System.out.println("Secret Name: " + secret.getName());
-                System.out.println("Secret Value: " + secret.getValue());
-                System.out.println("---------------------------------");
-            } catch (Exception e) {
-                System.out.println("Error retrieving secret: " + secretProperties.getName());
-                e.printStackTrace();
-            }
-        });
-    }
-}
+15:03:49.154 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID
+15:03:49.179 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Failed to determine an authentication scheme based on the available environment variables. Please specify AZURE_TENANT_ID and AZURE_CLIENT_SECRET to authenticate through a ClientSecretCredential; AZURE_TENANT_ID and AZURE_CLIENT_CERTIFICATE_PATH to authenticate through a ClientCertificateCredential; or AZURE_USERNAME and AZURE_PASSWORD to authenticate through a UserPasswordCredential.
+15:03:53.513 [main] DEBUG reactor.util.Loggers - Using Slf4j logging framework
+15:03:53.692 [main] DEBUG com.azure.identity.ManagedIdentityCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID
+15:03:53.716 [main] DEBUG com.azure.identity.SharedTokenCacheCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID
+15:03:53.778 [main] ERROR com.azure.identity.implementation.IntelliJCacheAccessor - IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+com.azure.identity.CredentialUnavailableException: IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+	at com.azure.identity.implementation.IntelliJCacheAccessor.getAuthDetailsIfAvailable(IntelliJCacheAccessor.java:243)
+	at com.azure.identity.IntelliJCredential.<init>(IntelliJCredential.java:51)
+	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:132)
+	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:20)
