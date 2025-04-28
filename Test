@@ -1,4 +1,8 @@
-11:59:23.265 [reactor-http-nio-1] DEBUG com.azure.core.http.policy.RetryPolicy - [Error Resume] Try count: 0, Error: {}
-java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
-	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
-	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
+C:\Users\CC437236>nslookup nsn-dev-ecm-kva-001.vault.azure.net
+Server:  DOCJHBSNT01.africa.nedcor.net
+Address:  10.50.10.10
+
+Non-authoritative answer:
+Name:    nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net
+Address:  10.245.74.104
+Aliases:  nsn-dev-ecm-kva-001.vault.azure.net
