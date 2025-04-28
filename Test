@@ -1,15 +1,7 @@
-C:\Users\CC437236>nslookup https://nsn-dev-ecm-kva-001.vault.azure.net
-Server:  DOCJHBSNT01.africa.nedcor.net
-Address:  10.50.10.10
+I am currently working on resolving the dependency issues for the project, and I have managed to fix those. However, I am facing an issue with DNS resolution for the URL https://nsn-dev-ecm-kva-001.vault.azure.net. I am getting the error "Could not resolve host," which seems to be related to network connectivity or DNS settings.
 
-*** DOCJHBSNT01.africa.nedcor.net can't find https://nsn-dev-ecm-kva-001.vault.azure.net: Non-existent domain
+Since this issue seems to be beyond my current configuration, I kindly request your assistance in checking if there are any DNS or network configurations on your end that might be affecting the connection to the Key Vault URL.
 
-C:\Users\CC437236>curl -v https://nsn-dev-ecm-kva-001.vault.azure.net
-* Could not resolve host: nsn-dev-ecm-kva-001.vault.azure.net
-* shutting down connection #0
-curl: (6) Could not resolve host: nsn-dev-ecm-kva-001.vault.azure.net
+I would greatly appreciate any guidance or support you can provide in fixing this issue. Please let me know if there are any specific details you require from my side.
 
-C:\Users\CC437236>ping https://nsn-dev-ecm-kva-001.vault.azure.net
-Ping request could not find host https://nsn-dev-ecm-kva-001.vault.azure.net. Please check the name and try again.
-
-C:\Users\CC437236>
+Thank you for your understanding and assistance. I look forward to hearing from you soon.
