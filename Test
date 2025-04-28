@@ -1,12 +1,148 @@
-15:03:49.154 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID
-15:03:49.179 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Failed to determine an authentication scheme based on the available environment variables. Please specify AZURE_TENANT_ID and AZURE_CLIENT_SECRET to authenticate through a ClientSecretCredential; AZURE_TENANT_ID and AZURE_CLIENT_CERTIFICATE_PATH to authenticate through a ClientCertificateCredential; or AZURE_USERNAME and AZURE_PASSWORD to authenticate through a UserPasswordCredential.
-15:03:53.513 [main] DEBUG reactor.util.Loggers - Using Slf4j logging framework
-15:03:53.692 [main] DEBUG com.azure.identity.ManagedIdentityCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID
-15:03:53.716 [main] DEBUG com.azure.identity.SharedTokenCacheCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID
-15:03:53.778 [main] ERROR com.azure.identity.implementation.IntelliJCacheAccessor - IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+15:47:28.819 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID
+15:47:28.840 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Failed to create a ClientSecretCredential or ClientCertificateCredential. Missing required environment variable either AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH
+15:47:28.846 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Failed to determine an authentication scheme based on the available environment variables. Please specify AZURE_TENANT_ID and AZURE_CLIENT_SECRET to authenticate through a ClientSecretCredential; AZURE_TENANT_ID and AZURE_CLIENT_CERTIFICATE_PATH to authenticate through a ClientCertificateCredential; or AZURE_USERNAME and AZURE_PASSWORD to authenticate through a UserPasswordCredential.
+15:47:33.323 [main] DEBUG reactor.util.Loggers - Using Slf4j logging framework
+15:47:33.494 [main] DEBUG com.azure.identity.ManagedIdentityCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID
+15:47:33.522 [main] DEBUG com.azure.identity.SharedTokenCacheCredential - Azure Identity => Found the following environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID
+15:47:33.602 [main] ERROR com.azure.identity.implementation.IntelliJCacheAccessor - IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
 com.azure.identity.CredentialUnavailableException: IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
 	at com.azure.identity.implementation.IntelliJCacheAccessor.getAuthDetailsIfAvailable(IntelliJCacheAccessor.java:243)
 	at com.azure.identity.IntelliJCredential.<init>(IntelliJCredential.java:51)
 	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:132)
 	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
 	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:20)
+15:48:53.671 [main] DEBUG io.netty.util.internal.logging.InternalLoggerFactory - Using SLF4J as the default logging framework
+15:48:53.683 [main] DEBUG io.netty.util.internal.PlatformDependent0 - -Dio.netty.noUnsafe: false
+15:48:53.684 [main] DEBUG io.netty.util.internal.PlatformDependent0 - Java version: 17
+15:48:53.694 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.theUnsafe: available
+15:48:53.701 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.copyMemory: available
+15:48:53.704 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.storeFence: available
+15:48:53.708 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.Buffer.address: available
+15:48:53.712 [main] DEBUG io.netty.util.internal.PlatformDependent0 - direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+15:48:53.716 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.Bits.unaligned: available, true
+15:48:53.721 [main] DEBUG io.netty.util.internal.PlatformDependent0 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @e3c0e40
+15:48:53.725 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.DirectByteBuffer.<init>(long, int): unavailable
+15:48:53.725 [main] DEBUG io.netty.util.internal.PlatformDependent - sun.misc.Unsafe: available
+15:48:53.776 [main] DEBUG io.netty.util.internal.PlatformDependent - maxDirectMemory: 4273995776 bytes (maybe)
+15:48:53.777 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.tmpdir: C:\Users\CC437236\AppData\Local\Temp (java.io.tmpdir)
+15:48:53.778 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+15:48:53.779 [main] DEBUG io.netty.util.internal.PlatformDependent - Platform: Windows
+15:48:53.786 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.maxDirectMemory: -1 bytes
+15:48:53.787 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+15:48:53.795 [main] DEBUG io.netty.util.internal.CleanerJava9 - java.nio.ByteBuffer.cleaner(): available
+15:48:53.796 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.noPreferDirect: false
+15:48:54.061 [main] DEBUG io.netty.util.internal.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+15:48:54.061 [main] DEBUG io.netty.util.internal.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+15:48:54.312 [main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.level: simple
+15:48:54.312 [main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.targetRecords: 4
+Connected to Key Vault: https://nsn-dev-ecm-kva-001.vault.azure.net/
+Listing secrets...com.azure.security.keyvault.secrets.SecretClient@6ee6f53
+15:50:20.621 [main] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv4Stack: false
+15:50:20.622 [main] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv6Addresses: false
+15:50:20.653 [main] DEBUG io.netty.util.NetUtilInitializations - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+15:50:20.661 [main] DEBUG io.netty.util.NetUtil - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+15:50:20.834 [main] INFO com.azure.security.keyvault.secrets.SecretAsyncClient - Listing secrets
+15:50:21.004 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.workdir: C:\Users\CC437236\AppData\Local\Temp (io.netty.tmpdir)
+15:50:21.004 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.deleteLibAfterLoading: true
+15:50:21.004 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.tryPatchShadedId: true
+15:50:21.005 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.detectNativeLibraryDuplicates: true
+15:50:21.658 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - Successfully loaded the library C:\Users\CC437236\AppData\Local\Temp\netty_tcnative_windows_x86_6417924078101915187353.dll
+15:50:21.661 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - Loaded library with name 'netty_tcnative_windows_x86_64'
+15:50:21.663 [main] DEBUG io.netty.handler.ssl.OpenSsl - Initialize netty-tcnative using engine: 'default'
+15:50:21.664 [main] DEBUG io.netty.handler.ssl.OpenSsl - netty-tcnative using native library: BoringSSL
+15:50:22.437 [main] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkAccessible: true
+15:50:22.438 [main] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkBounds: true
+15:50:22.449 [main] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@5d5d9e5
+15:50:22.552 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numHeapArenas: 8
+15:50:22.552 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numDirectArenas: 8
+15:50:22.553 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.pageSize: 8192
+15:50:22.553 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxOrder: 9
+15:50:22.553 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.chunkSize: 4194304
+15:50:22.554 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.smallCacheSize: 256
+15:50:22.555 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.normalCacheSize: 64
+15:50:22.555 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+15:50:22.556 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimInterval: 8192
+15:50:22.556 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+15:50:22.557 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.useCacheForAllThreads: false
+15:50:22.558 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+15:50:22.657 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.allocator.type: pooled
+15:50:22.658 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.threadLocalDirectBufferSize: 0
+15:50:22.659 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+15:50:22.704 [main] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@4b6166aa
+15:50:22.805 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.maxCapacityPerThread: 4096
+15:50:22.806 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.ratio: 8
+15:50:22.807 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.chunkSize: 32
+15:50:22.807 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.blocking: false
+15:50:22.927 [main] DEBUG io.netty.util.internal.PlatformDependent - org.jctools-core.MpscChunkedArrayQueue: available
+15:50:23.045 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 => ECDHE-ECDSA-AES128-GCM-SHA256
+15:50:23.046 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 => ECDHE-ECDSA-AES128-GCM-SHA256
+15:50:23.048 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 => ECDHE-RSA-AES128-GCM-SHA256
+15:50:23.049 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_128_GCM_SHA256 => ECDHE-RSA-AES128-GCM-SHA256
+15:50:23.050 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 => ECDHE-ECDSA-AES256-GCM-SHA384
+15:50:23.051 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 => ECDHE-ECDSA-AES256-GCM-SHA384
+15:50:23.052 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 => ECDHE-RSA-AES256-GCM-SHA384
+15:50:23.053 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_256_GCM_SHA384 => ECDHE-RSA-AES256-GCM-SHA384
+15:50:23.054 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-ECDSA-CHACHA20-POLY1305
+15:50:23.055 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-ECDSA-CHACHA20-POLY1305
+15:50:23.056 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-RSA-CHACHA20-POLY1305
+15:50:23.057 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-RSA-CHACHA20-POLY1305
+15:50:23.058 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-PSK-CHACHA20-POLY1305
+15:50:23.058 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-PSK-CHACHA20-POLY1305
+15:50:23.059 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA => ECDHE-ECDSA-AES128-SHA
+15:50:23.060 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_128_CBC_SHA => ECDHE-ECDSA-AES128-SHA
+15:50:23.061 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA => ECDHE-RSA-AES128-SHA
+15:50:23.061 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA => ECDHE-RSA-AES128-SHA
+15:50:23.063 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA => ECDHE-PSK-AES128-CBC-SHA
+15:50:23.064 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_AES_128_CBC_SHA => ECDHE-PSK-AES128-CBC-SHA
+15:50:23.065 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA => ECDHE-ECDSA-AES256-SHA
+15:50:23.065 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA => ECDHE-ECDSA-AES256-SHA
+15:50:23.066 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA => ECDHE-RSA-AES256-SHA
+15:50:23.067 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA => ECDHE-RSA-AES256-SHA
+15:50:23.068 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA => ECDHE-PSK-AES256-CBC-SHA
+15:50:23.068 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_AES_256_CBC_SHA => ECDHE-PSK-AES256-CBC-SHA
+15:50:23.069 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_128_GCM_SHA256 => AES128-GCM-SHA256
+15:50:23.069 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_128_GCM_SHA256 => AES128-GCM-SHA256
+15:50:23.070 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_256_GCM_SHA384 => AES256-GCM-SHA384
+15:50:23.071 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_256_GCM_SHA384 => AES256-GCM-SHA384
+15:50:23.072 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_128_CBC_SHA => AES128-SHA
+15:50:23.073 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_128_CBC_SHA => AES128-SHA
+15:50:23.074 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_PSK_WITH_AES_128_CBC_SHA => PSK-AES128-CBC-SHA
+15:50:23.074 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_PSK_WITH_AES_128_CBC_SHA => PSK-AES128-CBC-SHA
+15:50:23.074 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_256_CBC_SHA => AES256-SHA
+15:50:23.075 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_256_CBC_SHA => AES256-SHA
+15:50:23.077 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_PSK_WITH_AES_256_CBC_SHA => PSK-AES256-CBC-SHA
+15:50:23.077 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_PSK_WITH_AES_256_CBC_SHA => PSK-AES256-CBC-SHA
+15:50:23.078 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_3DES_EDE_CBC_SHA => DES-CBC3-SHA
+15:50:23.078 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_3DES_EDE_CBC_SHA => DES-CBC3-SHA
+15:50:23.079 [main] DEBUG io.netty.handler.ssl.OpenSsl - Supported protocols (OpenSSL): [SSLv2Hello, TLSv1, TLSv1.1, TLSv1.2, TLSv1.3] 
+15:50:23.080 [main] DEBUG io.netty.handler.ssl.OpenSsl - Default cipher suites (OpenSSL): [TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256]
+15:50:23.609 [main] DEBUG reactor.netty.tcp.TcpResources - [http] resources will use the default LoopResources: DefaultLoopResources {prefix=reactor-http, daemon=true, selectCount=4, workerCount=4}
+15:50:23.609 [main] DEBUG reactor.netty.tcp.TcpResources - [http] resources will use the default ConnectionProvider: reactor.netty.resources.DefaultPooledConnectionProvider@c1fca1e
+15:50:23.627 [main] DEBUG reactor.netty.resources.DefaultLoopIOUring - Default io_uring support : false
+15:50:23.728 [main] DEBUG reactor.netty.resources.DefaultLoopEpoll - Default Epoll support : false
+15:50:23.744 [main] DEBUG reactor.netty.resources.DefaultLoopKQueue - Default KQueue support : false
+15:50:23.777 [main] DEBUG io.netty.channel.MultithreadEventLoopGroup - -Dio.netty.eventLoopThreads: 8
+15:50:23.999 [main] DEBUG io.netty.channel.nio.NioEventLoop - -Dio.netty.noKeySetOptimization: false
+15:50:24.000 [main] DEBUG io.netty.channel.nio.NioEventLoop - -Dio.netty.selectorAutoRebuildThreshold: 512
+15:50:24.287 [main] DEBUG io.netty.resolver.DefaultHostsFileEntriesResolver - -Dio.netty.hostsFileRefreshInterval: 0
+15:50:24.390 [main] DEBUG io.netty.resolver.dns.DefaultDnsServerAddressStreamProvider - Default DNS servers: [/10.50.10.10:53, /10.50.3.10:53] (sun.net.dns.ResolverConfiguration)
+15:50:24.484 [main] DEBUG reactor.netty.resources.PooledConnectionProvider - Creating a new [http] client pool [PoolFactory{evictionInterval=PT0S, leasingStrategy=fifo, maxConnections=500, maxIdleTime=-1, maxLifeTime=-1, metricsEnabled=false, pendingAcquireMaxCount=1000, pendingAcquireTimeout=45000}] for [nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443]
+15:50:24.838 [main] DEBUG io.netty.channel.DefaultChannelId - -Dio.netty.processId: 14084 (auto-detected)
+15:50:24.858 [main] DEBUG io.netty.channel.DefaultChannelId - -Dio.netty.machineId: 50:6b:8d:ff:fe:8c:7b:e6 (auto-detected)
+15:50:25.107 [reactor-http-nio-2] DEBUG reactor.netty.resources.PooledConnectionProvider - [2a880963] Created a new pooled channel, now: 0 active connections, 0 inactive connections and 0 pending acquire requests.
+15:50:25.161 [reactor-http-nio-2] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@1566179d
+15:50:25.210 [reactor-http-nio-2] DEBUG reactor.netty.tcp.SslProvider - [2a880963] SSL enabled using engine io.netty.handler.ssl.OpenSslEngine@9b32b0b and SNI nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443
+15:50:25.254 [reactor-http-nio-2] DEBUG reactor.netty.transport.TransportConfig - [2a880963] Initialized pipeline DefaultChannelPipeline{(reactor.left.sslHandler = io.netty.handler.ssl.SslHandler), (reactor.left.sslReader = reactor.netty.tcp.SslProvider$SslReadHandler), (reactor.left.httpCodec = io.netty.handler.codec.http.HttpClientCodec), (reactor.right.reactiveBridge = reactor.netty.channel.ChannelOperationsHandler)}
+15:50:25.369 [reactor-http-nio-1] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@3409f7c9
+15:50:25.373 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x4253b3bb] WRITE: UDP, [926: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+15:50:25.430 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x4253b3bb] RECEIVED: UDP [926: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:61950, 926, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1800 IN CNAME 53B)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. 10 IN A 4B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:50:25.433 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x4253b3bb] WRITE: UDP, [16609: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:50:25.444 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x4253b3bb] RECEIVED: UDP [16609: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:61950, 16609, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. 10 IN A 4B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:50:25.450 [reactor-http-nio-2] DEBUG reactor.netty.transport.TransportConnector - [2a880963] Connecting to [nsn-dev-ecm-kva-001.vault.azure.net/10.245.74.104:443].
