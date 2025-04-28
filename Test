@@ -1,26 +1,584 @@
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.security.keyvault.secrets.models.SecretProperties;
+C:\Users\CC437236\jdk-17.0.12_windows-x64_bin\jdk-17.0.12\bin\java.exe "-javaagent:C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 2024.2.3\lib\idea_rt.jar=62647:C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 2024.2.3\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\CC437236\Documents\file-manager\target\classes;C:\Users\CC437236\.m2\repository\za\co\nedbank\spring-nedbank-kafka-sb3\1.0.0-RELEASE\spring-nedbank-kafka-sb3-1.0.0-RELEASE.jar;C:\Users\CC437236\.m2\repository\org\springframework\kafka\spring-kafka\3.0.11\spring-kafka-3.0.11.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-context\6.0.2\spring-context-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-expression\6.0.2\spring-expression-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-messaging\6.0.2\spring-messaging-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-tx\6.0.2\spring-tx-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\retry\spring-retry\2.0.0\spring-retry-2.0.0.jar;C:\Users\CC437236\.m2\repository\org\apache\kafka\kafka-clients\3.3.1\kafka-clients-3.3.1.jar;C:\Users\CC437236\.m2\repository\com\github\luben\zstd-jni\1.5.2-1\zstd-jni-1.5.2-1.jar;C:\Users\CC437236\.m2\repository\org\lz4\lz4-java\1.8.0\lz4-java-1.8.0.jar;C:\Users\CC437236\.m2\repository\org\xerial\snappy\snappy-java\1.1.8.4\snappy-java-1.1.8.4.jar;C:\Users\CC437236\.m2\repository\io\micrometer\micrometer-observation\1.10.2\micrometer-observation-1.10.2.jar;C:\Users\CC437236\.m2\repository\io\micrometer\micrometer-commons\1.10.2\micrometer-commons-1.10.2.jar;C:\Users\CC437236\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.0.0\spring-boot-starter-web-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter\3.0.0\spring-boot-starter-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot\3.0.0\spring-boot-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.0.0\spring-boot-autoconfigure-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.0.0\spring-boot-starter-logging-3.0.0.jar;C:\Users\CC437236\.m2\repository\ch\qos\logback\logback-classic\1.4.5\logback-classic-1.4.5.jar;C:\Users\CC437236\.m2\repository\ch\qos\logback\logback-core\1.4.5\logback-core-1.4.5.jar;C:\Users\CC437236\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.19.0\log4j-to-slf4j-2.19.0.jar;C:\Users\CC437236\.m2\repository\org\apache\logging\log4j\log4j-api\2.19.0\log4j-api-2.19.0.jar;C:\Users\CC437236\.m2\repository\org\slf4j\jul-to-slf4j\2.0.4\jul-to-slf4j-2.0.4.jar;C:\Users\CC437236\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\CC437236\.m2\repository\org\yaml\snakeyaml\1.33\snakeyaml-1.33.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.0.0\spring-boot-starter-json-3.0.0.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.14.1\jackson-datatype-jdk8-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.14.1\jackson-module-parameter-names-2.14.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.0.0\spring-boot-starter-tomcat-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.1\tomcat-embed-core-10.1.1.jar;C:\Users\CC437236\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.1\tomcat-embed-el-10.1.1.jar;C:\Users\CC437236\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.1\tomcat-embed-websocket-10.1.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-web\6.0.2\spring-web-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-webmvc\6.0.2\spring-webmvc-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-integration\3.0.0\spring-boot-starter-integration-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\boot\spring-boot-starter-aop\3.0.0\spring-boot-starter-aop-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\aspectj\aspectjweaver\1.9.9.1\aspectjweaver-1.9.9.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\integration\spring-integration-core\6.0.0\spring-integration-core-6.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\batch\spring-batch-core\5.0.0\spring-batch-core-5.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\batch\spring-batch-infrastructure\5.0.0\spring-batch-infrastructure-5.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-aop\6.0.2\spring-aop-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-beans\6.0.2\spring-beans-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-jdbc\6.0.2\spring-jdbc-6.0.2.jar;C:\Users\CC437236\.m2\repository\io\micrometer\micrometer-core\1.10.2\micrometer-core-1.10.2.jar;C:\Users\CC437236\.m2\repository\org\hdrhistogram\HdrHistogram\2.1.12\HdrHistogram-2.1.12.jar;C:\Users\CC437236\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\CC437236\.m2\repository\org\springframework\ws\spring-ws-core\4.0.0\spring-ws-core-4.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\ws\spring-xml\4.0.0\spring-xml-4.0.0.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-oxm\6.0.2\spring-oxm-6.0.2.jar;C:\Users\CC437236\.m2\repository\jakarta\xml\soap\jakarta.xml.soap-api\3.0.0\jakarta.xml.soap-api-3.0.0.jar;C:\Users\CC437236\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.0\jakarta.activation-api-2.1.0.jar;C:\Users\CC437236\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\CC437236\.m2\repository\com\sun\xml\bind\jaxb-impl\4.0.1\jaxb-impl-4.0.1.jar;C:\Users\CC437236\.m2\repository\com\sun\xml\bind\jaxb-core\4.0.1\jaxb-core-4.0.1.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-core\6.0.2\spring-core-6.0.2.jar;C:\Users\CC437236\.m2\repository\org\springframework\spring-jcl\6.0.2\spring-jcl-6.0.2.jar;C:\Users\CC437236\.m2\repository\com\sun\xml\messaging\saaj\saaj-impl\3.0.0\saaj-impl-3.0.0.jar;C:\Users\CC437236\.m2\repository\org\eclipse\angus\angus-activation\1.0.0\angus-activation-1.0.0.jar;C:\Users\CC437236\.m2\repository\org\jvnet\staxex\stax-ex\2.1.0\stax-ex-2.1.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-storage-blob\12.10.0\azure-storage-blob-12.10.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-storage-common\12.10.0\azure-storage-common-12.10.0.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-storage-internal-avro\12.0.2\azure-storage-internal-avro-12.0.2.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-core\1.14.0\azure-core-1.14.0.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.14.1\jackson-annotations-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.14.1\jackson-core-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.14.1\jackson-datatype-jsr310-2.14.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-xml\2.14.1\jackson-dataformat-xml-2.14.1.jar;C:\Users\CC437236\.m2\repository\org\codehaus\woodstox\stax2-api\4.2.1\stax2-api-4.2.1.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\woodstox\woodstox-core\6.4.0\woodstox-core-6.4.0.jar;C:\Users\CC437236\.m2\repository\org\slf4j\slf4j-api\2.0.4\slf4j-api-2.0.4.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-classes\2.0.54.Final\netty-tcnative-classes-2.0.54.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-linux-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-linux-aarch_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-osx-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-osx-aarch_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.54.Final\netty-tcnative-boringssl-static-2.0.54.Final-windows-x86_64.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-security-keyvault-secrets\4.2.3\azure-security-keyvault-secrets-4.2.3.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-core-http-netty\1.6.3\azure-core-http-netty-1.6.3.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-handler\4.1.85.Final\netty-handler-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-common\4.1.85.Final\netty-common-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver\4.1.85.Final\netty-resolver-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport\4.1.85.Final\netty-transport-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec\4.1.85.Final\netty-codec-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-handler-proxy\4.1.85.Final\netty-handler-proxy-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-socks\4.1.85.Final\netty-codec-socks-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-buffer\4.1.85.Final\netty-buffer-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-http\4.1.85.Final\netty-codec-http-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-http2\4.1.85.Final\netty-codec-http2-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-native-unix-common\4.1.85.Final\netty-transport-native-unix-common-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-native-epoll\4.1.85.Final\netty-transport-native-epoll-4.1.85.Final-linux-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-classes-epoll\4.1.85.Final\netty-transport-classes-epoll-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-native-kqueue\4.1.85.Final\netty-transport-native-kqueue-4.1.85.Final-osx-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-transport-classes-kqueue\4.1.85.Final\netty-transport-classes-kqueue-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\reactor-netty\1.1.0\reactor-netty-1.1.0.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\reactor-netty-core\1.1.0\reactor-netty-core-1.1.0.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver-dns\4.1.85.Final\netty-resolver-dns-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-codec-dns\4.1.85.Final\netty-codec-dns-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver-dns-native-macos\4.1.85.Final\netty-resolver-dns-native-macos-4.1.85.Final-osx-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\netty-resolver-dns-classes-macos\4.1.85.Final\netty-resolver-dns-classes-macos-4.1.85.Final.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\reactor-netty-http\1.1.0\reactor-netty-http-1.1.0.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\netty\incubator\reactor-netty-incubator-quic\0.1.0\reactor-netty-incubator-quic-0.1.0.jar;C:\Users\CC437236\.m2\repository\io\netty\incubator\netty-incubator-codec-native-quic\0.0.33.Final\netty-incubator-codec-native-quic-0.0.33.Final-linux-x86_64.jar;C:\Users\CC437236\.m2\repository\io\netty\incubator\netty-incubator-codec-classes-quic\0.0.33.Final\netty-incubator-codec-classes-quic-0.0.33.Final.jar;C:\Users\CC437236\.m2\repository\com\azure\azure-identity\1.2.5\azure-identity-1.2.5.jar;C:\Users\CC437236\.m2\repository\net\minidev\json-smart\2.4.8\json-smart-2.4.8.jar;C:\Users\CC437236\.m2\repository\net\minidev\accessors-smart\2.4.8\accessors-smart-2.4.8.jar;C:\Users\CC437236\.m2\repository\org\ow2\asm\asm\9.1\asm-9.1.jar;C:\Users\CC437236\.m2\repository\com\microsoft\azure\msal4j\1.9.1\msal4j-1.9.1.jar;C:\Users\CC437236\.m2\repository\com\microsoft\azure\msal4j-persistence-extension\1.1.0\msal4j-persistence-extension-1.1.0.jar;C:\Users\CC437236\.m2\repository\net\java\dev\jna\jna\5.5.0\jna-5.5.0.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\oauth2-oidc-sdk\8.36\oauth2-oidc-sdk-8.36.jar;C:\Users\CC437236\.m2\repository\com\github\stephenc\jcip\jcip-annotations\1.0-1\jcip-annotations-1.0-1.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\content-type\2.1\content-type-2.1.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\lang-tag\1.4.4\lang-tag-1.4.4.jar;C:\Users\CC437236\.m2\repository\com\nimbusds\nimbus-jose-jwt\8.20.1\nimbus-jose-jwt-8.20.1.jar;C:\Users\CC437236\.m2\repository\net\java\dev\jna\jna-platform\5.6.0\jna-platform-5.6.0.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2\2.1.4\KeePassJava2-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-kdb\2.1.4\KeePassJava2-kdb-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\database\2.1.4\database-2.1.4.jar;C:\Users\CC437236\.m2\repository\com\google\guava\guava\19.0\guava-19.0.jar;C:\Users\CC437236\.m2\repository\com\madgag\spongycastle\core\1.54.0.0\core-1.54.0.0.jar;C:\Users\CC437236\.m2\repository\org\jetbrains\annotations\15.0\annotations-15.0.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-dom\2.1.4\KeePassJava2-dom-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-kdbx\2.1.4\KeePassJava2-kdbx-2.1.4.jar;C:\Users\CC437236\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-jaxb\2.1.4\KeePassJava2-jaxb-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\linguafranca\pwdb\KeePassJava2-simple\2.1.4\KeePassJava2-simple-2.1.4.jar;C:\Users\CC437236\.m2\repository\org\simpleframework\simple-xml\2.7.1\simple-xml-2.7.1.jar;C:\Users\CC437236\.m2\repository\stax\stax-api\1.0.1\stax-api-1.0.1.jar;C:\Users\CC437236\.m2\repository\stax\stax\1.2.0\stax-1.2.0.jar;C:\Users\CC437236\.m2\repository\xpp3\xpp3\1.1.3.3\xpp3-1.1.3.3.jar;C:\Users\CC437236\.m2\repository\org\apache\httpcomponents\httpcore\4.4.15\httpcore-4.4.15.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\aalto-xml\1.0.0\aalto-xml-1.0.0.jar;C:\Users\CC437236\.m2\repository\io\projectreactor\reactor-core\3.5.0\reactor-core-3.5.0.jar;C:\Users\CC437236\.m2\repository\org\reactivestreams\reactive-streams\1.0.4\reactive-streams-1.0.4.jar;C:\Users\CC437236\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.14.1\jackson-databind-2.14.1.jar com.nedbank.kafka.filemanage.service.ListSecretsExample
+15:58:58.597 [main] DEBUG com.azure.identity.EnvironmentCredential - Azure Identity => Found the following environment variables: 
+15:58:58.609 [main] ERROR com.azure.identity.EnvironmentCredential - Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable AZURE_CLIENT_ID
+15:58:59.590 [main] DEBUG reactor.util.Loggers - Using Slf4j logging framework
+15:58:59.615 [main] DEBUG com.azure.identity.ManagedIdentityCredential - Azure Identity => Found the following environment variables: 
+15:58:59.616 [main] DEBUG com.azure.identity.SharedTokenCacheCredential - Azure Identity => Found the following environment variables: 
+15:58:59.621 [main] ERROR com.azure.identity.implementation.IntelliJCacheAccessor - IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+com.azure.identity.CredentialUnavailableException: IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+	at com.azure.identity.implementation.IntelliJCacheAccessor.getAuthDetailsIfAvailable(IntelliJCacheAccessor.java:243)
+	at com.azure.identity.IntelliJCredential.<init>(IntelliJCredential.java:51)
+	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:132)
+	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
+	at com.nedbank.kafka.filemanage.service.ListSecretsExample.main(ListSecretsExample.java:15)
+15:58:59.719 [main] DEBUG io.netty.util.internal.logging.InternalLoggerFactory - Using SLF4J as the default logging framework
+15:58:59.722 [main] DEBUG io.netty.util.internal.PlatformDependent0 - -Dio.netty.noUnsafe: false
+15:58:59.722 [main] DEBUG io.netty.util.internal.PlatformDependent0 - Java version: 17
+15:58:59.724 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.theUnsafe: available
+15:58:59.725 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.copyMemory: available
+15:58:59.726 [main] DEBUG io.netty.util.internal.PlatformDependent0 - sun.misc.Unsafe.storeFence: available
+15:58:59.727 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.Buffer.address: available
+15:58:59.728 [main] DEBUG io.netty.util.internal.PlatformDependent0 - direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+15:58:59.729 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.Bits.unaligned: available, true
+15:58:59.731 [main] DEBUG io.netty.util.internal.PlatformDependent0 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @4f4c4b1a
+15:58:59.734 [main] DEBUG io.netty.util.internal.PlatformDependent0 - java.nio.DirectByteBuffer.<init>(long, int): unavailable
+15:58:59.734 [main] DEBUG io.netty.util.internal.PlatformDependent - sun.misc.Unsafe: available
+15:58:59.754 [main] DEBUG io.netty.util.internal.PlatformDependent - maxDirectMemory: 4273995776 bytes (maybe)
+15:58:59.755 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.tmpdir: C:\Users\CC437236\AppData\Local\Temp (java.io.tmpdir)
+15:58:59.755 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+15:58:59.756 [main] DEBUG io.netty.util.internal.PlatformDependent - Platform: Windows
+15:58:59.757 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.maxDirectMemory: -1 bytes
+15:58:59.757 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+15:58:59.758 [main] DEBUG io.netty.util.internal.CleanerJava9 - java.nio.ByteBuffer.cleaner(): available
+15:58:59.759 [main] DEBUG io.netty.util.internal.PlatformDependent - -Dio.netty.noPreferDirect: false
+15:58:59.810 [main] DEBUG io.netty.util.internal.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+15:58:59.810 [main] DEBUG io.netty.util.internal.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+15:58:59.903 [main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.level: simple
+15:58:59.903 [main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.targetRecords: 4
+Listing secrets from Key Vault:
+15:59:00.252 [main] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv4Stack: false
+15:59:00.253 [main] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv6Addresses: false
+15:59:00.276 [main] DEBUG io.netty.util.NetUtilInitializations - Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+15:59:00.278 [main] DEBUG io.netty.util.NetUtil - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+15:59:00.306 [main] INFO com.azure.security.keyvault.secrets.SecretAsyncClient - Listing secrets
+15:59:00.335 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.workdir: C:\Users\CC437236\AppData\Local\Temp (io.netty.tmpdir)
+15:59:00.335 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.deleteLibAfterLoading: true
+15:59:00.335 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.tryPatchShadedId: true
+15:59:00.335 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - -Dio.netty.native.detectNativeLibraryDuplicates: true
+15:59:00.883 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - Successfully loaded the library C:\Users\CC437236\AppData\Local\Temp\netty_tcnative_windows_x86_6416972809946392171708.dll
+15:59:00.890 [main] DEBUG io.netty.util.internal.NativeLibraryLoader - Loaded library with name 'netty_tcnative_windows_x86_64'
+15:59:00.890 [main] DEBUG io.netty.handler.ssl.OpenSsl - Initialize netty-tcnative using engine: 'default'
+15:59:00.891 [main] DEBUG io.netty.handler.ssl.OpenSsl - netty-tcnative using native library: BoringSSL
+15:59:01.162 [main] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkAccessible: true
+15:59:01.162 [main] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkBounds: true
+15:59:01.164 [main] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@5bda80bf
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numHeapArenas: 8
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numDirectArenas: 8
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.pageSize: 8192
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxOrder: 9
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.chunkSize: 4194304
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.smallCacheSize: 256
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.normalCacheSize: 64
+15:59:01.194 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+15:59:01.195 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimInterval: 8192
+15:59:01.195 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+15:59:01.195 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.useCacheForAllThreads: false
+15:59:01.195 [main] DEBUG io.netty.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+15:59:01.217 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.allocator.type: pooled
+15:59:01.218 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.threadLocalDirectBufferSize: 0
+15:59:01.218 [main] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+15:59:01.226 [main] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@15a902e7
+15:59:01.242 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.maxCapacityPerThread: 4096
+15:59:01.243 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.ratio: 8
+15:59:01.243 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.chunkSize: 32
+15:59:01.244 [main] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.blocking: false
+15:59:01.259 [main] DEBUG io.netty.util.internal.PlatformDependent - org.jctools-core.MpscChunkedArrayQueue: available
+15:59:01.286 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 => ECDHE-ECDSA-AES128-GCM-SHA256
+15:59:01.286 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 => ECDHE-ECDSA-AES128-GCM-SHA256
+15:59:01.286 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 => ECDHE-RSA-AES128-GCM-SHA256
+15:59:01.286 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_128_GCM_SHA256 => ECDHE-RSA-AES128-GCM-SHA256
+15:59:01.286 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 => ECDHE-ECDSA-AES256-GCM-SHA384
+15:59:01.286 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 => ECDHE-ECDSA-AES256-GCM-SHA384
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 => ECDHE-RSA-AES256-GCM-SHA384
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_256_GCM_SHA384 => ECDHE-RSA-AES256-GCM-SHA384
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-ECDSA-CHACHA20-POLY1305
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-ECDSA-CHACHA20-POLY1305
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-RSA-CHACHA20-POLY1305
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-RSA-CHACHA20-POLY1305
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-PSK-CHACHA20-POLY1305
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256 => ECDHE-PSK-CHACHA20-POLY1305
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA => ECDHE-ECDSA-AES128-SHA
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_128_CBC_SHA => ECDHE-ECDSA-AES128-SHA
+15:59:01.287 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA => ECDHE-RSA-AES128-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_128_CBC_SHA => ECDHE-RSA-AES128-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA => ECDHE-PSK-AES128-CBC-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_AES_128_CBC_SHA => ECDHE-PSK-AES128-CBC-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA => ECDHE-ECDSA-AES256-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA => ECDHE-ECDSA-AES256-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA => ECDHE-RSA-AES256-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA => ECDHE-RSA-AES256-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA => ECDHE-PSK-AES256-CBC-SHA
+15:59:01.288 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_ECDHE_PSK_WITH_AES_256_CBC_SHA => ECDHE-PSK-AES256-CBC-SHA
+15:59:01.289 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_128_GCM_SHA256 => AES128-GCM-SHA256
+15:59:01.290 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_128_GCM_SHA256 => AES128-GCM-SHA256
+15:59:01.290 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_256_GCM_SHA384 => AES256-GCM-SHA384
+15:59:01.290 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_256_GCM_SHA384 => AES256-GCM-SHA384
+15:59:01.290 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_128_CBC_SHA => AES128-SHA
+15:59:01.290 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_128_CBC_SHA => AES128-SHA
+15:59:01.291 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_PSK_WITH_AES_128_CBC_SHA => PSK-AES128-CBC-SHA
+15:59:01.291 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_PSK_WITH_AES_128_CBC_SHA => PSK-AES128-CBC-SHA
+15:59:01.291 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_AES_256_CBC_SHA => AES256-SHA
+15:59:01.291 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_AES_256_CBC_SHA => AES256-SHA
+15:59:01.291 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_PSK_WITH_AES_256_CBC_SHA => PSK-AES256-CBC-SHA
+15:59:01.291 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_PSK_WITH_AES_256_CBC_SHA => PSK-AES256-CBC-SHA
+15:59:01.292 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: TLS_RSA_WITH_3DES_EDE_CBC_SHA => DES-CBC3-SHA
+15:59:01.292 [main] DEBUG io.netty.handler.ssl.CipherSuiteConverter - Cipher suite mapping: SSL_RSA_WITH_3DES_EDE_CBC_SHA => DES-CBC3-SHA
+15:59:01.292 [main] DEBUG io.netty.handler.ssl.OpenSsl - Supported protocols (OpenSSL): [SSLv2Hello, TLSv1, TLSv1.1, TLSv1.2, TLSv1.3] 
+15:59:01.292 [main] DEBUG io.netty.handler.ssl.OpenSsl - Default cipher suites (OpenSSL): [TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256]
+15:59:01.482 [main] DEBUG reactor.netty.tcp.TcpResources - [http] resources will use the default LoopResources: DefaultLoopResources {prefix=reactor-http, daemon=true, selectCount=4, workerCount=4}
+15:59:01.484 [main] DEBUG reactor.netty.tcp.TcpResources - [http] resources will use the default ConnectionProvider: reactor.netty.resources.DefaultPooledConnectionProvider@3676ac27
+15:59:01.504 [main] DEBUG reactor.netty.resources.DefaultLoopIOUring - Default io_uring support : false
+15:59:01.552 [main] DEBUG reactor.netty.resources.DefaultLoopEpoll - Default Epoll support : false
+15:59:01.558 [main] DEBUG reactor.netty.resources.DefaultLoopKQueue - Default KQueue support : false
+15:59:01.567 [main] DEBUG io.netty.channel.MultithreadEventLoopGroup - -Dio.netty.eventLoopThreads: 8
+15:59:01.614 [main] DEBUG io.netty.channel.nio.NioEventLoop - -Dio.netty.noKeySetOptimization: false
+15:59:01.615 [main] DEBUG io.netty.channel.nio.NioEventLoop - -Dio.netty.selectorAutoRebuildThreshold: 512
+15:59:01.786 [main] DEBUG io.netty.resolver.DefaultHostsFileEntriesResolver - -Dio.netty.hostsFileRefreshInterval: 0
+15:59:01.838 [main] DEBUG io.netty.resolver.dns.DefaultDnsServerAddressStreamProvider - Default DNS servers: [/10.50.10.10:53, /10.50.3.10:53] (sun.net.dns.ResolverConfiguration)
+15:59:01.855 [main] DEBUG reactor.netty.resources.PooledConnectionProvider - Creating a new [http] client pool [PoolFactory{evictionInterval=PT0S, leasingStrategy=fifo, maxConnections=500, maxIdleTime=-1, maxLifeTime=-1, metricsEnabled=false, pendingAcquireMaxCount=1000, pendingAcquireTimeout=45000}] for [nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443]
+15:59:01.956 [main] DEBUG io.netty.channel.DefaultChannelId - -Dio.netty.processId: 20464 (auto-detected)
+15:59:01.970 [main] DEBUG io.netty.channel.DefaultChannelId - -Dio.netty.machineId: 50:6b:8d:ff:fe:8c:7b:e6 (auto-detected)
+15:59:02.043 [reactor-http-nio-2] DEBUG reactor.netty.resources.PooledConnectionProvider - [22c02b14] Created a new pooled channel, now: 0 active connections, 0 inactive connections and 0 pending acquire requests.
+15:59:02.066 [reactor-http-nio-2] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@796e4a87
+15:59:02.104 [reactor-http-nio-2] DEBUG reactor.netty.tcp.SslProvider - [22c02b14] SSL enabled using engine io.netty.handler.ssl.OpenSslEngine@444c18ec and SNI nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443
+15:59:02.133 [reactor-http-nio-2] DEBUG reactor.netty.transport.TransportConfig - [22c02b14] Initialized pipeline DefaultChannelPipeline{(reactor.left.sslHandler = io.netty.handler.ssl.SslHandler), (reactor.left.sslReader = reactor.netty.tcp.SslProvider$SslReadHandler), (reactor.left.httpCodec = io.netty.handler.codec.http.HttpClientCodec), (reactor.right.reactiveBridge = reactor.netty.channel.ChannelOperationsHandler)}
+15:59:02.206 [reactor-http-nio-1] DEBUG io.netty.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@6f4ffe5e
+15:59:02.209 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x2c9ed333] WRITE: UDP, [7356: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+15:59:02.300 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x2c9ed333] RECEIVED: UDP [7356: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59601, 7356, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1284 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:02.302 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x2c9ed333] WRITE: UDP, [15970: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:02.318 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x2c9ed333] RECEIVED: UDP [15970: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59601, 15970, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 9 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:02.319 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x2c9ed333] WRITE: UDP, [19066: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:02.362 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x2c9ed333] RECEIVED: UDP [19066: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59601, 19066, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 9 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:02.362 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x2c9ed333] WRITE: UDP, [17494: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+15:59:02.363 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x2c9ed333] RECEIVED: UDP [17494: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59601, 17494, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1283 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:02.364 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x2c9ed333] WRITE: UDP, [45324: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:02.375 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x2c9ed333] RECEIVED: UDP [45324: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59601, 45324, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 8 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:02.376 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x2c9ed333] WRITE: UDP, [63592: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:02.380 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x2c9ed333] RECEIVED: UDP [63592: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59601, 63592, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 9 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:02.403 [reactor-http-nio-1] DEBUG com.azure.core.http.policy.RetryPolicy - [Error Resume] Try count: 0, Error: {}
+java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
+	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
+	at io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:418)
+	at io.netty.resolver.dns.DnsResolveContext.onResponse(DnsResolveContext.java:629)
+	at io.netty.resolver.dns.DnsResolveContext.access$400(DnsResolveContext.java:66)
+	at io.netty.resolver.dns.DnsResolveContext$2.operationComplete(DnsResolveContext.java:462)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setSuccess0(DefaultPromise.java:605)
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
+	at io.netty.resolver.dns.DnsQueryContext.trySuccess(DnsQueryContext.java:232)
+	at io.netty.resolver.dns.DnsQueryContext.finish(DnsQueryContext.java:224)
+	at io.netty.resolver.dns.DnsNameResolver$DnsResponseHandler.channelRead(DnsNameResolver.java:1314)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:97)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:59:03.208 [reactor-http-nio-3] DEBUG reactor.netty.resources.PooledConnectionProvider - [80406262] Created a new pooled channel, now: 0 active connections, 0 inactive connections and 0 pending acquire requests.
+15:59:03.209 [reactor-http-nio-3] DEBUG reactor.netty.tcp.SslProvider - [80406262] SSL enabled using engine io.netty.handler.ssl.OpenSslEngine@635ab0a0 and SNI nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443
+15:59:03.211 [reactor-http-nio-3] DEBUG reactor.netty.transport.TransportConfig - [80406262] Initialized pipeline DefaultChannelPipeline{(reactor.left.sslHandler = io.netty.handler.ssl.SslHandler), (reactor.left.sslReader = reactor.netty.tcp.SslProvider$SslReadHandler), (reactor.left.httpCodec = io.netty.handler.codec.http.HttpClientCodec), (reactor.right.reactiveBridge = reactor.netty.channel.ChannelOperationsHandler)}
+15:59:03.213 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0xe69766cb] WRITE: UDP, [52647: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+15:59:03.216 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0xe69766cb] RECEIVED: UDP [52647: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59602, 52647, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1283 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:03.217 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0xe69766cb] WRITE: UDP, [31593: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:03.219 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0xe69766cb] RECEIVED: UDP [31593: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59602, 31593, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 8 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:03.219 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0xe69766cb] WRITE: UDP, [32123: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:03.222 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0xe69766cb] RECEIVED: UDP [32123: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59602, 32123, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 9 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:03.222 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0xe69766cb] WRITE: UDP, [12979: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+15:59:03.225 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0xe69766cb] RECEIVED: UDP [12979: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59602, 12979, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1283 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:03.225 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0xe69766cb] WRITE: UDP, [34577: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:03.227 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0xe69766cb] RECEIVED: UDP [34577: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59602, 34577, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 8 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:03.227 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0xe69766cb] WRITE: UDP, [2355: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:03.235 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0xe69766cb] RECEIVED: UDP [2355: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59602, 2355, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 9 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:03.235 [reactor-http-nio-1] DEBUG com.azure.core.http.policy.RetryPolicy - [Error Resume] Try count: 1, Error: {}
+java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
+	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
+	at io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:418)
+	at io.netty.resolver.dns.DnsResolveContext.onResponse(DnsResolveContext.java:629)
+	at io.netty.resolver.dns.DnsResolveContext.access$400(DnsResolveContext.java:66)
+	at io.netty.resolver.dns.DnsResolveContext$2.operationComplete(DnsResolveContext.java:462)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setSuccess0(DefaultPromise.java:605)
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
+	at io.netty.resolver.dns.DnsQueryContext.trySuccess(DnsQueryContext.java:232)
+	at io.netty.resolver.dns.DnsQueryContext.finish(DnsQueryContext.java:224)
+	at io.netty.resolver.dns.DnsNameResolver$DnsResponseHandler.channelRead(DnsNameResolver.java:1314)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:97)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:59:04.879 [reactor-http-nio-4] DEBUG reactor.netty.resources.PooledConnectionProvider - [26169e50] Created a new pooled channel, now: 0 active connections, 0 inactive connections and 0 pending acquire requests.
+15:59:04.880 [reactor-http-nio-4] DEBUG reactor.netty.tcp.SslProvider - [26169e50] SSL enabled using engine io.netty.handler.ssl.OpenSslEngine@5e71c4f1 and SNI nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443
+15:59:04.882 [reactor-http-nio-4] DEBUG reactor.netty.transport.TransportConfig - [26169e50] Initialized pipeline DefaultChannelPipeline{(reactor.left.sslHandler = io.netty.handler.ssl.SslHandler), (reactor.left.sslReader = reactor.netty.tcp.SslProvider$SslReadHandler), (reactor.left.httpCodec = io.netty.handler.codec.http.HttpClientCodec), (reactor.right.reactiveBridge = reactor.netty.channel.ChannelOperationsHandler)}
+15:59:04.884 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x351f27b4] WRITE: UDP, [11517: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+15:59:04.890 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x351f27b4] RECEIVED: UDP [11517: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59603, 11517, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1281 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:04.891 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x351f27b4] WRITE: UDP, [476: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:04.898 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x351f27b4] RECEIVED: UDP [476: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59603, 476, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 6 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:04.899 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x351f27b4] WRITE: UDP, [59956: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:04.904 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x351f27b4] RECEIVED: UDP [59956: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59603, 59956, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 7 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:04.904 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x351f27b4] WRITE: UDP, [25651: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+15:59:04.923 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x351f27b4] RECEIVED: UDP [25651: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59603, 25651, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1281 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:04.924 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x351f27b4] WRITE: UDP, [47757: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:04.937 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x351f27b4] RECEIVED: UDP [47757: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59603, 47757, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 6 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:04.937 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x351f27b4] WRITE: UDP, [50878: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:04.944 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x351f27b4] RECEIVED: UDP [50878: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59603, 50878, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 7 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:04.945 [reactor-http-nio-1] DEBUG com.azure.core.http.policy.RetryPolicy - [Error Resume] Try count: 2, Error: {}
+java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
+	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
+	at io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:418)
+	at io.netty.resolver.dns.DnsResolveContext.onResponse(DnsResolveContext.java:629)
+	at io.netty.resolver.dns.DnsResolveContext.access$400(DnsResolveContext.java:66)
+	at io.netty.resolver.dns.DnsResolveContext$2.operationComplete(DnsResolveContext.java:462)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setSuccess0(DefaultPromise.java:605)
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
+	at io.netty.resolver.dns.DnsQueryContext.trySuccess(DnsQueryContext.java:232)
+	at io.netty.resolver.dns.DnsQueryContext.finish(DnsQueryContext.java:224)
+	at io.netty.resolver.dns.DnsNameResolver$DnsResponseHandler.channelRead(DnsNameResolver.java:1314)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:97)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+15:59:08.199 [reactor-http-nio-1] DEBUG reactor.netty.resources.PooledConnectionProvider - [a0a41ff1] Created a new pooled channel, now: 0 active connections, 0 inactive connections and 0 pending acquire requests.
+15:59:08.200 [reactor-http-nio-1] DEBUG reactor.netty.tcp.SslProvider - [a0a41ff1] SSL enabled using engine io.netty.handler.ssl.OpenSslEngine@5e699d1e and SNI nsn-dev-ecm-kva-001.vault.azure.net/<unresolved>:443
+15:59:08.201 [reactor-http-nio-1] DEBUG reactor.netty.transport.TransportConfig - [a0a41ff1] Initialized pipeline DefaultChannelPipeline{(reactor.left.sslHandler = io.netty.handler.ssl.SslHandler), (reactor.left.sslReader = reactor.netty.tcp.SslProvider$SslReadHandler), (reactor.left.httpCodec = io.netty.handler.codec.http.HttpClientCodec), (reactor.right.reactiveBridge = reactor.netty.channel.ChannelOperationsHandler)}
+15:59:08.202 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x07840823] WRITE: UDP, [21824: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+15:59:08.204 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x07840823] RECEIVED: UDP [21824: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59604, 21824, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN A)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1278 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:08.205 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x07840823] WRITE: UDP, [28954: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:08.206 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x07840823] RECEIVED: UDP [28954: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59604, 28954, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 3 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:08.206 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x07840823] WRITE: UDP, [40602: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+15:59:08.208 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x07840823] RECEIVED: UDP [40602: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59604, 40602, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN A)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 4 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:08.208 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x07840823] WRITE: UDP, [64168: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+15:59:08.210 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x07840823] RECEIVED: UDP [64168: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59604, 64168, QUERY(0), NoError(0), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.vault.azure.net. IN CNAME)
+	DefaultDnsRawRecord(nsn-dev-ecm-kva-001.vault.azure.net. 1278 IN CNAME 53B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:08.210 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x07840823] WRITE: UDP, [32102: /10.50.10.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:08.211 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x07840823] RECEIVED: UDP [32102: /10.50.10.10:53], DatagramDnsResponse(from: /10.50.10.10:53, to: /[0:0:0:0:0:0:0:0]:59604, 32102, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 3 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:08.212 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsQueryContext - [id: 0x07840823] WRITE: UDP, [41386: /10.50.3.10:53], DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+15:59:08.214 [reactor-http-nio-1] DEBUG io.netty.resolver.dns.DnsNameResolver - [id: 0x07840823] RECEIVED: UDP [41386: /10.50.3.10:53], DatagramDnsResponse(from: /10.50.3.10:53, to: /[0:0:0:0:0:0:0:0]:59604, 41386, QUERY(0), NXDomain(3), RD RA)
+	DefaultDnsQuestion(nsn-dev-ecm-kva-001.privatelink.vaultcore.azure.net. IN CNAME)
+	DefaultDnsRawRecord(privatelink.vaultcore.azure.net. 4 IN SOA 74B)
+	DefaultDnsRawRecord(OPT flags:0 udp:4000 0B)
+15:59:08.216 [reactor-http-nio-1] WARN com.azure.security.keyvault.secrets.SecretAsyncClient - Failed to list secrets
+Max retries 3 times exceeded. Error Details: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+java.lang.RuntimeException: Max retries 3 times exceeded. Error Details: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at com.azure.core.http.policy.RetryPolicy.lambda$attemptAsync$1(RetryPolicy.java:127)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:94)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onError(MonoFlatMap.java:180)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onError(MonoFlatMap.java:180)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onError(MonoFlatMap.java:180)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onError(FluxMap.java:134)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onError(FluxMap.java:134)
+	at reactor.core.publisher.FluxPeek$PeekSubscriber.onError(FluxPeek.java:222)
+	at reactor.core.publisher.MonoSingle$SingleSubscriber.onError(MonoSingle.java:150)
+	at reactor.core.publisher.MonoFlatMapMany$FlatMapManyMain.onError(MonoFlatMapMany.java:204)
+	at reactor.core.publisher.SerializedSubscriber.onError(SerializedSubscriber.java:124)
+	at reactor.core.publisher.FluxRetryWhen$RetryWhenMainSubscriber.whenError(FluxRetryWhen.java:225)
+	at reactor.core.publisher.FluxRetryWhen$RetryWhenOtherSubscriber.onError(FluxRetryWhen.java:274)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onError(FluxContextWrite.java:121)
+	at reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.maybeOnError(FluxConcatMapNoPrefetch.java:326)
+	at reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.onNext(FluxConcatMapNoPrefetch.java:211)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onNext(FluxContextWrite.java:107)
+	at reactor.core.publisher.SinkManyEmitterProcessor.drain(SinkManyEmitterProcessor.java:471)
+	at reactor.core.publisher.SinkManyEmitterProcessor$EmitterInner.drainParent(SinkManyEmitterProcessor.java:615)
+	at reactor.core.publisher.FluxPublish$PubSubInner.request(FluxPublish.java:602)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.request(FluxContextWrite.java:136)
+	at reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.request(FluxConcatMapNoPrefetch.java:336)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.request(FluxContextWrite.java:136)
+	at reactor.core.publisher.Operators$DeferredSubscription.request(Operators.java:1680)
+	at reactor.core.publisher.FluxRetryWhen$RetryWhenMainSubscriber.onError(FluxRetryWhen.java:192)
+	at reactor.core.publisher.MonoCreate$DefaultMonoSink.error(MonoCreate.java:201)
+	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect$ClientTransportSubscriber.onError(HttpClientConnect.java:307)
+	at reactor.core.publisher.MonoCreate$DefaultMonoSink.error(MonoCreate.java:201)
+	at reactor.netty.resources.DefaultPooledConnectionProvider$DisposableAcquire.onError(DefaultPooledConnectionProvider.java:160)
+	at reactor.netty.internal.shaded.reactor.pool.AbstractPool$Borrower.fail(AbstractPool.java:475)
+	at reactor.netty.internal.shaded.reactor.pool.SimpleDequePool.lambda$drainLoop$9(SimpleDequePool.java:429)
+	at reactor.core.publisher.FluxDoOnEach$DoOnEachSubscriber.onError(FluxDoOnEach.java:186)
+	at reactor.core.publisher.MonoCreate$DefaultMonoSink.error(MonoCreate.java:201)
+	at reactor.netty.resources.DefaultPooledConnectionProvider$PooledConnectionAllocator$PooledConnectionInitializer.onError(DefaultPooledConnectionProvider.java:550)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.secondError(MonoFlatMap.java:241)
+	at reactor.core.publisher.MonoFlatMap$FlatMapInner.onError(MonoFlatMap.java:315)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:106)
+	at reactor.core.publisher.Operators.error(Operators.java:198)
+	at reactor.core.publisher.MonoError.subscribe(MonoError.java:53)
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4444)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:103)
+	at reactor.netty.transport.TransportConnector$MonoChannelPromise.tryFailure(TransportConnector.java:582)
+	at reactor.netty.transport.TransportConnector.lambda$doResolveAndConnect$11(TransportConnector.java:389)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:552)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:609)
+	at io.netty.util.concurrent.DefaultPromise.setFailure(DefaultPromise.java:109)
+	at io.netty.resolver.InetSocketAddressResolver$2.operationComplete(InetSocketAddressResolver.java:86)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:609)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:117)
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1055)
+	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
+	at io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:418)
+	at io.netty.resolver.dns.DnsResolveContext.onResponse(DnsResolveContext.java:629)
+	at io.netty.resolver.dns.DnsResolveContext.access$400(DnsResolveContext.java:66)
+	at io.netty.resolver.dns.DnsResolveContext$2.operationComplete(DnsResolveContext.java:462)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setSuccess0(DefaultPromise.java:605)
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
+	at io.netty.resolver.dns.DnsQueryContext.trySuccess(DnsQueryContext.java:232)
+	at io.netty.resolver.dns.DnsQueryContext.finish(DnsQueryContext.java:224)
+	at io.netty.resolver.dns.DnsNameResolver$DnsResponseHandler.channelRead(DnsNameResolver.java:1314)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:97)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
+	... 35 common frames omitted
+Exception in thread "main" java.lang.RuntimeException: Max retries 3 times exceeded. Error Details: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at com.azure.core.http.policy.RetryPolicy.lambda$attemptAsync$1(RetryPolicy.java:127)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:94)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onError(MonoFlatMap.java:180)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onError(MonoFlatMap.java:180)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.onError(MonoFlatMap.java:180)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onError(FluxMap.java:134)
+	at reactor.core.publisher.FluxMap$MapSubscriber.onError(FluxMap.java:134)
+	at reactor.core.publisher.FluxPeek$PeekSubscriber.onError(FluxPeek.java:222)
+	at reactor.core.publisher.MonoSingle$SingleSubscriber.onError(MonoSingle.java:150)
+	at reactor.core.publisher.MonoFlatMapMany$FlatMapManyMain.onError(MonoFlatMapMany.java:204)
+	at reactor.core.publisher.SerializedSubscriber.onError(SerializedSubscriber.java:124)
+	at reactor.core.publisher.FluxRetryWhen$RetryWhenMainSubscriber.whenError(FluxRetryWhen.java:225)
+	at reactor.core.publisher.FluxRetryWhen$RetryWhenOtherSubscriber.onError(FluxRetryWhen.java:274)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onError(FluxContextWrite.java:121)
+	at reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.maybeOnError(FluxConcatMapNoPrefetch.java:326)
+	at reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.onNext(FluxConcatMapNoPrefetch.java:211)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.onNext(FluxContextWrite.java:107)
+	at reactor.core.publisher.SinkManyEmitterProcessor.drain(SinkManyEmitterProcessor.java:471)
+	at reactor.core.publisher.SinkManyEmitterProcessor$EmitterInner.drainParent(SinkManyEmitterProcessor.java:615)
+	at reactor.core.publisher.FluxPublish$PubSubInner.request(FluxPublish.java:602)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.request(FluxContextWrite.java:136)
+	at reactor.core.publisher.FluxConcatMapNoPrefetch$FluxConcatMapNoPrefetchSubscriber.request(FluxConcatMapNoPrefetch.java:336)
+	at reactor.core.publisher.FluxContextWrite$ContextWriteSubscriber.request(FluxContextWrite.java:136)
+	at reactor.core.publisher.Operators$DeferredSubscription.request(Operators.java:1680)
+	at reactor.core.publisher.FluxRetryWhen$RetryWhenMainSubscriber.onError(FluxRetryWhen.java:192)
+	at reactor.core.publisher.MonoCreate$DefaultMonoSink.error(MonoCreate.java:201)
+	at reactor.netty.http.client.HttpClientConnect$MonoHttpConnect$ClientTransportSubscriber.onError(HttpClientConnect.java:307)
+	at reactor.core.publisher.MonoCreate$DefaultMonoSink.error(MonoCreate.java:201)
+	at reactor.netty.resources.DefaultPooledConnectionProvider$DisposableAcquire.onError(DefaultPooledConnectionProvider.java:160)
+	at reactor.netty.internal.shaded.reactor.pool.AbstractPool$Borrower.fail(AbstractPool.java:475)
+	at reactor.netty.internal.shaded.reactor.pool.SimpleDequePool.lambda$drainLoop$9(SimpleDequePool.java:429)
+	at reactor.core.publisher.FluxDoOnEach$DoOnEachSubscriber.onError(FluxDoOnEach.java:186)
+	at reactor.core.publisher.MonoCreate$DefaultMonoSink.error(MonoCreate.java:201)
+	at reactor.netty.resources.DefaultPooledConnectionProvider$PooledConnectionAllocator$PooledConnectionInitializer.onError(DefaultPooledConnectionProvider.java:550)
+	at reactor.core.publisher.MonoFlatMap$FlatMapMain.secondError(MonoFlatMap.java:241)
+	at reactor.core.publisher.MonoFlatMap$FlatMapInner.onError(MonoFlatMap.java:315)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:106)
+	at reactor.core.publisher.Operators.error(Operators.java:198)
+	at reactor.core.publisher.MonoError.subscribe(MonoError.java:53)
+	at reactor.core.publisher.Mono.subscribe(Mono.java:4444)
+	at reactor.core.publisher.FluxOnErrorResume$ResumeSubscriber.onError(FluxOnErrorResume.java:103)
+	at reactor.netty.transport.TransportConnector$MonoChannelPromise.tryFailure(TransportConnector.java:582)
+	at reactor.netty.transport.TransportConnector.lambda$doResolveAndConnect$11(TransportConnector.java:389)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:552)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:609)
+	at io.netty.util.concurrent.DefaultPromise.setFailure(DefaultPromise.java:109)
+	at io.netty.resolver.InetSocketAddressResolver$2.operationComplete(InetSocketAddressResolver.java:86)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:609)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:117)
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1055)
+	at io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:1000)
+	at io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:418)
+	at io.netty.resolver.dns.DnsResolveContext.onResponse(DnsResolveContext.java:629)
+	at io.netty.resolver.dns.DnsResolveContext.access$400(DnsResolveContext.java:66)
+	at io.netty.resolver.dns.DnsResolveContext$2.operationComplete(DnsResolveContext.java:462)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:578)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:571)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:550)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:491)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:616)
+	at io.netty.util.concurrent.DefaultPromise.setSuccess0(DefaultPromise.java:605)
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
+	at io.netty.resolver.dns.DnsQueryContext.trySuccess(DnsQueryContext.java:232)
+	at io.netty.resolver.dns.DnsQueryContext.finish(DnsQueryContext.java:224)
+	at io.netty.resolver.dns.DnsNameResolver$DnsResponseHandler.channelRead(DnsNameResolver.java:1314)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:103)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:97)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+	Suppressed: java.lang.Exception: #block terminated with an error
+		at reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:99)
+		at reactor.core.publisher.Flux.blockLast(Flux.java:2746)
+		at com.azure.core.util.paging.ContinuablePagedByIteratorBase.requestPage(ContinuablePagedByIteratorBase.java:94)
+		at com.azure.core.util.paging.ContinuablePagedByItemIterable$ContinuablePagedByItemIterator.<init>(ContinuablePagedByItemIterable.java:50)
+		at com.azure.core.util.paging.ContinuablePagedByItemIterable.iterator(ContinuablePagedByItemIterable.java:37)
+		at com.azure.core.util.paging.ContinuablePagedIterable.iterator(ContinuablePagedIterable.java:106)
+		at com.nedbank.kafka.filemanage.service.ListSecretsExample.main(ListSecretsExample.java:19)
+Caused by: java.net.UnknownHostException: Failed to resolve 'nsn-dev-ecm-kva-001.vault.azure.net' after 6 queries 
+	at io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:1047)
+	... 35 more
 
-public class ListSecretsExample {
-    public static void main(String[] args) {
-        String keyVaultUrl = "https://nsn-dev-ecm-kva-001.vault.azure.net/";
-
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(keyVaultUrl)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
-        System.out.println("Listing secrets from Key Vault:");
-        for (SecretProperties secretProperties : secretClient.listPropertiesOfSecrets()) {
-            try {
-                KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
-                System.out.printf("Secret name: %s%nSecret value: %s%n%n", secret.getName(), secret.getValue());
-            } catch (Exception e) {
-                System.out.printf("Could not fetch value for secret: %s (maybe it's disabled or deleted)%n", secretProperties.getName());
-            }
-        }
-    }
-}
+Process finished with exit code 1
