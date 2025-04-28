@@ -1,1 +1,29 @@
-Method threw 'com.azure.core.http.rest.MissingRequiredAnnotationException' exception. Cannot evaluate com.azure.security.keyvault.secrets.$Proxy3.toString()
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.KeyVaultSecret;
+
+public class ListSecretsFromKeyVault {
+
+    public static void main(String[] args) {
+        // Build the SecretClient using DefaultAzureCredential
+        SecretClient secretClient = new SecretClientBuilder()
+                .vaultUrl("<YourKeyVaultURL>") // Replace with your KeyVault URL
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        // List all secrets in the KeyVault
+        secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
+            // For each secret, get its value
+            try {
+                KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
+                System.out.println("Secret Name: " + secret.getName());
+                System.out.println("Secret Value: " + secret.getValue());
+                System.out.println("---------------------------------");
+            } catch (Exception e) {
+                System.out.println("Error retrieving secret: " + secretProperties.getName());
+                e.printStackTrace();
+            }
+        });
+    }
+}
