@@ -1,7 +1,6 @@
-I am currently working on resolving the dependency issues for the project, and I have managed to fix those. However, I am facing an issue with DNS resolution for the URL https://nsn-dev-ecm-kva-001.vault.azure.net. I am getting the error "Could not resolve host," which seems to be related to network connectivity or DNS settings.
-
-Since this issue seems to be beyond my current configuration, I kindly request your assistance in checking if there are any DNS or network configurations on your end that might be affecting the connection to the Key Vault URL.
-
-I would greatly appreciate any guidance or support you can provide in fixing this issue. Please let me know if there are any specific details you require from my side.
-
-Thank you for your understanding and assistance. I look forward to hearing from you soon.
+com.azure.identity.CredentialUnavailableException: IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE.
+	at com.azure.identity.implementation.IntelliJCacheAccessor.getAuthDetailsIfAvailable(IntelliJCacheAccessor.java:243)
+	at com.azure.identity.IntelliJCredential.<init>(IntelliJCredential.java:51)
+	at com.azure.identity.DefaultAzureCredentialBuilder.getCredentialsChain(DefaultAzureCredentialBuilder.java:132)
+	at com.azure.identity.DefaultAzureCredentialBuilder.build(DefaultAzureCredentialBuilder.java:123)
+	at com.nedbank.kafka.filemanage.service.BlobStorageFromKeyVault.main(BlobStorageFromKeyVault.java:20)
