@@ -1,3 +1,3 @@
-Hi , this is not giving me much to go on  
+I am running the Java program locally from my laptop using IntelliJ. The Key Vault URL is being accessed from my corporate network, and not from within any Azure Virtual Network (VNet).
 
-Were is this environment sitting . I am i assuming local laptop ??
+If the Key Vault (nsn-dev-ecm-kva-001) is configured with private endpoint access or restricted to specific VNets, that could explain why the connection from my local machine is failing (despite DNS resolving). It likely requires access from within a particular Azure environment
