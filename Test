@@ -1,14 +1,1 @@
-we are trying to develop java application .......... whilch will be deployed on AKS, 
-Application needs access to azure key vault to perform blob storage access
-Azure key valult is not accessable from outside AKS 
-My Dev machine(vdi-name) does not have rights to access azure key valult and same can not be provided as per security team.
-Access only given to AKS or DEV servers on Request.
-
-Actions needed to perform 
-
-Hi @Rafi, do we have any java application machine or servers to test our application before deploying on AKS.
-
-Azure key vault permissions to be discussed with wayne once dev machine acces is resolved.
-
-
- 
+Virtual Machine- V105P11PRA0888
