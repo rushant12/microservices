@@ -1,16 +1,7 @@
-
-C:\Users\CC437236>nslookup nsn-dev-ecm-kva-001.vault.azure.net
-Server:  DOCJHBSNT01.africa.nedcor.net
-Address:  10.50.10.10
-
-Non-authoritative answer:
-Name:    nsn-dev-ecm-kva-001.vault.azure.net
-
-
-C:\Users\CC437236>ping nsn-dev-ecm-kva-001.vault.azure.net
-Ping request could not find host nsn-dev-ecm-kva-001.vault.azure.net. Please check the name and try again.
-
-C:\Users\CC437236>curl -v nsn-dev-ecm-kva-001.vault.azure.net
-* Could not resolve host: nsn-dev-ecm-kva-001.vault.azure.net
-* shutting down connection #0
-curl: (6) Could not resolve host: nsn-dev-ecm-kva-001.vault.azure.net
+ clientID: "09fba11c-0e5b-433b-bca3-b1be22723bbd"
+    keyvaultName: "nsn-dev-ecm-kva-001"
+ 
+    resourceGroup: "NSN-DEV-RGP-KVA-001"
+    subscriptionId: "defff450-5812-4e47-aaec-519e6f269730"
+    tenantId: "0b1d23d8-10d1-4093-8cb7-fd0bb32f81e1"
+ 
