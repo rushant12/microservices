@@ -1,7 +1,1 @@
- clientID: "09fba11c-0e5b-433b-bca3-b1be22723bbd"
-    keyvaultName: "nsn-dev-ecm-kva-001"
- 
-    resourceGroup: "NSN-DEV-RGP-KVA-001"
-    subscriptionId: "defff450-5812-4e47-aaec-519e6f269730"
-    tenantId: "0b1d23d8-10d1-4093-8cb7-fd0bb32f81e1"
- 
+We are attempting to resolve the Key Vault from a local development environment (IntelliJ on a corporate machine), not from within any Azure Virtual Network
