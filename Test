@@ -1,1 +1,29 @@
 I’m not aware of an environment where you can test / build against Azure vault, however we do use an instance of a vault (Hashicorp) which is accessible to retrieve and inserts secrets. I’m not sure how different the Azure vault and Hashicorp are (I think they are not really that different) but you could use an instance of the vault to test your code and then switch over to vault when your code is correctly deployed?
+
+Hi Team,
+
+We are currently in the process of developing a Java application that will:
+
+•	Consume files from Kafka
+
+•	Process those files
+
+•	Store the output in Azure Blob Storage
+
+To securely perform Blob Storage operations, the application requires access to Azure Key Vault for retrieving the necessary secrets.
+
+•	However, we are currently facing the following constraints:
+
+•	Azure Key Vault is not accessible from outside the AKS environment
+
+•	Our development virtual machine (V105P11PRA0888) does not have the required permissions to access the Key Vault
+
+•	As per the security team’s policy, access to the Key Vault cannot be granted to individual development environments
+
+Access is strictly limited to the AKS cluster or designated, pre-approved DEV servers
+
+Actions Required
+
+•	@Van Vuuren, L. (Lizelle)/@Rimer, R. (Raphael) – Could you please confirm if we have any existing Java application server or DEV environment (with Key Vault access) available for testing the application prior to deployment on AKS?
+
+•	Azure Key Vault permissions – To be further discussed with @Turner, W. (Wayne) once a suitable test environment is identified.
