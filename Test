@@ -1,64 +1,55 @@
 package com.example.demo.service;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import com.azure.storage.blob.*;
+import com.azure.storage.blob.models.BlobClient;
+import com.azure.storage.blob.models.BlobContainerClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 @Service
-public class KafkaListenerService {
+public class BlobStorageService {
 
-    private static final Logger logger = LoggerFactory.getLogger(KafkaListenerService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlobStorageService.class);
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final BlobStorageService blobStorageService;
+    @Value("${accountName}")
+    private String accountName;
 
-    public KafkaListenerService(KafkaTemplate<String, String> kafkaTemplate, BlobStorageService blobStorageService) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.blobStorageService = blobStorageService;
-    }
+    @Value("${accountKey}")
+    private String accountKey;
 
-    @KafkaListener(topics = "your-kafka-topic", groupId = "str-ecp-batch")
-    public void consumeKafkaMessage(ConsumerRecord<String, String> record) {
-        String message = record.value();
-        logger.info("Received Kafka message: {}", message);
+    @Value("${containerName}")
+    private String containerName;
 
-        try {
-            // Assume message format: {"batchId":"1234", "filePath":"C:/files/sample.csv"}
-            String batchId = extractField(message, "batchId");
-            String filePath = extractField(message, "filePath");
+    public String uploadFile(String filePath, String batchId) throws Exception {
+        logger.info("Uploading file with batchId={} to Azure Blob Storage", batchId);
 
-            logger.info("Parsed batchId: {}, filePath: {}", batchId, filePath);
+        String connectionString = String.format(
+                "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
+                accountName, accountKey
+        );
 
-            // Upload to blob storage
-            String blobUrl = blobStorageService.uploadFile(filePath, batchId);
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .connectionString(connectionString)
+                .buildClient();
 
-            logger.info("File uploaded to blob storage at URL: {}", blobUrl);
-
-            // Send back to Kafka
-            kafkaTemplate.send("summary-topic", batchId, blobUrl);
-            logger.info("Sent blob URL to Kafka topic: summary-topic");
-
-        } catch (Exception e) {
-            logger.error("Error processing Kafka message: {}", e.getMessage(), e);
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
+        if (!containerClient.exists()) {
+            containerClient.create();
         }
-    }
 
-    private String extractField(String json, String fieldName) {
-        // Use proper JSON parsing (e.g. Jackson)
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        try {
-            com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
-            return node.get(fieldName).asText();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to extract " + fieldName + " from message: " + json, e);
-        }
-    }
+        File file = new File(filePath);
+        String blobName = batchId + "/" + file.getName();
 
-    public void consumeMessageAndStoreFile(String message) {
-        // Allows manual trigger from REST controller
-        consumeKafkaMessage(new ConsumerRecord<>("manual", 0, 0, null, message));
+        BlobClient blobClient = containerClient.getBlobClient(blobName);
+        blobClient.uploadFromFile(file.getAbsolutePath(), true);
+
+        String url = blobClient.getBlobUrl();
+        logger.info("Successfully uploaded to: {}", url);
+
+        return url;
     }
 }
