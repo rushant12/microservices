@@ -1,29 +1,35 @@
-# Kafka Consumer Configuration
-kafka.bootstrap.servers=your-kafka-broker
-kafka.consumer.group.id=str-ecp-batch
-kafka.consumer.auto.offset.reset=earliest
+package com.example.demo.controller;
 
-# SSL Configuration
-kafka.consumer.security.protocol=SSL
-kafka.consumer.ssl.keystore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks
-kafka.consumer.ssl.keystore.password=3dX7y3Yz9Jv6L4F
-kafka.consumer.ssl.key.password=3dX7y3Yz9Jv6L4F
-kafka.consumer.ssl.truststore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks
-kafka.consumer.ssl.truststore.password=nedbank1
-kafka.consumer.ssl.protocol=TLSv1.2
+import com.example.demo.service.KafkaListenerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-# Kafka Consumer Deserialization
-kafka.consumer.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-kafka.consumer.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+@RestController
+@RequestMapping("/api/file")
+public class FileProcessingController {
 
-# Kafka Producer Configuration (to send Summary File URL)
-kafka.producer.key.serializer=org.apache.kafka.common.serialization.StringSerializer
-kafka.producer.value.serializer=org.apache.kafka.common.serialization.StringSerializer
-kafka.producer.security.protocol=SSL
-kafka.producer.ssl.keystore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks
-kafka.producer.ssl.keystore.password=3dX7y3Yz9Jv6L4F
-kafka.producer.ssl.key.password=3dX7y3Yz9Jv6L4F
-kafka.producer.ssl.truststore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks
-kafka.producer.ssl.truststore.password=nedbank1
-kafka.producer.ssl.protocol=TLSv1.2
-kafka.producer.bootstrap.servers=your-kafka-broker
+    private static final Logger logger = LoggerFactory.getLogger(FileProcessingController.class);
+
+    @Autowired
+    private KafkaListenerService kafkaListenerService;
+
+    // Endpoint to manually trigger the Kafka message processing
+    @PostMapping("/process")
+    public ResponseEntity<String> processFile(@RequestBody String message) {
+        logger.info("Received request to process file with message: {}", message);
+        
+        try {
+            // Manually consume the message, upload the file, and send URL to Kafka
+            kafkaListenerService.consumeMessageAndStoreFile(message);
+            logger.info("File processed successfully for message: {}", message);
+            return new ResponseEntity<>("File processing triggered successfully!", HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error processing file for message: {}. Error: {}", message, e.getMessage());
+            return new ResponseEntity<>("Error processing file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
