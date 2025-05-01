@@ -1,78 +1,15 @@
-{
-    "INSERT_BNG_ENG_RECS":"Y",
+	List<Integer> validOrientations = Arrays.asList(0, 90, 180, 270);
+		int configOrientation = fileCoordinates.getIOrientation();
+		if (!validOrientations.contains(configOrientation)) {
+			System.err.println("Invalid orientation value in configuration: " + configOrientation
+					+ ". Valid values are: 0, 90, 180, 270.");
+			System.exit(1);
+		}
 
+------------------------------------------------------
 
-    "DELETE_TEXT": [
-         {
-            "page_num": 1,
-            "x1": 5.46319,
-            "y1": 0.93027,
-            "x2": 6.46319,
-            "y2": 1.93027,
-            "orientation": 90
-        } ,
-     {
-            "page_num": 3,
-            "x1": 0.46319,
-            "y1": 0.63027,
-            "x2": 0.86319,
-            "y2": 0.93027,
-            "orientation": 90
-        }   
-] 
-  }
-
-
---------------------------------------------------------------------------------
-
-{
-    "INSERT_BNG_ENG_RECS":"Y",
-
-
-    "DELETE_TEXT": [
-         {
-            "page_num": 1,
-            "x1": 5.46319,
-            "y1": 0.93027,
-            "x2": 6.46319,
-            "y2": 1.93027,
-            "orientation": 270
-        } ,
-     {
-            "page_num": 3,
-            "x1": 0.46319,
-            "y1": 0.63027,
-            "x2": 0.86319,
-            "y2": 0.93027,
-            "orientation": 270
-        }   
-] 
-  }
-
-
-----------------------------------------------------------------------------------
-
-{
-    "INSERT_BNG_ENG_RECS":"Y",
-
-
-    "DELETE_TEXT": [
-         {
-            "page_num": 1,
-            "x1": 5.46319,
-            "y1": 0.93027,
-            "x2": 6.46319,
-            "y2": 1.93027,
-            "orientation": 180
-        } ,
-     {
-            "page_num": 3,
-            "x1": 0.46319,
-            "y1": 0.63027,
-            "x2": 0.86319,
-            "y2": 0.93027,
-            "orientation": 180
-        }   
-] 
-  }
-    
+if (ctrlType == AfpPtxCtrlType.STO) {
+											AfpPtxCtrlSTO stoPtxCtrl = (AfpPtxCtrlSTO) ctrl;
+											currentIOrientation = Integer.parseInt(stoPtxCtrl.getIorntion()
+													.degreestoEnglish().replaceAll("[^\\d]", ""));
+										}
