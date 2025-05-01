@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.storage.blob.*;
 import com.azure.storage.blob.models.BlobClient;
 import com.azure.storage.blob.models.BlobContainerClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,23 +18,32 @@ public class BlobStorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(BlobStorageService.class);
 
-    @Value("${accountName}")
-    private String accountName;
+    private final SecretClient secretClient;
 
-    @Value("${accountKey}")
-    private String accountKey;
-
-    @Value("${containerName}")
-    private String containerName;
+    public BlobStorageService() {
+        this.secretClient = new SecretClientBuilder()
+                .vaultUrl("https://<your-key-vault-name>.vault.azure.net/") // Replace with your Key Vault URI
+                .credential(new DefaultAzureCredentialBuilder().build())     // Uses Managed Identity
+                .buildClient();
+    }
 
     public String uploadFile(String filePath, String batchId) throws Exception {
-        logger.info("Uploading file with batchId={} to Azure Blob Storage", batchId);
+        logger.info("Fetching secrets from Azure Key Vault...");
 
+        // Fetch secrets from Key Vault
+        String accountName = getSecretValue("accountName");
+        String accountKey = getSecretValue("accountKey");
+        String containerName = getSecretValue("containerName");
+
+        logger.info("Fetched accountName={}, containerName={}", accountName, containerName);
+
+        // Build the connection string
         String connectionString = String.format(
                 "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
                 accountName, accountKey
         );
 
+        // Create Blob client
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient();
@@ -47,9 +59,17 @@ public class BlobStorageService {
         BlobClient blobClient = containerClient.getBlobClient(blobName);
         blobClient.uploadFromFile(file.getAbsolutePath(), true);
 
-        String url = blobClient.getBlobUrl();
-        logger.info("Successfully uploaded to: {}", url);
+        String blobUrl = blobClient.getBlobUrl();
+        logger.info("File uploaded to blob storage at URL: {}", blobUrl);
 
-        return url;
+        return blobUrl;
+    }
+
+    private String getSecretValue(String secretName) {
+        KeyVaultSecret secret = secretClient.getSecret(secretName);
+        return secret.getValue();
     }
 }
+azure.keyvault.uri=https://<your-key-vault-name>.vault.azure.net/
+
+logging.level.com.azure.spring=DEBUG
