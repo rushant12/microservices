@@ -1,11 +1,19 @@
 package com.nedbank.kafka.filemanage.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @Service
 public class KafkaListenerService {
@@ -15,31 +23,64 @@ public class KafkaListenerService {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final BlobStorageService blobStorageService;
 
+    // Fetch configuration dynamically from application.properties
+    @Value("${kafka.topic.input}")
+    private String inputTopic;
+
+    @Value("${kafka.topic.output}")
+    private String outputTopic;
+
+    @Value("${kafka.producer.bootstrap.servers}")
+    private String bootstrapServers;
+
+    @Value("${kafka.producer.security.protocol}")
+    private String securityProtocol;
+
+    @Value("${kafka.producer.ssl.keystore.location}")
+    private String keystoreLocation;
+
+    @Value("${kafka.producer.ssl.keystore.password}")
+    private String keystorePassword;
+
+    @Value("${kafka.producer.ssl.key.password}")
+    private String keyPassword;
+
+    @Value("${kafka.producer.ssl.truststore.location}")
+    private String truststoreLocation;
+
+    @Value("${kafka.producer.ssl.truststore.password}")
+    private String truststorePassword;
+
+    @Value("${azure.blob.storage.containerName}")
+    private String containerName;
+
     public KafkaListenerService(KafkaTemplate<String, String> kafkaTemplate, BlobStorageService blobStorageService) {
         this.kafkaTemplate = kafkaTemplate;
         this.blobStorageService = blobStorageService;
     }
 
-    @KafkaListener(topics = "str-ecp-batch-composition", groupId = "str-ecp-batch")
+    @KafkaListener(topics = "${kafka.topic.input}", groupId = "${kafka.consumer.group.id}")
     public void consumeKafkaMessage(ConsumerRecord<String, String> record) {
         String message = record.value();
         logger.info("Received Kafka message: {}", message);
 
         try {
-            // Assume message format: {"batchId":"1234", "filePath":"C:/files/sample.csv"}
+            // Parse the message (assumed to be JSON)
             String batchId = extractField(message, "batchId");
             String filePath = extractField(message, "filePath");
 
             logger.info("Parsed batchId: {}, filePath: {}", batchId, filePath);
 
-            // Upload to blob storage
+            // Upload file to Azure Blob Storage
             String blobUrl = blobStorageService.uploadFile(filePath, batchId);
-
             logger.info("File uploaded to blob storage at URL: {}", blobUrl);
 
-            // Send back to Kafka
-            kafkaTemplate.send("summary-topic", batchId, blobUrl);
-            logger.info("Sent blob URL to Kafka topic: summary-topic");
+            // Create the summary data to publish to Kafka
+            Map<String, Object> summaryPayload = buildSummaryPayload(batchId, blobUrl);
+
+            // Send the summary data back to Kafka (the response topic)
+            kafkaTemplate.send(outputTopic, batchId, new ObjectMapper().writeValueAsString(summaryPayload));
+            logger.info("Summary published to Kafka topic: {}", outputTopic);
 
         } catch (Exception e) {
             logger.error("Error processing Kafka message: {}", e.getMessage(), e);
@@ -47,18 +88,90 @@ public class KafkaListenerService {
     }
 
     private String extractField(String json, String fieldName) {
-        // Use proper JSON parsing (e.g. Jackson)
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        // Use proper JSON parsing (Jackson)
+        ObjectMapper mapper = new ObjectMapper();
         try {
-            com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
+            JsonNode node = mapper.readTree(json);
             return node.get(fieldName).asText();
         } catch (Exception e) {
             throw new RuntimeException("Failed to extract " + fieldName + " from message: " + json, e);
         }
     }
 
+    private Map<String, Object> buildSummaryPayload(String batchId, String blobUrl) {
+        Map<String, Object> summaryPayload = new LinkedHashMap<>();
+
+        // Create a sample summary, fetch dynamic values from the message
+        Map<String, Object> header = new HashMap<>();
+        header.put("TenantCode", extractFieldFromEnvOrProps("azure.tenantCode"));
+        header.put("ChannelID", extractFieldFromEnvOrProps("azure.channelId"));
+        header.put("AudienceID", UUID.randomUUID().toString());
+        header.put("Timestamp", new Date().toString());
+        header.put("SourceSystem", extractFieldFromEnvOrProps("azure.sourceSystem"));
+        header.put("Product", extractFieldFromEnvOrProps("azure.product"));
+        header.put("JobName", extractFieldFromEnvOrProps("azure.jobName"));
+
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("TotalFilesProcessed", 2);  // Could be dynamic, adjust as necessary
+        metadata.put("ProcessingStatus", "Success");
+        metadata.put("EventOutcomeCode", "Success");
+        metadata.put("EventOutcomeDescription", "All customer PDFs processed successfully");
+
+        List<Map<String, String>> processedFiles = new ArrayList<>();
+        processedFiles.add(Map.of("CustomerID", "C001", "PDFFileURL", blobUrl + "/pdfs/C001_" + batchId + ".pdf"));
+        processedFiles.add(Map.of("CustomerID", "C002", "PDFFileURL", blobUrl + "/pdfs/C002_" + batchId + ".pdf"));
+
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("UniqueConsumerRef", UUID.randomUUID().toString());
+        payload.put("UniqueECPBatchRef", UUID.randomUUID().toString());
+        payload.put("FilenetObjectID", List.of("C044A38E-0000-C21B-B1E2-69FEE895A17B", "D8EFC5A4-0000-B22A-B3D5-74FEE895A17B"));
+        payload.put("RepositoryID", "Legacy");
+        payload.put("RunPriority", "High");
+        payload.put("EventID", "E12345");
+        payload.put("EventType", "Completion");
+        payload.put("RestartKey", "Key12345");
+
+        summaryPayload.put("BatchID", batchId);
+        summaryPayload.put("Header", header);
+        summaryPayload.put("Metadata", metadata);
+        summaryPayload.put("Payload", payload);
+        summaryPayload.put("ProcessedFiles", processedFiles);
+        summaryPayload.put("SummaryFileURL", blobUrl + "/summary/" + batchId + "_summary.json");
+        summaryPayload.put("Timestamp", new Date().toString());
+
+        return summaryPayload;
+    }
+
+    private String extractFieldFromEnvOrProps(String propertyKey) {
+        // This method can fetch values from environment variables or properties
+        String value = System.getenv(propertyKey);
+        if (value == null) {
+            value = extractFieldFromProperties(propertyKey);
+        }
+        return value != null ? value : "default_value";  // fallback if no value found
+    }
+
+    private String extractFieldFromProperties(String propertyKey) {
+        // Fetch from application.properties or yml file
+        // You can use @Value annotation here or load dynamically
+        switch (propertyKey) {
+            case "azure.tenantCode":
+                return "ZANBL"; // Example hardcoded property - can be refactored as needed
+            case "azure.channelId":
+                return "100";
+            case "azure.sourceSystem":
+                return "CARD";
+            case "azure.product":
+                return "CASA";
+            case "azure.jobName":
+                return "SMM815";
+            default:
+                return null;
+        }
+    }
+
+    // Allows manual triggering from REST controller or elsewhere
     public void consumeMessageAndStoreFile(String message) {
-        // Allows manual trigger from REST controller
         consumeKafkaMessage(new ConsumerRecord<>("manual", 0, 0, null, message));
     }
 }
