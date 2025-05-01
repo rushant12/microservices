@@ -1,1 +1,77 @@
-i got it from him on the message he sent to them and they responded as such
+package com.nedbank.kafka.filemanage.controller;
+import com.nedbank.kafka.filemanage.service.KafkaProducerService;
+import com.nedbank.kafka.filemanage.service.FileNetService;
+import com.nedbank.kafka.filemanage.service.AzureBlobStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/file-processing")
+public class FileProcessingController {
+
+    private final KafkaProducerService kafkaProducerService;
+    private final FileNetService fileNetService;
+    private final AzureBlobStorageService azureBlobStorageService;
+
+    @Autowired
+    public FileProcessingController(KafkaProducerService kafkaProducerService,
+                                    FileNetService fileNetService,
+                                    AzureBlobStorageService azureBlobStorageService) {
+        this.kafkaProducerService = kafkaProducerService;
+        this.fileNetService = fileNetService;
+        this.azureBlobStorageService = azureBlobStorageService;
+    }
+
+   /* @PostMapping("/process")
+    public String processBatchFile(@RequestParam String objectId, @RequestParam String repositoryId) throws Exception {
+        // Fetch file from FileNet
+        String fileContent = fileNetService.fetchFileFromFileNet(objectId, repositoryId);
+
+        // Upload the file to Azure Blob Storage
+        String fileUrl = azureBlobStorageService.uploadFile("your-container", "file.pdf", fileContent);
+
+        // Create summary and send to Kafka
+        kafkaProducerService.sendMessage("str-ecp-batch-composition-complete", "File processed and uploaded");
+
+        return "File processed and uploaded: " + fileUrl;
+    }*/
+}
+   // Create a Properties object to configure the consumer
+            Properties properties = new Properties();
+
+            // Kafka broker list
+            //properties.put("bootstrap.servers", "nbpigelpdev02.africa.nedcor.net:9093,nbpproelpdev01.africa.nedcor.net:9093,nbpinelpdev01.africa.nedcor.net:9093"); // Use the appropriate broker URL for SSL
+        properties.put("bootstrap.servers", "nsnxeteelpka01.nednet.co.za:9093,nsnxeteelpka02.nednet.co.za:9093,nsnxeteelpka03.nednet.co.za:9093");
+            // Consumer group ID
+            properties.put("group.id", "str-ecp-batch");
+
+            // Offset reset behavior when no offset is found
+            properties.put("auto.offset.reset", "earliest");
+
+            // SSL configurations
+            properties.put("security.protocol", "SSL");  // Enable SSL
+            properties.put("ssl.keystore.location", "C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks");  // Path to keystore (for client authentication, if needed)
+            properties.put("ssl.keystore.password", "3dX7y3Yz9Jv6L4F");  // Keystore password
+            properties.put("ssl.key.password", "3dX7y3Yz9Jv6L4F");  // Key password (if different from keystore password)
+            properties.put("ssl.truststore.location", "C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks");  // Path to truststore (for broker verification)
+            properties.put("ssl.truststore.password", "nedbank1");  // Truststore password
+            properties.put("ssl.protocol", "TLSv1.2");  // SSL/TLS protocol version
+
+            // Set the deserializers for the key and value of the messages
+            properties.put("key.deserializer", StringDeserializer.class.getName());
+            properties.put("value.deserializer", StringDeserializer.class.getName());
+
+            // Create the Kafka consumer
+            KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
+
+            // Subscribe to the desired topic(s)
+            consumer.subscribe(List.of("str-ecp-batch-composition"));
+
+            // Consume messages
+            while (true) {
+                var records = consumer.poll(java.time.Duration.ofMillis(1000));  // Poll for messages every second
+                for (var record : records) {
+                    System.out.printf("Consumed record with key: %s, value: %s%n", record.key(), record.value());
+                }
+            }
+        }
