@@ -1,29 +1,64 @@
-# Kafka Consumer Configuration
-kafka.bootstrap.servers=nsnxeteelpka01.nednet.co.za:9093,nsnxeteelpka02.nednet.co.za:9093,nsnxeteelpka03.nednet.co.za:9093
-kafka.consumer.group.id=str-ecp-batch
-kafka.consumer.auto.offset.reset=earliest
+package com.example.demo.service;
 
-# SSL Configuration
-kafka.consumer.security.protocol=SSL
-kafka.consumer.ssl.keystore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks
-kafka.consumer.ssl.keystore.password=3dX7y3Yz9Jv6L4F
-kafka.consumer.ssl.key.password=3dX7y3Yz9Jv6L4F
-kafka.consumer.ssl.truststore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks
-kafka.consumer.ssl.truststore.password=nedbank1
-kafka.consumer.ssl.protocol=TLSv1.2
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
-# Kafka Consumer Deserialization
-kafka.consumer.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-kafka.consumer.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+@Service
+public class KafkaListenerService {
 
-# Kafka Producer Configuration (to send Summary File URL)
-kafka.producer.key.serializer=org.apache.kafka.common.serialization.StringSerializer
-kafka.producer.value.serializer=org.apache.kafka.common.serialization.StringSerializer
-kafka.producer.security.protocol=SSL
-kafka.producer.ssl.keystore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks
-kafka.producer.ssl.keystore.password=3dX7y3Yz9Jv6L4F
-kafka.producer.ssl.key.password=3dX7y3Yz9Jv6L4F
-kafka.producer.ssl.truststore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks
-kafka.producer.ssl.truststore.password=nedbank1
-kafka.producer.ssl.protocol=TLSv1.2
-kafka.producer.bootstrap.servers=nsnxeteelpka01.nednet.co.za:9093,nsnxeteelpka02.nednet.co.za:9093,nsnxeteelpka03.nednet.co.za:9093
+    private static final Logger logger = LoggerFactory.getLogger(KafkaListenerService.class);
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final BlobStorageService blobStorageService;
+
+    public KafkaListenerService(KafkaTemplate<String, String> kafkaTemplate, BlobStorageService blobStorageService) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.blobStorageService = blobStorageService;
+    }
+
+    @KafkaListener(topics = "your-kafka-topic", groupId = "str-ecp-batch")
+    public void consumeKafkaMessage(ConsumerRecord<String, String> record) {
+        String message = record.value();
+        logger.info("Received Kafka message: {}", message);
+
+        try {
+            // Assume message format: {"batchId":"1234", "filePath":"C:/files/sample.csv"}
+            String batchId = extractField(message, "batchId");
+            String filePath = extractField(message, "filePath");
+
+            logger.info("Parsed batchId: {}, filePath: {}", batchId, filePath);
+
+            // Upload to blob storage
+            String blobUrl = blobStorageService.uploadFile(filePath, batchId);
+
+            logger.info("File uploaded to blob storage at URL: {}", blobUrl);
+
+            // Send back to Kafka
+            kafkaTemplate.send("summary-topic", batchId, blobUrl);
+            logger.info("Sent blob URL to Kafka topic: summary-topic");
+
+        } catch (Exception e) {
+            logger.error("Error processing Kafka message: {}", e.getMessage(), e);
+        }
+    }
+
+    private String extractField(String json, String fieldName) {
+        // Use proper JSON parsing (e.g. Jackson)
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        try {
+            com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
+            return node.get(fieldName).asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract " + fieldName + " from message: " + json, e);
+        }
+    }
+
+    public void consumeMessageAndStoreFile(String message) {
+        // Allows manual trigger from REST controller
+        consumeKafkaMessage(new ConsumerRecord<>("manual", 0, 0, null, message));
+    }
+}
