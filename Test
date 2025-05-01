@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.nedbank.kafka.filemanage.service;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -70,6 +70,3 @@ public class BlobStorageService {
         return secret.getValue();
     }
 }
-azure.keyvault.uri=https://<your-key-vault-name>.vault.azure.net/
-
-logging.level.com.azure.spring=DEBUG
