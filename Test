@@ -1,34 +1,64 @@
-package com.nedbank.kafka.filemanage.controller;
+package com.nedbank.kafka.filemanage.service;
 
-import com.nedbank.kafka.filemanage.service.KafkaListenerService;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/api/file")
-public class FileProcessingController {
+@Service
+public class KafkaListenerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileProcessingController.class);
+    private static final Logger logger = LoggerFactory.getLogger(KafkaListenerService.class);
 
-    @Autowired
-    private KafkaListenerService kafkaListenerService;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final BlobStorageService blobStorageService;
 
-    // Endpoint to manually trigger the Kafka message processing
-    @PostMapping("/process")
-    public String processFile(@RequestBody String message) {
-        logger.info("Received request to process file with message: {}", message);
+    public KafkaListenerService(KafkaTemplate<String, String> kafkaTemplate, BlobStorageService blobStorageService) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.blobStorageService = blobStorageService;
+    }
+
+    @KafkaListener(topics = "str-ecp-batch-composition", groupId = "str-ecp-batch")
+    public void consumeKafkaMessage(ConsumerRecord<String, String> record) {
+        String message = record.value();
+        logger.info("Received Kafka message: {}", message);
 
         try {
-            // Manually consume the message, upload the file, and send URL to Kafka
-            kafkaListenerService.consumeMessageAndStoreFile(message);
-            logger.info("File processed successfully for message: {}", message);
-            return "File processing triggered successfully!";
+            // Assume message format: {"batchId":"1234", "filePath":"C:/files/sample.csv"}
+            String batchId = extractField(message, "batchId");
+            String filePath = extractField(message, "filePath");
+
+            logger.info("Parsed batchId: {}, filePath: {}", batchId, filePath);
+
+            // Upload to blob storage
+            String blobUrl = blobStorageService.uploadFile(filePath, batchId);
+
+            logger.info("File uploaded to blob storage at URL: {}", blobUrl);
+
+            // Send back to Kafka
+            kafkaTemplate.send("summary-topic", batchId, blobUrl);
+            logger.info("Sent blob URL to Kafka topic: summary-topic");
+
         } catch (Exception e) {
-            logger.error("Error processing file for message: {}. Error: {}", message, e.getMessage());
-            return "Error processing file: " + e.getMessage();
+            logger.error("Error processing Kafka message: {}", e.getMessage(), e);
         }
     }
-}
 
+    private String extractField(String json, String fieldName) {
+        // Use proper JSON parsing (e.g. Jackson)
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        try {
+            com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
+            return node.get(fieldName).asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract " + fieldName + " from message: " + json, e);
+        }
+    }
+
+    public void consumeMessageAndStoreFile(String message) {
+        // Allows manual trigger from REST controller
+        consumeKafkaMessage(new ConsumerRecord<>("manual", 0, 0, null, message));
+    }
+}
