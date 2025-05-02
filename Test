@@ -1,4 +1,26 @@
-curl --location --request GET 'https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev' \
+curl --location --request POST 'https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev' \
 --header 'Content-Type: application/json' \
 --header 'x-vault-namespace: admin/espire' \
 --data-raw '{"password": "Dev+Cred4#"}'
+
+
+
+private static final String AUTH_URL = "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev";
+    private static final String SECRET_URL = "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099";
+    private static final String NAMESPACE = "admin/espire";
+    private static final String USER_PASSWORD = "Dev+Cred4#";
+
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public String getSecretFromVault() {
+        try {
+            // 1. Authenticate and get token
+            HttpHeaders authHeaders = new HttpHeaders();
+            authHeaders.setContentType(MediaType.APPLICATION_JSON);
+            authHeaders.set("x-vault-namespace", NAMESPACE);
+
+            String authBody = "{\"password\": \"" + USER_PASSWORD + "\"}";
+            HttpEntity<String> authRequest = new HttpEntity<>(authBody, authHeaders);
+
+            ResponseEntity<String> authResponse = restTemplate.postForEntity(AUTH_URL, authRequest, String.class);
