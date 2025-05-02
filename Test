@@ -1,8 +1,5 @@
 {
-			"name": "ReadSecret",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "ListSecret",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -17,16 +14,34 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"password\": \"nbh_dev1\"\r\n }",
-					"options": {
-						"raw": {
-							"language": "json"
+				"url": {
+					"raw": "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev?list=true",
+					"protocol": "https",
+					"host": [
+						"vault-public-vault-75e984b5",
+						"bdecd756",
+						"z1",
+						"hashicorp",
+						"cloud"
+					],
+					"port": "8200",
+					"path": [
+						"v1",
+						"Store_Dev"
+					],
+					"query": [
+						{
+							"key": "list",
+							"value": "true"
 						}
-					}
-				},
-				"url": "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099"
+					]
+				}
 			},
 			"response": []
 		}
+
+curl --location --request GET 'https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099' \
+--header 'x-vault-namespace: admin/espire' \
+--header 'x-vault-token: hvs.CAESIEOijBc4wCC_UtI2FhdCw7zZMPz1MxPm-7kr-Ry0ny0oGikKImh2cy5EallFREcxODZ1ZExrd0RXQW41ejlPVjUubDNGWm0Q3uSzCA' \
+--header 'Content-Type: application/json' \
+--data-raw '{"password": "nbh_dev1"}'
