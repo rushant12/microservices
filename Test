@@ -1,3 +1,8 @@
+We have successfully accessed the Vault endpoint and confirmed connectivity to the Store_Dev secrets path. However, upon retrieving the data for key 10099, we observed that the response currently contains only sample/test data, as shown below:
+
+json
+Copy
+Edit
 {
     "request_id": "c9153e22-0138-a3b1-bcb3-1a17f5c73c3f",
     "lease_id": "",
@@ -11,3 +16,4 @@
     "auth": null,
     "mount_type": "kv"
 }
+To proceed further with our integration/validation, could you please help us by updating the secret with actual data or confirming if we should expect additional keys or values under this path?
