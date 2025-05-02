@@ -1,1 +1,11 @@
-http://webproxy.africa.nedcor.net:9001/proxy2.pac
+public static void main(String[] args) {
+    // Set proxy settings
+    System.setProperty("https.proxyHost", "webproxy.africa.nedcor.net");
+    System.setProperty("https.proxyPort", "9001");
+    System.setProperty("http.proxyHost", "webproxy.africa.nedcor.net");
+    System.setProperty("http.proxyPort", "9001");
+
+    // Then continue with your Vault client or API logic
+    VaultClient client = new VaultClient();
+    client.getSecretFromVault(); // your implementation
+}
