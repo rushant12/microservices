@@ -3,15 +3,15 @@ package com.nedbank.kafka.filemanage.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.*;
-
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 
 public class VaultClient {
 
@@ -20,8 +20,8 @@ public class VaultClient {
     private static final String NAMESPACE = "admin/espire";
     private static final String USER_PASSWORD = "Dev+Cred4#";
 
-    private final RestTemplate restTemplate = new RestTemplate();
-    //private final RestTemplate restTemplate = createRestTemplateWithProxy();
+    // Use RestTemplate with proxy configuration
+    private final RestTemplate restTemplate = createRestTemplateWithProxy();
     private final ObjectMapper mapper = new ObjectMapper();
 
     public String getSecretFromVault() {
@@ -60,31 +60,34 @@ public class VaultClient {
             throw new RuntimeException("Error while accessing Vault: " + e.getMessage(), e);
         }
     }
-    /*public RestTemplate createRestTemplateWithProxy() {
-        HttpHost proxy = new HttpHost("webproxy.africa.nedcor.net", 9001);
+
+    public RestTemplate createRestTemplateWithProxy() {
+        String proxyHost = "webproxy.africa.nedcor.net";
+        int proxyPort = 9001;
+        String proxyUser = "CC437236";
+        String proxyPass = "34dYaB@jEh56";
+
+        HttpHost proxy = new HttpHost(proxyHost, proxyPort);
+
+        // Set proxy credentials
+        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(
+                new AuthScope(proxyHost, proxyPort),
+                new UsernamePasswordCredentials(proxyUser, proxyPass)
+        );
+
         DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
 
         CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider)
                 .setRoutePlanner(routePlanner)
                 .build();
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
         return new RestTemplate(factory);
-    }*/
+    }
 
     public static void main(String[] args) {
-        // Set proxy settings
-        System.setProperty("http.proxyHost", "webproxy.africa.nedcor.net");
-        System.setProperty("http.proxyPort", "9001");
-        System.setProperty("https.proxyHost", "webproxy.africa.nedcor.net");
-        System.setProperty("https.proxyPort", "9001");
-
-        Authenticator.setDefault(new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("CC437236", "34dYaB@jEh56".toCharArray());
-            }
-        });
-
         VaultClient vaultService = new VaultClient();
         String secret = vaultService.getSecretFromVault();
         System.out.println("Secret from Vault:\n" + secret);
