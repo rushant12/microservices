@@ -1,5 +1,3 @@
-<dependency>
-    <groupId>com.bettercloud</groupId>
-    <artifactId>vault-java-driver</artifactId>
-    <version>5.1.0</version>
-</dependency>
+   // KV v2: data -> data -> key
+            Map<String, String> data = response.getData();
+            Map<String, String> nestedData = (Map<String, String>) data.get("data");
