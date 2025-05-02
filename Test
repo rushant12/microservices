@@ -1,7 +1,1 @@
-We have been attempting to connect to the Vault instance shared by your team at:
-
-arduino
-Copy
-Edit
-https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200
-However, we are consistently encountering a timeout error, indicating that our machine is unable to establish a connection to the specified endpoint on port 8200
+http://webproxy.africa.nedcor.net:9001/proxy2.pac
