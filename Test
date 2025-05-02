@@ -1,12 +1,7 @@
-Required type:
-HttpClient
-Provided:
-CloseableHttpClient
-
 public RestTemplate createRestTemplateWithProxy() {
     HttpHost proxy = new HttpHost("webproxy.africa.nedcor.net", 9001);
     DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-    
+
     CloseableHttpClient httpClient = HttpClients.custom()
             .setRoutePlanner(routePlanner)
             .build();
