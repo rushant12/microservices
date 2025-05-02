@@ -1,48 +1,5 @@
-import com.bettercloud.vault.Vault;
-import com.bettercloud.vault.VaultConfig;
-import com.bettercloud.vault.response.LogicalResponse;
-import com.bettercloud.vault.response.VaultResponse;
-import com.bettercloud.vault.rest.RestException;
-
-import java.util.Map;
-
-public class VaultClient {
-
-    public static void main(String[] args) {
-        try {
-            // Vault Configuration
-            String vaultUrl = "http://<vault-host>:8200"; // replace with actual Vault server URL
-            String vaultToken = "<your-vault-token>"; // replace with a valid Vault token
-            String secretPath = "secret/data/myapp/config"; // adjust if KV v1
-
-            // Initialize Vault configuration
-            VaultConfig config = new VaultConfig()
-                    .address(vaultUrl)
-                    .token(vaultToken)
-                    .build();
-
-            Vault vault = new Vault(config);
-
-            // KV Version 2 uses data/<path>, need to access data field inside the JSON
-            LogicalResponse response = vault
-                    .logical()
-                    .read(secretPath);
-
-            // KV v2: data -> data -> key
-            Map<String, Object> data = response.getData();
-            Map<String, Object> nestedData = (Map<String, Object>) data.get("data");
-
-            // Print expected keys
-            String accountName = (String) nestedData.get("accountName");
-            String accountKey = (String) nestedData.get("accountKey");
-            String containerName = (String) nestedData.get("containerName");
-
-            System.out.println("accountName: " + accountName);
-            System.out.println("accountKey: " + accountKey);
-            System.out.println("containerName: " + containerName);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
+<dependency>
+    <groupId>com.bettercloud</groupId>
+    <artifactId>vault-java-driver</artifactId>
+    <version>5.1.0</version>
+</dependency>
