@@ -1,2 +1,30 @@
-ecp-batch-composition-complete
-str-ecp-batch-composition
+As part of our Java application’s integration with HashiCorp Vault for secret management, we request the following information to proceed with development and testing:
+
+Required Vault Configuration Details:
+Vault Server URL
+(e.g., http://<vault-host>:8200)
+
+Authentication Method:
+
+Please provide a Vault token with read access to the required secret paths.
+
+Secrets Engine Version:
+
+Please confirm if the secrets engine at the mount path is KV version.
+
+Secret Path(s):
+
+Full path(s) where secrets are stored (e.g., secret/data/myapp/config)
+
+Expected Secret Keys:
+
+List of key names (e.g., accountName, acountKey and containerName
+etc.) available at the specified path
+
+List Permissions (Optional):
+
+If listing secrets is required, please confirm whether the token has list capability
+
+Maven Dependency:
+We are planning to use the vault-java-driver (version 5.1.0) for HashiCorp Vault integration.
+Could you please confirm if this JAR is available in your Nexus repository?
