@@ -9,34 +9,35 @@ public class VaultClient {
 
     public static void main(String[] args) {
         try {
-            // Vault Configuration
             String vaultUrl = "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200";
             String username = "espire_dev";
             String password = "Dev+Cred4#";
-            String secretPath = "Store_Dev/10099"; // Adjusted path
             String namespace = "admin/espire";
+            String secretPath = "Store_Dev/10099";
 
-            // Initialize Vault configuration
-            VaultConfig config = new VaultConfig()
+            // First: authenticate and get token
+            VaultConfig loginConfig = new VaultConfig()
                     .address(vaultUrl)
+                    .nameSpace(namespace)
                     .build();
 
-            Vault vault = new Vault(config);
+            Vault vaultForLogin = new Vault(loginConfig);
+            AuthResponse authResponse = vaultForLogin.auth().loginByUserPass(username, password, "userpass");
+            String clientToken = authResponse.getAuthClientToken();
 
-            // Authenticate using Userpass
-            AuthResponse authResponse = vault.auth().loginByUserPass(username, password, "userpass");
-            String token = authResponse.getAuthClientToken();
+            // Then: use token in full config
+            VaultConfig configWithToken = new VaultConfig()
+                    .address(vaultUrl)
+                    .token(clientToken)
+                    .nameSpace(namespace)
+                    .build();
 
-            // Read secret from Vault
-            LogicalResponse response = vault.logical()
-                    .withHeader("X-Vault-Token", token)
-                    .withHeader("X-Vault-Namespace", namespace)
-                    .read("v1/" + secretPath);
+            Vault vault = new Vault(configWithToken);
+            LogicalResponse response = vault.logical().read("Store_Dev/10099");
 
-            // Extract and print secret data
-            Map<String, String> data = response.getData();
-            String secretValue = data.get("password"); // Assuming 'password' is the key
-            System.out.println("Retrieved secret: " + secretValue);
+            Map<String, String> secretData = response.getData();
+            String passwordValue = secretData.get("password");
+            System.out.println("Retrieved secret password: " + passwordValue);
 
         } catch (Exception e) {
             e.printStackTrace();
