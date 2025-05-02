@@ -3,12 +3,8 @@ package com.nedbank.vault.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-
-@Service
 public class VaultService {
 
     private static final String AUTH_URL = "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev";
@@ -49,10 +45,17 @@ public class VaultService {
                 throw new RuntimeException("Failed to read secret from Vault");
             }
 
-            return readResponse.getBody(); // or parse with Jackson for specific key
+            return readResponse.getBody();
 
         } catch (Exception e) {
             throw new RuntimeException("Error while accessing Vault: " + e.getMessage(), e);
         }
+    }
+
+    // ✅ Main method to test Vault access
+    public static void main(String[] args) {
+        VaultService vaultService = new VaultService();
+        String secret = vaultService.getSecretFromVault();
+        System.out.println("Secret from Vault:\n" + secret);
     }
 }
