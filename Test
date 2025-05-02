@@ -25,15 +25,26 @@ public class VaultClient {
             String authBody = "{\"password\": \"" + USER_PASSWORD + "\"}";
             HttpEntity<String> authRequest = new HttpEntity<>(authBody, authHeaders);
 
-            ResponseEntity<String> authResponse = restTemplate.postForEntity(AUTH_URL, authRequest, String.class);
-            if (!authResponse.getStatusCode().is2xxSuccessful()) {
-                throw new RuntimeException("Failed to authenticate with Vault");
+            // --- MOCKED AUTHENTICATION RESPONSE START ---
+            String mockAuthResponse = "{\n" +
+                    "  \"auth\": {\n" +
+                    "    \"client_token\": \"hvs.mocked-token-value\",\n" +
+                    "    \"policies\": [\"default\", \"espire_dev\"],\n" +
+                    "    \"token_policies\": [\"default\", \"espire_dev\"],\n" +
+                    "    \"metadata\": {\"username\": \"espire_dev\"},\n" +
+                    "    \"lease_duration\": 1200,\n" +
+                    "    \"renewable\": true\n" +
+                    "  }\n" +
+                    "}";
+            JsonNode authJson = mapper.readTree(mockAuthResponse);
+            String token = authJson.at("/auth/client_token").asText();
+            // --- MOCKED AUTHENTICATION RESPONSE END ---
+
+            if (token == null || token.isEmpty()) {
+                throw new RuntimeException("Failed to get client token from Vault.");
             }
 
-            JsonNode authJson = mapper.readTree(authResponse.getBody());
-            String token = authJson.at("/auth/client_token").asText();
-
-            // 2. Read secret using token
+            // 2. Read secret using token (REAL CALL)
             HttpHeaders readHeaders = new HttpHeaders();
             readHeaders.set("x-vault-namespace", NAMESPACE);
             readHeaders.set("x-vault-token", token);
