@@ -1,6 +1,15 @@
-https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev?list=true
-| Key                 | Value                                                                                                            |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `x-vault-namespace` | `admin/espire`                                                                                                   |
-| `x-vault-token`     | `hvs.CAESIPSPU_F3lBcnW4AQZjICU-4VcfieYPbyQ5_CJYqs2TCKGikKImh2cy5PMzRIQTllOGZwZkRTM1huS1liTTdtd1MubDNGWm0Q9J-yCA` |
-| `Content-Type`      | `application/json`                                                                                               |
+{
+    "request_id": "89552355-4b0f-73c1-b30e-85916a11cd2f",
+    "lease_id": "",
+    "renewable": false,
+    "lease_duration": 0,
+    "data": {
+        "keys": [
+            "10099"
+        ]
+    },
+    "wrap_info": null,
+    "warnings": null,
+    "auth": null,
+    "mount_type": "kv"
+}
