@@ -1,23 +1,4 @@
-CC437236
-
-34dYaB@jEh56
-
-
-System.setProperty("http.proxyHost", "webproxy.africa.nedcor.net");
-System.setProperty("http.proxyPort", "9001");
-System.setProperty("https.proxyHost", "webproxy.africa.nedcor.net");
-System.setProperty("https.proxyPort", "9001");
-
-Authenticator.setDefault(new Authenticator() {
-    protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication("CC437236", "34dYaB@jEh56".toCharArray());
-    }
-});
-
--Dhttp.proxyHost=webproxy.africa.nedcor.net
--Dhttp.proxyPort=9001
--Dhttps.proxyHost=webproxy.africa.nedcor.net
--Dhttps.proxyPort=9001
-
--Dhttp.proxyUser=CC437236
--Dhttp.proxyPassword=34dYaB@jEh56
+Exception in thread "main" java.lang.RuntimeException: Error while accessing Vault: I/O error on POST request for "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev": Connection timed out: connect
+	at com.nedbank.kafka.filemanage.service.VaultClient.getSecretFromVault(VaultClient.java:60)
+	at com.nedbank.kafka.filemanage.service.VaultClient.main(VaultClient.java:89)
+Caused by: org.springframework.web.client.ResourceAccessException: I/O error on POST request for "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev": Connection timed out: connect
