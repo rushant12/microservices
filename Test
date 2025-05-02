@@ -1,12 +1,10 @@
 {
-    "request_id": "89552355-4b0f-73c1-b30e-85916a11cd2f",
+    "request_id": "c9153e22-0138-a3b1-bcb3-1a17f5c73c3f",
     "lease_id": "",
     "renewable": false,
-    "lease_duration": 0,
+    "lease_duration": 3600,
     "data": {
-        "keys": [
-            "10099"
-        ]
+        "test": "test"
     },
     "wrap_info": null,
     "warnings": null,
