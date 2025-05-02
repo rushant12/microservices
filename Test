@@ -1,47 +1,6 @@
-{
-			"name": "ListSecret",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-vault-namespace",
-						"value": "admin/espire",
-						"type": "text"
-					},
-					{
-						"key": "x-vault-token",
-						"value": "hvs.CAESIPSPU_F3lBcnW4AQZjICU-4VcfieYPbyQ5_CJYqs2TCKGikKImh2cy5PMzRIQTllOGZwZkRTM1huS1liTTdtd1MubDNGWm0Q9J-yCA",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev?list=true",
-					"protocol": "https",
-					"host": [
-						"vault-public-vault-75e984b5",
-						"bdecd756",
-						"z1",
-						"hashicorp",
-						"cloud"
-					],
-					"port": "8200",
-					"path": [
-						"v1",
-						"Store_Dev"
-					],
-					"query": [
-						{
-							"key": "list",
-							"value": "true"
-						}
-					]
-				}
-			},
-			"response": []
-		}
-
-curl --location --request GET 'https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099' \
---header 'x-vault-namespace: admin/espire' \
---header 'x-vault-token: hvs.CAESIEOijBc4wCC_UtI2FhdCw7zZMPz1MxPm-7kr-Ry0ny0oGikKImh2cy5EallFREcxODZ1ZExrd0RXQW41ejlPVjUubDNGWm0Q3uSzCA' \
---header 'Content-Type: application/json' \
---data-raw '{"password": "nbh_dev1"}'
+https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev?list=true
+| Key                 | Value                                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `x-vault-namespace` | `admin/espire`                                                                                                   |
+| `x-vault-token`     | `hvs.CAESIPSPU_F3lBcnW4AQZjICU-4VcfieYPbyQ5_CJYqs2TCKGikKImh2cy5PMzRIQTllOGZwZkRTM1huS1liTTdtd1MubDNGWm0Q9J-yCA` |
+| `Content-Type`      | `application/json`                                                                                               |
