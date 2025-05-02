@@ -1,71 +1,32 @@
-package com.nedbank.kafka.filemanage.service;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
-
-public class VaultClient {
-
-    private static final String AUTH_URL = "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev";
-    private static final String SECRET_URL = "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099";
-    private static final String NAMESPACE = "admin/espire";
-    private static final String USER_PASSWORD = "Dev+Cred4#";
-
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper mapper = new ObjectMapper();
-
-    public String getSecretFromVault() {
-        try {
-            // 1. Authenticate and get token
-            HttpHeaders authHeaders = new HttpHeaders();
-            authHeaders.setContentType(MediaType.APPLICATION_JSON);
-            authHeaders.set("x-vault-namespace", NAMESPACE);
-
-            String authBody = "{\"password\": \"" + USER_PASSWORD + "\"}";
-            HttpEntity<String> authRequest = new HttpEntity<>(authBody, authHeaders);
-
-            // --- MOCKED AUTHENTICATION RESPONSE START ---
-            String mockAuthResponse = "{\n" +
-                    "  \"auth\": {\n" +
-                    "    \"client_token\": \"hvs.mocked-token-value\",\n" +
-                    "    \"policies\": [\"default\", \"espire_dev\"],\n" +
-                    "    \"token_policies\": [\"default\", \"espire_dev\"],\n" +
-                    "    \"metadata\": {\"username\": \"espire_dev\"},\n" +
-                    "    \"lease_duration\": 1200,\n" +
-                    "    \"renewable\": true\n" +
-                    "  }\n" +
-                    "}";
-            JsonNode authJson = mapper.readTree(mockAuthResponse);
-            String token = authJson.at("/auth/client_token").asText();
-            // --- MOCKED AUTHENTICATION RESPONSE END ---
-
-            if (token == null || token.isEmpty()) {
-                throw new RuntimeException("Failed to get client token from Vault.");
-            }
-
-            // 2. Read secret using token (REAL CALL)
-            HttpHeaders readHeaders = new HttpHeaders();
-            readHeaders.set("x-vault-namespace", NAMESPACE);
-            readHeaders.set("x-vault-token", token);
-
-            HttpEntity<Void> readRequest = new HttpEntity<>(readHeaders);
-            ResponseEntity<String> readResponse = restTemplate.exchange(SECRET_URL, HttpMethod.GET, readRequest, String.class);
-
-            if (!readResponse.getStatusCode().is2xxSuccessful()) {
-                throw new RuntimeException("Failed to read secret from Vault");
-            }
-
-            return readResponse.getBody();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error while accessing Vault: " + e.getMessage(), e);
-        }
-    }
-
-    public static void main(String[] args) {
-        VaultClient vaultService = new VaultClient();
-        String secret = vaultService.getSecretFromVault();
-        System.out.println("Secret from Vault:\n" + secret);
-    }
-}
+{
+			"name": "ReadSecret",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-vault-namespace",
+						"value": "admin/espire",
+						"type": "text"
+					},
+					{
+						"key": "x-vault-token",
+						"value": "hvs.CAESIPSPU_F3lBcnW4AQZjICU-4VcfieYPbyQ5_CJYqs2TCKGikKImh2cy5PMzRIQTllOGZwZkRTM1huS1liTTdtd1MubDNGWm0Q9J-yCA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"nbh_dev1\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099"
+			},
+			"response": []
+		}
