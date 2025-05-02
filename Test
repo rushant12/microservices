@@ -1,1 +1,168 @@
-Could not find artifact org.apache.kafka:kafka-clients:pom:3.0.11 in nexus (https://nexus.devops.nednet.co.za/repository/maven-group/)
+package com.nedbank.kafka.filemanage.service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+//import org.apache.kafka.clients.producer.KafkaTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+
+@Service
+public class KafkaListenerService {
+
+    private static final Logger logger = LoggerFactory.getLogger(KafkaListenerService.class);
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final BlobStorageService blobStorageService;
+
+    // Fetch configuration dynamically from application.properties
+    @Value("${kafka.topic.input}")
+    private String inputTopic;
+
+    @Value("${kafka.topic.output}")
+    private String outputTopic;
+
+    @Value("${azure.blob.storage.containerName}")
+    private String containerName;
+
+    public KafkaListenerService(KafkaTemplate<String, String> kafkaTemplate, BlobStorageService blobStorageService) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.blobStorageService = blobStorageService;
+    }
+
+    // This is the Kafka listener that consumes the message from the input topic
+    @KafkaListener(topics = "${kafka.topic.input}", groupId = "${kafka.consumer.group.id}")
+    public void consumeKafkaMessage(ConsumerRecord<String, String> record) {
+        String message = record.value();
+        logger.info("Received Kafka message: {}", message);
+
+        try {
+            // Parse the message (assumed to be in JSON format)
+            String batchId = extractField(message, "batchId");
+            String filePath = extractField(message, "filePath");
+
+            logger.info("Parsed batchId: {}, filePath: {}", batchId, filePath);
+
+            // Upload the file to Azure Blob Storage and get the URL of the uploaded file
+            String blobUrl = blobStorageService.uploadFile(filePath, batchId);
+            logger.info("File uploaded to blob storage at URL: {}", blobUrl);
+
+            // Create a summary payload with metadata and processed file details
+            Map<String, Object> summaryPayload = buildSummaryPayload(batchId, blobUrl);
+
+            // Send the summary payload to the output Kafka topic
+            String summaryMessage = new ObjectMapper().writeValueAsString(summaryPayload);
+            kafkaTemplate.send(outputTopic, batchId, summaryMessage); // Publish summary to Kafka topic
+            logger.info("Summary published to Kafka topic: {} with message: {}", outputTopic, summaryMessage);
+
+        } catch (Exception e) {
+            logger.error("Error processing Kafka message: {}", e.getMessage(), e);
+        }
+    }
+
+    private String extractField(String json, String fieldName) {
+        // Use Jackson library for parsing JSON and extracting the required field
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode node = mapper.readTree(json);
+            return node.get(fieldName).asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract " + fieldName + " from message: " + json, e);
+        }
+    }
+
+    // This method builds the summary payload to send back to Kafka
+    private Map<String, Object> buildSummaryPayload(String batchId, String blobUrl) {
+        Map<String, Object> summaryPayload = new LinkedHashMap<>();
+
+        // Build header details
+        Map<String, Object> header = new HashMap<>();
+        header.put("TenantCode", "ZANBL"); // Can be dynamic if needed
+        header.put("ChannelID", "100");    // Can be dynamic if needed
+        header.put("AudienceID", UUID.randomUUID().toString());
+        header.put("Timestamp", new Date().toString());
+        header.put("SourceSystem", "CARD");
+        header.put("Product", "CASA");
+        header.put("JobName", "SMM815");
+
+        // Build metadata
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("TotalFilesProcessed", 2);  // Example, adjust based on your context
+        metadata.put("ProcessingStatus", "Success");
+        metadata.put("EventOutcomeCode", "Success");
+        metadata.put("EventOutcomeDescription", "All customer PDFs processed successfully");
+
+        // Build processed files information
+        List<Map<String, String>> processedFiles = new ArrayList<>();
+        processedFiles.add(Map.of("CustomerID", "C001", "PDFFileURL", blobUrl + "/pdfs/C001_" + batchId + ".pdf"));
+        processedFiles.add(Map.of("CustomerID", "C002", "PDFFileURL", blobUrl + "/pdfs/C002_" + batchId + ".pdf"));
+
+        // Build the final payload
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("UniqueConsumerRef", UUID.randomUUID().toString());
+        payload.put("UniqueECPBatchRef", UUID.randomUUID().toString());
+        payload.put("FilenetObjectID", List.of("C044A38E-0000-C21B-B1E2-69FEE895A17B", "D8EFC5A4-0000-B22A-B3D5-74FEE895A17B"));
+        payload.put("RepositoryID", "Legacy");
+        payload.put("RunPriority", "High");
+        payload.put("EventID", "E12345");
+        payload.put("EventType", "Completion");
+        payload.put("RestartKey", "Key12345");
+
+        // Add everything to the summary payload
+        summaryPayload.put("BatchID", batchId);
+        summaryPayload.put("Header", header);
+        summaryPayload.put("Metadata", metadata);
+        summaryPayload.put("Payload", payload);
+        summaryPayload.put("ProcessedFiles", processedFiles);
+        summaryPayload.put("SummaryFileURL", blobUrl + "/summary/" + batchId + "_summary.json");
+        summaryPayload.put("Timestamp", new Date().toString());
+
+        return summaryPayload;
+    }
+
+    // This method allows manual triggering of the Kafka message processing (for REST controller or other services)
+    public void consumeMessageAndStoreFile(String message) {
+        // Manually triggers the consumeKafkaMessage method to simulate consuming a message
+        consumeKafkaMessage(new ConsumerRecord<>("manual", 0, 0, null, message));
+    }
+}
+
+# Kafka Consumer Configuration
+kafka.bootstrap.servers=nsnxeteelpka01.nednet.co.za:9093,nsnxeteelpka02.nednet.co.za:9093,nsnxeteelpka03.nednet.co.za:9093
+kafka.consumer.group.id=str-ecp-batch
+kafka.consumer.auto.offset.reset=earliest
+
+# SSL Configuration
+kafka.consumer.security.protocol=SSL
+kafka.consumer.ssl.keystore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks
+kafka.consumer.ssl.keystore.password=3dX7y3Yz9Jv6L4F
+kafka.consumer.ssl.key.password=3dX7y3Yz9Jv6L4F
+kafka.consumer.ssl.truststore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks
+kafka.consumer.ssl.truststore.password=nedbank1
+kafka.consumer.ssl.protocol=TLSv1.2
+
+# Kafka Consumer Deserialization
+kafka.consumer.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+kafka.consumer.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+# Kafka Producer Configuration (to send Summary File URL)
+kafka.producer.key.serializer=org.apache.kafka.common.serialization.StringSerializer
+kafka.producer.value.serializer=org.apache.kafka.common.serialization.StringSerializer
+kafka.producer.security.protocol=SSL
+kafka.producer.ssl.keystore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\keystore.jks
+kafka.producer.ssl.keystore.password=3dX7y3Yz9Jv6L4F
+kafka.producer.ssl.key.password=3dX7y3Yz9Jv6L4F
+kafka.producer.ssl.truststore.location=C:\\Users\\CC437236\\jdk-17.0.12_windows-x64_bin\\jdk-17.0.12\\lib\\security\\truststore.jks
+kafka.producer.ssl.truststore.password=nedbank1
+kafka.producer.ssl.protocol=TLSv1.2
+kafka.producer.bootstrap.servers=nsnxeteelpka01.nednet.co.za:9093,nsnxeteelpka02.nednet.co.za:9093,nsnxeteelpka03.nednet.co.za:9093
+
+azure.keyvault.uri=https://nsn-dev-ecm-kva-001.vault.azure.net/secrets
+
+logging.level.com.azure.spring=DEBUG
