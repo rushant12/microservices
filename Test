@@ -2,16 +2,7 @@ package com.nedbank.kafka.filemanage.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class VaultClient {
@@ -21,8 +12,7 @@ public class VaultClient {
     private static final String NAMESPACE = "admin/espire";
     private static final String USER_PASSWORD = "Dev+Cred4#";
 
-    // Use RestTemplate with proxy configuration
-    private final RestTemplate restTemplate = createRestTemplateWithProxy();
+    private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper mapper = new ObjectMapper();
 
     public String getSecretFromVault() {
@@ -62,67 +52,9 @@ public class VaultClient {
         }
     }
 
-    public RestTemplate createRestTemplateWithProxy() {
-        String proxyHost = "webproxy.africa.nedcor.net";
-        int proxyPort = 9001;
-        String proxyUser = "CC437236";
-        String proxyPass = "34dYaB@jEh56";
-
-        HttpHost proxy = new HttpHost(proxyHost, proxyPort);
-
-        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(
-                new AuthScope(proxyHost, proxyPort),
-                new UsernamePasswordCredentials(proxyUser, proxyPass)
-        );
-
-        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-
-        org.apache.http.client.HttpClient httpClient = HttpClients.custom()
-                .setDefaultCredentialsProvider(credsProvider)
-                .setRoutePlanner(routePlanner)
-                .build();
-
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        return new RestTemplate(factory);
-    }
-
     public static void main(String[] args) {
         VaultClient vaultService = new VaultClient();
         String secret = vaultService.getSecretFromVault();
         System.out.println("Secret from Vault:\n" + secret);
     }
 }
-{
-    "request_id": "9f4a020f-9cde-a5d5-20b4-9da196730415",
-    "lease_id": "",
-    "renewable": false,
-    "lease_duration": 0,
-    "data": null,
-    "wrap_info": null,
-    "warnings": null,
-    "auth": {
-        "client_token": "hvs.CAESID41VozBGj_51dX0Ov72wcfV9ByLs3ttHGUO3v4O-ap3GikKImh2cy5Wa0pQN1Jxc2tIcWpFUVBnN3NITkxoWWgubDNGWm0Q74mzCA",
-        "accessor": "MrqErX28KH3U4ufIxBvdmdgU.l3FZm",
-        "policies": [
-            "default",
-            "espire_dev"
-        ],
-        "token_policies": [
-            "default",
-            "espire_dev"
-        ],
-        "metadata": {
-            "username": "espire_dev"
-        },
-        "lease_duration": 1200,
-        "renewable": true,
-        "entity_id": "b1fbda3d-3e91-ca3a-dd4d-0bc5812b6e28",
-        "token_type": "service",
-        "orphan": true,
-        "mfa_requirement": null,
-        "num_uses": 0
-    },
-    "mount_type": ""
-}
-https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev
