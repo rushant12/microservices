@@ -1,3 +1,42 @@
-   // KV v2: data -> data -> key
-            Map<String, String> data = response.getData();
-            Map<String, String> nestedData = (Map<String, String>) data.get("data");
+import com.bettercloud.vault.Vault;
+import com.bettercloud.vault.VaultConfig;
+import com.bettercloud.vault.response.LogicalResponse;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class VaultKV2Client {
+
+    public static void main(String[] args) {
+        try {
+            String vaultUrl = "http://<vault-host>:8200";
+            String vaultToken = "<your-vault-token>";
+            String secretPath = "secret/data/myapp/config";  // KV v2 path
+
+            VaultConfig config = new VaultConfig()
+                    .address(vaultUrl)
+                    .token(vaultToken)
+                    .build();
+
+            Vault vault = new Vault(config);
+
+            LogicalResponse response = vault.logical().read(secretPath);
+            String responseBody = response.getRestResponse().getBody();
+
+            // Use Jackson to parse nested JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode root = objectMapper.readTree(responseBody);
+            JsonNode dataNode = root.path("data").path("data");
+
+            String accountName = dataNode.path("accountName").asText();
+            String accountKey = dataNode.path("accountKey").asText();
+            String containerName = dataNode.path("containerName").asText();
+
+            System.out.println("accountName: " + accountName);
+            System.out.println("accountKey: " + accountKey);
+            System.out.println("containerName: " + containerName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
