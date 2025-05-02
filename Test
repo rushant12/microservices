@@ -2,3 +2,22 @@
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpclient</artifactId>
 </dependency>
+
+import org.apache.http.HttpHost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
+public RestTemplate createRestTemplateWithProxy() {
+    HttpHost proxy = new HttpHost("webproxy.africa.nedcor.net", 9001);
+    DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+    
+    CloseableHttpClient httpClient = HttpClients.custom()
+            .setRoutePlanner(routePlanner)
+            .build();
+
+    HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+    return new RestTemplate(factory);
+}
