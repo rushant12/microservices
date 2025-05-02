@@ -1,18 +1,7 @@
+We have been attempting to connect to the Vault instance shared by your team at:
 
-C:\Users\CC437236>curl -v https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev/
-* Host vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200 was resolved.
-* IPv6: (none)
-* IPv4: 40.68.97.112
-*   Trying 40.68.97.112:8200...
-* connect to 40.68.97.112 port 8200 from 0.0.0.0 port 60854 failed: Timed out
-* Failed to connect to vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud port 8200 after 21048 ms: Could not connect to server
-* closing connection #0
-curl: (28) Failed to connect to vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud port 8200 after 21048 ms: Could not connect to server
-
-C:\Users\CC437236>nslookup https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev/
-Server:  DOCJHBSNT01.africa.nedcor.net
-Address:  10.50.10.10
-
-DNS request timed out.
-    timeout was 2 seconds.
-*** Request to DOCJHBSNT01.africa.nedcor.net timed-out
+arduino
+Copy
+Edit
+https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200
+However, we are consistently encountering a timeout error, indicating that our machine is unable to establish a connection to the specified endpoint on port 8200
