@@ -1,6 +1,1 @@
-Exception in thread "main" java.lang.RuntimeException: Error while accessing Vault: I/O error on POST request for "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev": Unable to tunnel through proxy. Proxy returns "HTTP/1.1 400 Bad Request"
-	at com.nedbank.kafka.filemanage.service.VaultClient.getSecretFromVault(VaultClient.java:51)
-	at com.nedbank.kafka.filemanage.service.VaultClient.main(VaultClient.java:63)
-Caused by: org.springframework.web.client.ResourceAccessException: I/O error on POST request for "https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev": Unable to tunnel through proxy. Proxy returns "HTTP/1.1 400 Bad Request"
-	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:888)
-	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:868)
+curl -v https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/auth/userpass/login/espire_dev
