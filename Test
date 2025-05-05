@@ -1,1 +1,1 @@
-your user has the rights to create any secrets you need , you can definitely replace the provided test secret and create a new structure for it
+the reason we reached out is that we do not have all the required details—specifically, the accountKey for the Azure Blob Storage. Without this key, we’re unable to proceed with creating the secret ourselves
