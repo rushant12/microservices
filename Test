@@ -1,19 +1,7 @@
-We have successfully accessed the Vault endpoint and confirmed connectivity to the Store_Dev secrets path. However, upon retrieving the data for key 10099, we observed that the response currently contains only sample/test data, as shown below:
-
-json
-Copy
-Edit
-{
-    "request_id": "c9153e22-0138-a3b1-bcb3-1a17f5c73c3f",
-    "lease_id": "",
-    "renewable": false,
-    "lease_duration": 3600,
-    "data": {
-        "test": "test"
-    },
-    "wrap_info": null,
-    "warnings": null,
-    "auth": null,
-    "mount_type": "kv"
-}
-To proceed further with our integration/validation, could you please help us by updating the secret with actual data or confirming if we should expect additional keys or values under this path?
+curl --location --request POST 'https://vault-public-vault-75e984b5.bdecd756.z1.hashicorp.cloud:8200/v1/Store_Dev/10099' \
+--header 'x-vault-namespace: admin/espire' \
+--header 'x-vault-token: hvs.CAESIPSPU_F3lBcnW4AQZjICU-4VcfieYPbyQ5_CJYqs2TCKGikKImh2cy5PMzRIQTllOGZwZkRTM1huS1liTTdtd1MubDNGWm0Q9J-yCA' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "test": "test"
+}'
