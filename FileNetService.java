@@ -1,373 +1,313 @@
 package com.broadridge.pdf2print.dataprep.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-
-public class MasterDataPrepConfigFile {
-
-	private String INSERT_BNG_ENG_RECS;
-	private List<Map<String, String>> TRANSLATE_IMM_RECS;
-	private List<Map<String, String>> SET_IMM_RECS;
-	private List<Map<String, Object>> DELETE_TEXT;
-	private List<String> INSERT_FILE_LEVEL_NOPS;
-	private List<Map<String, String>> INSERT_FILE_LEVEL_NAMED_NOPS;
-	private List<Map<String, String>> INSERT_FILE_HEADER_NAMED_NOPS;
-	private List<Map<String, String>> INSERT_FILE_TRAILER_NAMED_NOPS;
-	private List<Map<String, String>> INSERT_MAIL_PIECE_LEVEL_TLES;
-	private List<Map<String, String>> INSERT_MAIL_PIECE_TLES;
-	private List<Map<String, String>> INSERT_MAIL_PIECE_LEVEL_NAMED_NOPS;
-	private List<Map<String, String>> INSERT_MAIL_PIECE_NAMED_NOPS;
-	private List<Map<String, String>> INSERT_OVERLAYS;
-	private List<Map<String, String>> INSERT_PSEGS;
-	private Map<String, Object> SCRAPE_SEND_ADDRESS;
-	private Map<String, Object> SCRAPE_AND_MOVE_SEND_ADDRESS;
-	private List<Map<String, JsonElement>> INSERT_NEW_PAGES;
-	private Map<String, String> CDFS;
-	private Map<String, String> CHECK_IMM_TABLE;
-	private Map<String, Integer> INSERT_ID_HOPPER_LOOKUP;
-	private String EACH_PDF_DOCUMENT_STARTS_NEW_SHEET;
-	private List<Map<String, Object>> SHIPPING_SH_CODE_LOOKUP;
-
-	// Getters and Setters
-	
-	public List<Map<String, Object>> getSHIPPING_SH_CODE_LOOKUP() {
-		return SHIPPING_SH_CODE_LOOKUP;
-	}
-
-	public void setSHIPPING_SH_CODE_LOOKUP(List<Map<String, Object>> sHIPPING_SH_CODE_LOOKUP) {
-		SHIPPING_SH_CODE_LOOKUP = sHIPPING_SH_CODE_LOOKUP;
-	}
-
-	public Map<String, Integer> getINSERT_ID_HOPPER_LOOKUP() {
-		return INSERT_ID_HOPPER_LOOKUP;
-	}
-
-	public void setINSERT_ID_HOPPER_LOOKUP(Map<String, Integer> iNSERT_ID_HOPPER_LOOKUP) {
-		INSERT_ID_HOPPER_LOOKUP = iNSERT_ID_HOPPER_LOOKUP;
-	}
-
-
-	public String getINSERT_BNG_ENG_RECS() {
-
-		return INSERT_BNG_ENG_RECS;
-
-	}
-
-	public void setINSERT_BNG_ENG_RECS(String INSERT_BNG_ENG_RECS) {
-
-		this.INSERT_BNG_ENG_RECS = INSERT_BNG_ENG_RECS;
-
-	}
-
-	public List<Map<String, String>> getTRANSLATE_IMM_RECS() {
-
-		return TRANSLATE_IMM_RECS;
-
-	}
-
-	public void setTRANSLATE_IMM_RECS(List<Map<String, String>> TRANSLATE_IMM_RECS) {
-
-		this.TRANSLATE_IMM_RECS = TRANSLATE_IMM_RECS;
-
-	}
-
-	public List<Map<String, String>> getSET_IMM_RECS() {
-
-		return SET_IMM_RECS;
-
-	}
-
-	public void setSET_IMM_RECS(List<Map<String, String>> SET_IMM_RECS) {
-
-		this.SET_IMM_RECS = SET_IMM_RECS;
-
-	}
-
-	public List<Map<String, Object>> getDELETE_TEXT() {
-
-		return DELETE_TEXT;
-
-	}
-
-	public void setDELETE_TEXT(List<Map<String, Object>> DELETE_TEXT) {
-
-		this.DELETE_TEXT = DELETE_TEXT;
-
-	}
-
-	public List<String> getINSERT_FILE_LEVEL_NOPS() {
-
-		return INSERT_FILE_LEVEL_NOPS;
-
-	}
-
-	public void setINSERT_FILE_LEVEL_NOPS(List<String> INSERT_FILE_LEVEL_NOPS) {
-
-		this.INSERT_FILE_LEVEL_NOPS = INSERT_FILE_LEVEL_NOPS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_FILE_LEVEL_NAMED_NOPS() {
-
-		return INSERT_FILE_LEVEL_NAMED_NOPS;
-
-	}
-
-	public void setINSERT_FILE_LEVEL_NAMED_NOPS(List<Map<String, String>> INSERT_FILE_LEVEL_NAMED_NOPS) {
-
-		this.INSERT_FILE_LEVEL_NAMED_NOPS = INSERT_FILE_LEVEL_NAMED_NOPS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_FILE_HEADER_NAMED_NOPS() {
-
-		return INSERT_FILE_HEADER_NAMED_NOPS;
-
-	}
-
-	public void setINSERT_FILE_HEADER_NAMED_NOPS(List<Map<String, String>> INSERT_FILE_HEADER_NAMED_NOPS) {
-
-		this.INSERT_FILE_HEADER_NAMED_NOPS = INSERT_FILE_HEADER_NAMED_NOPS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_FILE_TRAILER_NAMED_NOPS() {
-
-		return INSERT_FILE_TRAILER_NAMED_NOPS;
-
-	}
-
-	public void setINSERT_FILE_TRAILER_NAMED_NOPS(List<Map<String, String>> INSERT_FILE_TRAILER_NAMED_NOPS) {
-
-		this.INSERT_FILE_TRAILER_NAMED_NOPS = INSERT_FILE_TRAILER_NAMED_NOPS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_MAIL_PIECE_LEVEL_TLES() {
-
-		return INSERT_MAIL_PIECE_LEVEL_TLES;
-
-	}
-
-	public List<Map<String, String>> getINSERT_MAIL_PIECE_TLES() {
-
-		return INSERT_MAIL_PIECE_TLES;
-
-	}
-
-	public void setINSERT_MAIL_PIECE_TLES(List<Map<String, String>> INSERT_MAIL_PIECE_TLES) {
-
-		this.INSERT_MAIL_PIECE_TLES = INSERT_MAIL_PIECE_TLES;
-
-	}
-
-	public void setINSERT_MAIL_PIECE_LEVEL_TLES(List<Map<String, String>> INSERT_MAIL_PIECE_LEVEL_TLES) {
-
-		this.INSERT_MAIL_PIECE_LEVEL_TLES = INSERT_MAIL_PIECE_LEVEL_TLES;
-
-	}
-
-	public List<Map<String, String>> getINSERT_MAIL_PIECE_LEVEL_NAMED_NOPS() {
-
-		return INSERT_MAIL_PIECE_LEVEL_NAMED_NOPS;
-
-	}
-
-	public void setINSERT_MAIL_PIECE_LEVEL_NAMED_NOPS(List<Map<String, String>> INSERT_MAIL_PIECE_LEVEL_NAMED_NOPS) {
-
-		this.INSERT_MAIL_PIECE_LEVEL_NAMED_NOPS = INSERT_MAIL_PIECE_LEVEL_NAMED_NOPS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_MAIL_PIECE_NAMED_NOPS() {
-
-		return INSERT_MAIL_PIECE_NAMED_NOPS;
-
-	}
-
-	public void setINSERT_MAIL_PIECE_NAMED_NOPS(List<Map<String, String>> INSERT_MAIL_PIECE_NAMED_NOPS) {
-
-		this.INSERT_MAIL_PIECE_NAMED_NOPS = INSERT_MAIL_PIECE_NAMED_NOPS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_OVERLAYS() {
-
-		return INSERT_OVERLAYS;
-
-	}
-
-	public void setINSERT_OVERLAYS(List<Map<String, String>> INSERT_OVERLAYS) {
-
-		this.INSERT_OVERLAYS = INSERT_OVERLAYS;
-
-	}
-
-	public List<Map<String, String>> getINSERT_PSEGS() {
-
-		return INSERT_PSEGS;
-
-	}
-
-	public void setINSERT_PSEGS(List<Map<String, String>> INSERT_PSEGS) {
-
-		this.INSERT_PSEGS = INSERT_PSEGS;
-
-	}
-
-	public Map<String, Object> getSCRAPE_SEND_ADDRESS() {
-
-		return SCRAPE_SEND_ADDRESS;
-
-	}
-
-	public void setSCRAPE_SEND_ADDRESS(Map<String, Object> SCRAPE_SEND_ADDRESS) {
-
-		this.SCRAPE_SEND_ADDRESS = SCRAPE_SEND_ADDRESS;
-
-	}
-
-	public Map<String, Object> getSCRAPE_AND_MOVE_SEND_ADDRESS() {
-
-		return SCRAPE_AND_MOVE_SEND_ADDRESS;
-
-	}
-
-	public void setSCRAPE_AND_MOVE_SEND_ADDRESS(Map<String, Object> SCRAPE_AND_MOVE_SEND_ADDRESS) {
-
-		this.SCRAPE_AND_MOVE_SEND_ADDRESS = SCRAPE_AND_MOVE_SEND_ADDRESS;
-
-	}
-
-	public List<Map<String, JsonElement>> getINSERT_NEW_PAGES() {
-
-		return INSERT_NEW_PAGES;
-
-	}
-
-	public void setINSERT_NEW_PAGES(List<Map<String, JsonElement>> INSERT_NEW_PAGES) {
-
-		this.INSERT_NEW_PAGES = INSERT_NEW_PAGES;
-
-	}
-
-	public Map<String, String> getCDFS() {
-
-		return CDFS;
-
-	}
-
-	public void setCDFS(Map<String, String> CDFS) {
-
-		this.CDFS = CDFS;
-
-	}
-
-	public Map<String, String> getCHECK_IMM_TABLE() {
-
-		return CHECK_IMM_TABLE;
-
-	}
-
-	public void setCHECK_IMM_TABLE(Map<String, String> CHECK_IMM_TABLE) {
-
-		this.CHECK_IMM_TABLE = CHECK_IMM_TABLE;
-
-	}
-
-	// Inner classes for nested objects
-
-	public static class DeleteText {
-
-		private int page_num;
-
-		private double x1, y1, x2, y2;
-
-		private int iOrientation;
-
-		public int getPage_num() {
-
-			return page_num;
-
-		}
-
-		public void setPage_num(int page_num) {
-
-			this.page_num = page_num;
-
-		}
-
-		public double getX1() {
-
-			return x1;
-
-		}
-
-		public void setX1(double x1) {
-
-			this.x1 = x1;
-
-		}
-
-		public double getY1() {
-
-			return y1;
-
-		}
-
-		public void setY1(double y1) {
-
-			this.y1 = y1;
-
-		}
-
-		public double getX2() {
-
-			return x2;
-
-		}
-
-		public void setX2(double x2) {
-
-			this.x2 = x2;
-
-		}
-
-		public double getY2() {
-
-			return y2;
-
-		}
-
-		public void setY2(double y2) {
-
-			this.y2 = y2;
-
-		}
-
-		public int getiOrientation() {
-
-			return iOrientation;
-
-		}
-
-		public void setiOrientation(int iOrientation) {
-
-			this.iOrientation = iOrientation;
-
-		}
-
-	}
-		public String getEACH_PDF_DOCUMENT_STARTS_NEW_SHEET() {
-		return EACH_PDF_DOCUMENT_STARTS_NEW_SHEET;
-	}
-
-	public void setEACH_PDF_DOCUMENT_STARTS_NEW_SHEET(String eACH_PDF_DOCUMENT_STARTS_NEW_SHEET) {
-		EACH_PDF_DOCUMENT_STARTS_NEW_SHEET = eACH_PDF_DOCUMENT_STARTS_NEW_SHEET;
-	}
-
-	// Additional classes for other nested structures can be added similarly
-
+import com.google.gson.JsonObject;
+
+public class LoadMasterDataPrepConfig {
+
+    private static MasterDataPrepConfigFile masterDataPrepConfigFile = null;
+
+    // This method will load the config once and then use it in subsequent calls
+    public static void loadMasterDataprepConfig() throws JSONException, IOException {
+        if (masterDataPrepConfigFile == null) {
+            // Get config file path from system property
+            String configFile = ReadAFPFile.getCmdLine().getConfigFile(); // Assuming cmdLine is initialized correctly
+            System.out.println("configFile:" + configFile);
+
+            // Read the config file and convert it into a JSON object
+            String jsonString = new String(Files.readAllBytes(Paths.get(configFile)));
+          
+            JSONObject masterDataprepJsonObject = new JSONObject(jsonString);
+
+           
+            masterDataPrepConfigFile = new MasterDataPrepConfigFile();
+            masterDataPrepConfigFile.setINSERT_BNG_ENG_RECS(masterDataprepJsonObject.optString("INSERT_BNG_ENG_RECS"));
+
+            // Setting TRANSLATE_IMM_RECS (Array of objects)
+            JSONArray translateImmRecs = masterDataprepJsonObject.optJSONArray("TRANSLATE_IMM_RECS");
+            List<Map<String, String>> translateList = new ArrayList<>();
+            if (translateImmRecs != null) {
+                for (int i = 0; i < translateImmRecs.length(); i++) {
+                    JSONObject entry = translateImmRecs.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> translateMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            translateMap.put(key, value);
+                        }
+                        translateList.add(translateMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setTRANSLATE_IMM_RECS(translateList);
+
+            // Setting SET_IMM_RECS (Array of objects)
+            JSONArray setImmRecs = masterDataprepJsonObject.optJSONArray("SET_IMM_RECS");
+            List<Map<String, String>> setList = new ArrayList<>();
+            if (setImmRecs != null) {
+                for (int i = 0; i < setImmRecs.length(); i++) {
+                    JSONObject entry = setImmRecs.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> immMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            immMap.put(key, value);
+                        }
+                        setList.add(immMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setSET_IMM_RECS(setList);
+
+            // Setting DELETE_TEXT (Array of objects with numeric and floating point fields)
+            JSONArray deleteText = masterDataprepJsonObject.optJSONArray("DELETE_TEXT");
+            List<Map<String, Object>> deleteList = new ArrayList<>();
+            if (deleteText != null) {
+                for (int i = 0; i < deleteText.length(); i++) {
+                    JSONObject obj = deleteText.optJSONObject(i);
+                    if (obj != null) {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("page_num", obj.optInt("page_num"));
+                        map.put("x1", obj.optDouble("x1"));
+                        map.put("y1", obj.optDouble("y1"));
+                        map.put("x2", obj.optDouble("x2"));
+                        map.put("y2", obj.optDouble("y2"));
+                        map.put("orientation", obj.optInt("orientation"));
+                        deleteList.add(map);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setDELETE_TEXT(deleteList);
+
+            // Setting INSERT_FILE_LEVEL_NOPS (Array of strings)
+            JSONArray insertFileLevelNops = masterDataprepJsonObject.optJSONArray("INSERT_FILE_LEVEL_NOPS");
+            List<String> nopsList = new ArrayList<>();
+            if (insertFileLevelNops != null) {
+                for (int i = 0; i < insertFileLevelNops.length(); i++) {
+                    String value = insertFileLevelNops.optString(i);
+                    nopsList.add(value);
+                }
+            }
+            masterDataPrepConfigFile.setINSERT_FILE_LEVEL_NOPS(nopsList);
+            
+            JSONArray insertFileHeaderNamedNops = masterDataprepJsonObject.optJSONArray("INSERT_FILE_HEADER_NAMED_NOPS");
+            List<Map<String, String>> nopsHeaderList = new ArrayList<>();
+            if (insertFileHeaderNamedNops != null) {
+                for (int i = 0; i < insertFileHeaderNamedNops.length(); i++) {
+                    JSONObject entry = insertFileHeaderNamedNops.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> namedNopMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            namedNopMap.put(key, value);
+                        }
+                        nopsHeaderList.add(namedNopMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setINSERT_FILE_HEADER_NAMED_NOPS(nopsHeaderList);
+            
+            JSONArray insertFileTrailerNamedNops = masterDataprepJsonObject.optJSONArray("INSERT_FILE_TRAILER_NAMED_NOPS");
+            List<Map<String, String>> nopsTrailerList = new ArrayList<>();
+            if (insertFileTrailerNamedNops != null) {
+                for (int i = 0; i < insertFileTrailerNamedNops.length(); i++) {
+                    JSONObject entry = insertFileTrailerNamedNops.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> namedNopMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            namedNopMap.put(key, value);
+                        }
+                        nopsTrailerList.add(namedNopMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setINSERT_FILE_TRAILER_NAMED_NOPS(nopsTrailerList);
+           
+            JSONArray insertMailpieceTles = masterDataprepJsonObject.optJSONArray("INSERT_MAIL_PIECE_TLES");
+            List<Map<String, String>> mailPieceTleList = new ArrayList<>();
+            if (insertMailpieceTles != null) {
+                for (int i = 0; i < insertMailpieceTles.length(); i++) {
+                    JSONObject entry = insertMailpieceTles.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> namedNopMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            namedNopMap.put(key, value);
+                        }
+                        mailPieceTleList.add(namedNopMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setINSERT_MAIL_PIECE_TLES(mailPieceTleList);
+            
+         JSONArray insertMailpieceNops = masterDataprepJsonObject.optJSONArray("INSERT_MAIL_PIECE_NAMED_NOPS");
+            List<Map<String, String>> mailPieceNopList = new ArrayList<>();
+            if (insertMailpieceNops != null) {
+                for (int i = 0; i < insertMailpieceNops.length(); i++) {
+                    JSONObject entry = insertMailpieceNops.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> namedNopMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            namedNopMap.put(key, value);
+                        }
+                        mailPieceNopList.add(namedNopMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setINSERT_MAIL_PIECE_NAMED_NOPS(mailPieceNopList);
+           
+            // Setting INSERT_FILE_LEVEL_NAMED_NOPS (Array of objects)
+            JSONArray insertFileLevelNamedNops = masterDataprepJsonObject.optJSONArray("INSERT_FILE_LEVEL_NAMED_NOPS");
+            List<Map<String, String>> namedNopsList = new ArrayList<>();
+            if (insertFileLevelNamedNops != null) {
+                for (int i = 0; i < insertFileLevelNamedNops.length(); i++) {
+                    JSONObject entry = insertFileLevelNamedNops.optJSONObject(i);
+                    if (entry != null) {
+                        Iterator<String> keys = entry.keys();
+                        Map<String, String> nopMap = new HashMap<>();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = entry.optString(key);
+                            nopMap.put(key, value);
+                        }
+                        namedNopsList.add(nopMap);
+                    }
+                }
+            }
+            masterDataPrepConfigFile.setINSERT_FILE_LEVEL_NAMED_NOPS(namedNopsList);
+
+            // Setting SCRAPE_SEND_ADDRESS (Object with numeric and string fields)
+            JSONObject scrapeSendAddress = masterDataprepJsonObject.optJSONObject("SCRAPE_SEND_ADDRESS");
+            if (scrapeSendAddress != null) {
+                Map<String, Object> scrapeSendMap = new HashMap<>();
+                scrapeSendMap.put("x1", scrapeSendAddress.optDouble("x1"));
+                scrapeSendMap.put("y1", scrapeSendAddress.optDouble("y1"));
+                scrapeSendMap.put("x2", scrapeSendAddress.optDouble("x2"));
+                scrapeSendMap.put("y2", scrapeSendAddress.optDouble("y2"));
+                scrapeSendMap.put("iOrientation", scrapeSendAddress.optInt("iOrientation"));
+                scrapeSendMap.put("foreign_sh_code", scrapeSendAddress.optString("foreign_sh_code"));
+                masterDataPrepConfigFile.setSCRAPE_SEND_ADDRESS(scrapeSendMap);
+            }
+
+           // Setting SCRAPE_AND_MOVE_SEND_ADDRESS (Object with numeric and string fields)
+            JSONObject scrapeAndMoveSendAddress = masterDataprepJsonObject.optJSONObject("SCRAPE_AND_MOVE_SEND_ADDRESS");
+            if (scrapeAndMoveSendAddress != null) {
+                Map<String, Object> scrapeAndMoveSendMap = new HashMap<>();
+             
+                JSONObject from = scrapeAndMoveSendAddress.optJSONObject("from");
+                if (from != null) {
+                    Map<String, Object> fromMap = new HashMap<>();
+                    fromMap.put("x1", from.optDouble("x1"));
+                    fromMap.put("y1", from.optDouble("y1"));
+                    fromMap.put("x2", from.optDouble("x2"));
+                    fromMap.put("y2", from.optDouble("y2"));
+                    fromMap.put("orientation", from.optInt("orientation"));
+                    scrapeAndMoveSendMap.put("from", fromMap);
+                }
+             
+                JSONObject to = scrapeAndMoveSendAddress.optJSONObject("to");
+                if (to != null) {
+                    Map<String, Object> toMap = new HashMap<>();
+                    toMap.put("x1", to.optDouble("x1"));
+                    toMap.put("y1", to.optDouble("y1"));
+                    toMap.put("orientation", to.optInt("orientation"));
+                    toMap.put("new_font", to.optString("new_font"));
+                    toMap.put("line_spacing", to.optDouble("line_spacing"));
+                    scrapeAndMoveSendMap.put("to", toMap);
+                }
+             
+                masterDataPrepConfigFile.setSCRAPE_AND_MOVE_SEND_ADDRESS(scrapeAndMoveSendMap);
+            }
+            
+         // insert new pages
+            Gson gson = new Gson();
+    		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+    		JsonArray insertNewPages = (JsonArray) jsonObject.get("INSERT_NEW_PAGES");
+    		List<Map<String, JsonElement>> newPageList=new ArrayList<>();
+    		if (insertNewPages != null && insertNewPages.size() > 0) {
+    			for (int i = 0; i < insertNewPages.size(); i++) {
+    				JsonObject ob = (JsonObject) insertNewPages.get(i);
+    				newPageList.add(ob.asMap());
+    			}
+    			masterDataPrepConfigFile.setINSERT_NEW_PAGES(newPageList);
+    		}
+			
+				JSONArray hopperLookupArray = masterDataprepJsonObject.optJSONArray("INSERT_ID_HOPPER_LOOKUP");
+    		if (hopperLookupArray != null) {
+    		    Map<String, Integer> hopperLookupMap = new HashMap<>();
+    		    for (int i = 0; i < hopperLookupArray.length(); i++) {
+    		        JSONObject obj = hopperLookupArray.getJSONObject(i);
+    		        Iterator<String> keys = obj.keys();
+    		        while (keys.hasNext()) {
+    		            String key = keys.next();
+    		            int value = obj.optInt(key);
+    		            hopperLookupMap.put(key, value);
+    		        }
+    		    }
+    		    masterDataPrepConfigFile.setINSERT_ID_HOPPER_LOOKUP(hopperLookupMap);
+    		}
+			
+			masterDataPrepConfigFile.setEACH_PDF_DOCUMENT_STARTS_NEW_SHEET(masterDataprepJsonObject.optString("EACH_PDF_DOCUMENT_STARTS_NEW_SHEET"));
+
+            // Finish setting the values
+			
+			// Parse the SHIPPING_SH_CODE_LOOKUP section
+						JSONArray shippingShCodeLookupArray = masterDataprepJsonObject.optJSONArray("SHIPPING_SH_CODE_LOOKUP");
+						List<Map<String, Object>> shippingShCodeLookupList = new ArrayList<>();
+						if (shippingShCodeLookupArray != null) {
+							for (int i = 0; i < shippingShCodeLookupArray.length(); i++) {
+								JSONObject entry = shippingShCodeLookupArray.optJSONObject(i);
+								if (entry != null) {
+									Map<String, Object> map = new HashMap<>();
+									map.put("carrier", entry.optString("carrier").toLowerCase());
+									map.put("service", entry.optString("service").toLowerCase());
+									map.put("sh_code", entry.optInt("sh_code"));
+									shippingShCodeLookupList.add(map);
+								}
+							}
+						}
+						masterDataPrepConfigFile.setSHIPPING_SH_CODE_LOOKUP(shippingShCodeLookupList);
+          
+        }
+        
+    }
+
+    // This method will provide access to the loaded config
+    public static MasterDataPrepConfigFile getConfig() throws JSONException, IOException {
+        if (masterDataPrepConfigFile == null) {
+            loadMasterDataprepConfig();
+        }
+        return masterDataPrepConfigFile;
+    }
 }
+
+
