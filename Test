@@ -1,5 +1,7 @@
-I see you have a Win11 VM, Docker currently does not work on a Win11 VM. If you need the software, we will need to migrate you to a new VM in the Win10 environment. 
- 
-so You will basically get a new machine. 
-
-Du Preez, V. (Victor)
+  "SCRAPE_SEND_ADDRESS": {
+    "x1": 0.91638,
+    "y1": 1.76347,
+    "x2": 0.93638,
+    "y2": 2.23638,
+    "orientation": 90
+  }
