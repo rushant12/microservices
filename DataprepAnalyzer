@@ -790,8 +790,6 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 	        iOrientations = orientationFromMap;
 	    }
 
-	    System.out.println("Orientation Value: " + iOrientations);
-
 	    // Orientation value validation before using it
 	    List<Integer> validOrientations = Arrays.asList(0, 90, 180, 270);
 	    if (!validOrientations.contains(iOrientations)) {
