@@ -499,7 +499,8 @@ public class TextService {
                             }
                             if (ctrlType == AfpPtxCtrlType.STO) {
                                 AfpPtxCtrlSTO stoPtxCtrl = (AfpPtxCtrlSTO) ctrl;
-                                currentIOrientation = stoPtxCtrl.getIorntion().asInt();
+                                currentIOrientation = Integer.parseInt(stoPtxCtrl.getIorntion()
+                                        .degreestoEnglish().replaceAll("[^\\d]", ""));
                                 // currentIorientation2 = stoPtxCtrl.getBorntion().asInt();
                                 // System.err.println("STO " + stoPtxCtrl.toEnglish());
                                 // System.out.println("IOren " + stoPtxCtrl.getBorntion().asInt());
@@ -516,13 +517,13 @@ public class TextService {
                             }
                             if (ctrlType == AfpPtxCtrlType.TRN) {
                                 for (FileCoordinate fileCoordinate : fileCoordinates) {
-
                                     if (textServiceUtils.isInsideTheBox(xPos, yPos, fileCoordinate)
                                             && currentIOrientation == fileCoordinate.getIOrientation()) {
                                         AfpPtxCtrlTRN trnPtxCtrl = (AfpPtxCtrlTRN) ctrl;
                                         // System.out.println("[debug] Removing from Input: XY=" + xPos + ", " + yPos +
                                         // ", Orientation=" + currentIOrientation + ", Text="+
                                         // trnPtxCtrl.getTrnString());
+                                        System.out.println(trnPtxCtrl.getTrnString());
 
                                         if (pYpos == 0 || pYpos == yPos) {
                                             textLine = textLine.concat(trnPtxCtrl.getTrnString());
@@ -566,5 +567,4 @@ public class TextService {
     }
 
 }
-
 
