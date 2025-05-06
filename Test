@@ -1,7 +1,5 @@
-FROM java:8-jre
-MAINTAINER Chi Dov <d.chiproeng@gmail.com>
+Hi Amit Garg,
 
-ADD ./target/turbine-stream-service.jar /app/
-CMD ["java", "-Xmx200m", "-jar", "/app/turbine-stream-service.jar"]
+I have raised the same request a couple of times, but I still do not see Docker Desktop on my system, even though the request shows as completed. I have also communicated this to the client.
 
-EXPOSE 8989
+Please let me know if you would like me to raise the request again.
