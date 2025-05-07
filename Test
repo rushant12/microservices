@@ -1,7 +1,38 @@
-  "SCRAPE_SEND_ADDRESS": {
-    "x1": 0.91638,
-    "y1": 1.76347,
-    "x2": 0.93638,
-    "y2": 2.23638,
-    "orientation": 90
-  }
+{
+  "FILE_TRAILER": {
+    "pdf_count": 1,
+    "mail_piece_count": 1
+  },
+  "MAIL_PIECES": [
+    {
+      "num_pdf_documents": 1,
+      "some_new_tag": "some_data",
+      "shipping_carrier": "FEDEX",
+      "is_foreign_address": "Y",
+      "country_code": "USA",
+      "send_address_lines": [
+        "Attn: Human Resources",
+        "Next Big Thing Inc.",
+        "1234 Picket Fence Lane",
+        "Los Angeles, CA 90230"
+      ],
+      "pdf_documents": [
+        {
+          "page_count": "7",
+          "file_name": "5060210431836579262.pdf"
+        }
+      ],
+      "zip_code": "90230",
+      "total_pdf_documents_page_count": 7,
+      "insert_ids": [
+        "VV599",
+        "VV9976",
+        "VV1302"
+      ],
+      "is_bulk_shipping": "Y",
+      "total_pdf_documents_sheet_count": 4,
+      "infact_account_number": "111111111",
+      "shipping_service": "Overnight"
+    }
+  ]
+}
