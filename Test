@@ -1,1 +1,22 @@
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZDMxNWE1OWItNjY2YS00OTUzLTliZjktNDNjYTRjZjU2YTA1%40thread.v2/0?context=%7b%22Tid%22%3a%2267da140c-2b2e-4193-8cdf-3c07fc72ad37%22%2c%22Oid%22%3a%2268dba4bd-ad1e-408b-b06a-a417b95ad9c0%22%7d
+	public static AfpCmdPTX createPTXRecord(short x_pos, short y_pos, String data, Short mcfCode, int iOrientation) {
+		try {
+			ArrayList<AfpPtxDataItem> newPtxDataItems = new ArrayList();
+			AfpPtxCtrlSeq newCtrlseq = new AfpPtxCtrlSeq();
+			createCtrlSeqPrefix(newPtxDataItems);
+			addPtxCtrlSEC(newCtrlseq);
+			createPtxCtrlSTO(newCtrlseq);
+			createPtxCtrlScfl(newCtrlseq, mcfCode);
+			AfpPtxCtrlAMI secondAMI = new AfpPtxCtrlAMI(x_pos, true);
+			newCtrlseq.addCtrl(secondAMI);
+			AfpPtxCtrlAMB secondAMB = new AfpPtxCtrlAMB(y_pos, true);
+			newCtrlseq.addCtrl(secondAMB);
+			AfpPtxCtrlSTO secondSTO = new AfpPtxCtrlSTO(new UBIN2(iOrientation), new UBIN2(iOrientation), true);
+			newCtrlseq.addCtrl(secondSTO);
+			newCtrlseq.addCtrl(new AfpPtxCtrlTRN(data, true));
+			newPtxDataItems.add(newCtrlseq);
+			return new AfpCmdPTX(newPtxDataItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
