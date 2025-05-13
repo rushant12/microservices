@@ -1,7 +1,20 @@
-
->>> ERROR: Data Stream Violation.
->>>        Repetition of structured field is invalid.
->>>        The following record is occurrence number 2.
-BAG   (D3A8C9, Begin Active Environment Group); len 16; rec 807; offset 826,393
-    00000 Active Env Group Name        (ebc t1v10500) : "        "
-
+	public static AfpCmdPTX createPTXRecord(short x_pos, short y_pos, String data, Short mcfCode, int iOrientation) {
+		try {
+			ArrayList<AfpPtxDataItem> newPtxDataItems = new ArrayList();
+			AfpPtxCtrlSeq newCtrlseq = new AfpPtxCtrlSeq();
+			createCtrlSeqPrefix(newPtxDataItems);
+			addPtxCtrlSEC(newCtrlseq);
+			createPtxCtrlSTO(newCtrlseq, iOrientation);
+			createPtxCtrlScfl(newCtrlseq, mcfCode);
+			AfpPtxCtrlAMI secondAMI = new AfpPtxCtrlAMI(x_pos, true);
+			newCtrlseq.addCtrl(secondAMI);
+			AfpPtxCtrlAMB secondAMB = new AfpPtxCtrlAMB(y_pos, true);
+			newCtrlseq.addCtrl(secondAMB);
+			newCtrlseq.addCtrl(new AfpPtxCtrlTRN(data, true));
+			newPtxDataItems.add(newCtrlseq);
+			return new AfpCmdPTX(newPtxDataItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
