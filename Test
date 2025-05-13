@@ -1,5 +1,5 @@
-	public static void createPtxCtrlSTO(AfpPtxCtrlSeq newCtrlseq) {
-		UBIN2 iorntion = new UBIN2(0);
+	public static void createPtxCtrlSTO(AfpPtxCtrlSeq newCtrlseq, int orientation) {
+		UBIN2 iorntion = new UBIN2(orientation);
 		UBIN2 borntion = new UBIN2(11520);
 		AfpPtxCtrlSTO orination = new AfpPtxCtrlSTO(iorntion, borntion, true);
 		newCtrlseq.addCtrl(orination);
