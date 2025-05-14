@@ -1,6 +1,43 @@
-	public static void createPtxCtrlSTO(AfpPtxCtrlSeq newCtrlseq, int orientation) {
-		UBIN2 iorntion = new UBIN2(orientation);
-		UBIN2 borntion = new UBIN2(11520);
-		AfpPtxCtrlSTO orination = new AfpPtxCtrlSTO(iorntion, borntion, true);
-		newCtrlseq.addCtrl(orination);
-	}
+{
+  "MAIL_PIECES": [
+    {
+      "infact_account_number": "111111111",
+      "is_bulk_shipping": "Y",
+      "send_address_lines": null,
+      "zip_code": "51450",
+      "country_code": null,
+      "department_id": null,
+      "insert_ids": "VV1302",
+      "is_foreign_address": "N",
+      "pdf_documents": [
+        {
+          "file_name": "5060210431836579262.pdf"
+        },
+        {
+          "file_name": "6926781760284311144.pdf"
+        }
+      ]
+    },
+    {
+      "infact_account_number": "222222222",
+      "is_bulk_shipping": "Y",
+      "send_address_lines": null,
+      "zip_code": "07836",
+      "country_code": null,
+      "department_id": null,
+      "insert_ids": [
+        "VV9976"
+      ],
+      "is_foreign_address": "Y",
+      "pdf_documents": [
+        {
+          "file_name": "7198760022269550296.pdf"
+        }
+      ]
+    }
+  ],
+  "FILE_TRAILER": {
+    "mail_piece_count": 2,
+    "pdf_count": 3
+  }
+}
