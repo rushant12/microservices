@@ -1,1 +1,728 @@
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_YTQxY2I2YWYtNDA5Ni00YzgyLThkM2QtMDJkNTg4ZjQxYzVk%40thread.v2/0?context=%7b%22Tid%22%3a%2267da140c-2b2e-4193-8cdf-3c07fc72ad37%22%2c%22Oid%22%3a%2268dba4bd-ad1e-408b-b06a-a417b95ad9c0%22%7d
+package com.broadridge.pdf2print.dataprep.service;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.broadridge.pdf2print.dataprep.models.BasicRawData;
+import com.broadridge.pdf2print.dataprep.models.RawStmt;
+import com.broadridge.pdf2print.dataprep.service.DataprepAnalyzer;
+import com.broadridge.pdf2print.dataprep.utils.AnalyzerUtils;
+import com.broadridge.pdf2print.dataprep.utils.DataPrepConfigUtils;
+import com.dst.output.custsys.lib.jolt.Loader;
+import com.dst.output.custsys.lib.jolt.LoaderAdapter;
+import com.dst.output.custsys.lib.jolt.Messenger;
+import com.dst.output.custsys.lib.jolt.MultiFmtr;
+import com.dst.output.custsys.lib.jolt.RawData;
+import com.dstoutput.custsys.jafp.AfpCmdBNG;
+import com.dstoutput.custsys.jafp.AfpCmdENG;
+import com.dstoutput.custsys.jafp.AfpCmdRaw;
+import com.dstoutput.custsys.jafp.AfpCmdTLE;
+import com.dstoutput.custsys.jafp.AfpCmdType;
+import com.dstoutput.custsys.jafp.AfpReader;
+import com.dstoutput.custsys.jafp.AfpRec;
+import com.dstoutput.custsys.jafp.AfpRecFormat;
+import com.dstoutput.custsys.jafp.AfpWriter;
+import com.dstoutput.custsys.jafp.AfpCmdEDT;
+import com.dstoutput.custsys.jafp.AfpNopGenericZD;
+import com.dstoutput.custsys.jafp.AfpCmdIMM;
+import com.dstoutput.custsys.jafp.AfpCmdBDT;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import com.broadridge.pdf2print.dataprep.service.LoadMasterDataPrepConfig;
+import com.broadridge.pdf2print.dataprep.service.MasterDataPrepConfigFile;
+import com.broadridge.pdf2print.dataprep.service.LoadMetaDataConfig;
+import com.broadridge.pdf2print.dataprep.service.MetaDataConfigFile;
+import com.broadridge.pdf2print.dataprep.service.MetaDataConfigFile.MailPiece;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+public class DataprepLoader extends LoaderAdapter implements Loader {
+	private AfpReader afpReader;
+	private NWCmdLine cmdLine = ReadAFPFile.getCmdLine();
+	private boolean isInputAfpRecUsed = true;
+	private AfpRec inputAfpRec;
+	private String ifName;
+	private AnalyzerUtils analyzerUtils = new AnalyzerUtils();
+	private DataprepAnalyzer dataPrepAnalyzer = new DataprepAnalyzer();
+	private RawStmt prevStmt = null;
+	public static JSONObject dataPrepConfig;
+	public static JSONObject perfingConfig;
+	public static JSONObject staticRmConfig;
+	public static JSONObject bitMapTableTagline;
+	public static JSONObject bitMapTableLogo;
+	public static JSONObject envelopeTable;
+	public static JSONObject closeOutConfig;
+	public static JSONObject checkIMMConfig;
+	public static JSONObject coversheetParentConfig;
+	public static JSONObject readertypeParentConfig;
+	public static String csvFolder = "";
+	public static String csvType = "";
+	public static Map<String, HashMap<String, HashMap<String, String>>> csvAddressMap = new HashMap();
+	public static Map<String, String> csvKeyMap = new LinkedHashMap();
+	long stmtCounter = 0L;
+	public static Map<String, String> grayHairCodes = new HashMap();
+	private String headerBoundary = "BDT";
+	private boolean isHeaderBoundaryInclude = true;
+	private String stmtBegin = "BNG";
+	private String stmtEnd = "ENG";
+	public static List<AfpRec> trailerRecs = new ArrayList();
+	public static AfpWriter afpWriter;
+	public static int bngCount = 1;
+	private boolean shouldInsertBngEngRecs = false;
+	// Flag to track if BNG has been written
+	private boolean bngWritten = false;
+	private boolean engWritten = false;
+	public static List<AfpRec> bngRecs = new ArrayList();
+	public static List<AfpRec> engRecs = new ArrayList();
+	public static List<Integer> bngPos = new ArrayList();;
+	public static List<Integer> engPos = new ArrayList();;
+	List<Integer> engRecIndexList = new ArrayList<>();
+	List<RawStmt> rawStmtList = new ArrayList<>();
+	private int rawStmtCounter = 0;
+	private int skipIndex = 0;
+	private List<AfpRec> allRecords = new ArrayList<>();
+	private List<AfpRec> tleRecords = new ArrayList<>();
+	private List<AfpRec> nopRecords = new ArrayList<>();
+	private List<AfpRec> immRecords = new ArrayList<>();
+	private List<AfpRec> trailerRecords = new ArrayList<>();
+	// Map to store IMM settings (page_num -> IMM_name)
+	Map<String, String> immSettings = new HashMap<>();
+	Map<String, AfpRec> afpMap = new HashMap<String, AfpRec>();
+	private boolean nopsInserted = false;
+
+	// public MasterDataPrepConfigFile masterDataPrepConfigFile = new
+	// MasterDataPrepConfigFile();
+	public static JSONObject masterDataprepJsonObject;
+	Set<String> insertedNops = new HashSet<>();
+	private boolean isNewStmt = false;
+	MasterDataPrepConfigFile config;
+
+	@Override
+	public void open() throws IOException {
+		multiFmtr = MultiFmtr.getInstance();
+		String sInputFile = this.cmdLine.getInputFileName();
+		csvFolder = this.cmdLine.getCsvFolder();
+
+		// csvType = this.cmdLine.getCsvType();
+		File AFPFile = new File(sInputFile);
+		this.afpReader = AfpReader.openAfpFile(AFPFile, AfpRecFormat.AFPDS);
+		if (null == afpWriter) {
+			String sOutputFile = this.cmdLine.getOutputFileName();
+			File AFPOutputFile = new File(sOutputFile);
+			afpWriter = AfpWriter.openAfpFile(AFPOutputFile, AfpRecFormat.AFPDS);
+		}
+		try {
+			this.initLoader();
+		} catch (Exception e) {
+			System.exit(1);		
+			e.printStackTrace();
+		}
+		// NCOAFileService ncoaService = new
+		// NCOAFileService(this.cmdLine.getNcoaFile());
+		// ncoaService.loadNcoaFile();
+		this.loadCsvDataForAddresses();
+	}
+
+	private void loadCsvDataForAddresses() {
+		try {
+			if (csvFolder != null) {
+				File[] var1 = (new File(csvFolder)).listFiles();
+				int var2 = var1.length;
+
+				for (int var3 = 0; var3 < var2; ++var3) {
+					File csv = var1[var3];
+					if (csv.getName().substring(csv.getName().length() - 3).equalsIgnoreCase("csv")
+							&& (csvType.equals("OTP") && csv.getName().startsWith("OTP")
+									|| csvType.equals("FEDEX") && csv.getName().contains("FEDEX")
+									|| csvType.equals("MRDF"))) {
+						BufferedReader csvReader = new BufferedReader(new FileReader(csv));
+						String csvLine = "";
+						String csvName = csv.getName();
+						int lineNum = 0;
+						boolean needsUpdate = true;
+						HashMap csvAcctLvlData = new HashMap();
+
+						while ((csvLine = csvReader.readLine()) != null) {
+							csvLine = csvLine.replace("\"", "");
+							++lineNum;
+							String[] csvData = csvLine.split(",");
+							if (lineNum > 1) {
+								HashMap<String, String> addressData = new HashMap();
+								ArrayList<String> addressLines = new ArrayList();
+								if (!csvData[1].isBlank() && !csvData[1].equals(".")) {
+									addressLines.add(csvData[1]);
+								}
+
+								if (!csvData[2].isBlank() && !csvData[2].equals(".")) {
+									addressLines.add(csvData[2]);
+								}
+
+								if (!csvData[3].isBlank() && !csvData[3].equals(".")) {
+									addressLines.add(csvData[3]);
+								}
+
+								if (!csvData[4].isBlank() && !csvData[4].equals(".")) {
+									addressLines.add(csvData[4]);
+								}
+
+								if (csvType.equals("FEDEX")) {
+									if (!csvData[5].isBlank() && !csvData[5].equals(".")) {
+										addressLines.add(csvData[5]);
+									}
+
+									addressLines.add(csvData[6] + ", " + csvData[7] + " " + csvData[8]);
+								} else {
+									addressLines.add(csvData[5] + ", " + csvData[6] + " " + csvData[7]);
+								}
+
+								addressData = DataPrepConfigUtils.updateAddressesInAddressLines(addressData,
+										addressLines);
+								csvAcctLvlData.put(csvData[0], addressData);
+								csvAddressMap.put(csvName, csvAcctLvlData);
+								if (needsUpdate) {
+									String var10000 = csv.getName();
+									String key = var10000 + "_" + csvData[0];
+									csvKeyMap.put(key, csvLine.trim());
+								}
+							} else if (csvLine.contains("DOC_ACCOUNT_NUMBER")) {
+								needsUpdate = false;
+							}
+						}
+
+						csvReader.close();
+					}
+				}
+			}
+		} catch (Exception var15) {
+			var15.printStackTrace();
+		}
+
+	}
+
+	private void initLoader() throws IOException, Exception {
+		String configFile = this.cmdLine.getConfigFile();
+		String jsonString = new String(Files.readAllBytes(Paths.get(configFile)));
+
+		try {
+			JSONObject configObject = new JSONObject(jsonString);
+			config = LoadMasterDataPrepConfig.getConfig();
+
+//            perfingConfig = configObject.getJSONObject("PERFING");
+			// staticRmConfig = configObject.getJSONObject("STATiC_RM_ATTRIBUTES");
+			// dataPrepConfig = configObject.getJSONObject(this.cmdLine.getJobType());
+//            bitMapTableTagline = configObject.getJSONObject("BITMAPTABLETL");
+//            bitMapTableLogo = configObject.getJSONObject("BITMAPTABLELG");
+//            envelopeTable = configObject.getJSONObject("ENVELOPETABLE");
+//            closeOutConfig = dataPrepConfig.getJSONObject("CLOSE_OUT_FILE");
+//            coversheetParentConfig = configObject.getJSONObject("COVERSHEET");
+//            readertypeParentConfig = configObject.getJSONObject("READERTYPE");
+			// checkIMMConfig = configObject.getJSONObject("CHECK_IMM_TABLE");
+//            if (dataPrepConfig.has("PERFING")) {
+//                perfingConfig = dataPrepConfig.getJSONObject("PERFING");
+// 
+//
+//            }
+		} catch (JSONException var4) {
+			var4.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public RawData readFileHeader() throws IOException {
+		List<AfpRec> headerRecs = new ArrayList<>();
+		this.ifName = (new File(this.cmdLine.getInputFileName())).getName();
+
+		AfpRec inputRec;
+		try {
+
+			while ((inputRec = this.readRecord()) != null) {
+				if (this.isRec(inputRec, this.headerBoundary)) {
+					if (this.isHeaderBoundaryInclude) {
+						headerRecs.add(inputRec);
+						for (AfpRec afpRec : headerRecs) {
+							if (null == afpWriter) {
+								String sOutputFile = this.cmdLine.getOutputFileName();
+								File AFPOutputFile = new File(sOutputFile);
+								afpWriter = AfpWriter.openAfpFile(AFPOutputFile, AfpRecFormat.AFPDS);
+							}
+							afpWriter.write(afpRec);
+						}
+
+					} else {
+						this.isInputAfpRecUsed = false;
+					}
+					return new BasicRawData(headerRecs, this.ifName, 2, 0L);
+				}
+				headerRecs.add(inputRec);
+
+				if (!nopsInserted) {
+					String metaDataString = this.cmdLine.getMailPieceMetadataFile();
+					// Read the content of the metadata file into a string
+					String jsonContent = new String(Files.readAllBytes(Paths.get(metaDataString)));
+
+					// Parse the content into a JSONObject
+					JSONObject metaObject = new JSONObject(jsonContent);
+					// JSONObject metaObject = this.parse(Paths.get(metaDataString).toString());
+					JSONArray mailPieces = metaObject.getJSONArray("MAIL_PIECES");
+
+					// Iterate over each mail piece
+					for (int i = 0; i < mailPieces.length(); i++) {
+						JSONObject mailPiece = mailPieces.getJSONObject(i);
+						MasterDataPrepConfigFile config = LoadMasterDataPrepConfig.getConfig();
+						headerRecs = dataPrepAnalyzer.insertFileLevelNamedNops(headerRecs, insertedNops,
+								config.getINSERT_FILE_HEADER_NAMED_NOPS(), mailPiece);
+					}
+					nopsInserted = true;
+				}
+
+			}
+		} catch (Exception var3) {
+			var3.printStackTrace();
+		}
+		return null;
+	}
+
+	public RawData readStatement(Messenger messenger) throws IOException {
+		RawStmt currStmt = null;
+		RawStmt nextStmt = null;
+		boolean exitFromLoop = false;
+		do {
+			if (this.prevStmt != null) {
+				nextStmt = this.prevStmt;
+				this.prevStmt = null;
+			} else {
+				try {
+					System.out.println("Reading statement :");
+					nextStmt = this.getNextStatement();
+				} catch (ParseException var8) {
+					throw new RuntimeException(var8);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (nextStmt == null) {
+					exitFromLoop = true;
+				} else {
+					try {
+						if (this.stmtCounter != 1L) {
+							this.prevStmt = nextStmt;
+							nextStmt = null;
+							exitFromLoop = true;
+						}
+					} catch (Exception var7) {
+						throw new RuntimeException(var7);
+					}
+				}
+			}
+
+			currStmt = this.appendStatement(currStmt, nextStmt);
+		} while (!exitFromLoop);
+		if (currStmt != null) {
+			try {
+				this.ifName = this.getInputFilename(currStmt);
+			} catch (ParseException var6) {
+				throw new RuntimeException(var6);
+			}
+		}
+
+		return currStmt != null ? new BasicRawData(currStmt, this.ifName, 2, this.stmtCounter) : null;
+	}
+
+	private String getInputFilename(RawStmt currStmt) throws ParseException, UnsupportedEncodingException {
+		Iterator var2 = currStmt.getHeader().iterator();
+		while (var2.hasNext()) {
+			AfpRec rec = (AfpRec) var2.next();
+			AfpCmdRaw afpCmdRaw = new AfpCmdRaw(rec);
+			AfpCmdType afpCmdType = afpCmdRaw.getCmdType();
+			if (afpCmdType == AfpCmdType.TLE) {
+				AfpCmdTLE afpCmdTLE = new AfpCmdTLE(afpCmdRaw);
+				if (afpCmdTLE.getAttributeNameString().trim().equals("CUSTOM_INPUT_FILE_NAME")) {
+					return afpCmdTLE.getAttributeValueString().trim();
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private AfpRec readRecord() throws IOException {
+		if (!this.isInputAfpRecUsed) {
+			this.isInputAfpRecUsed = true;
+			return this.inputAfpRec;
+		} else {
+			this.inputAfpRec = this.afpReader.getRecord();
+			return this.inputAfpRec;
+		}
+	}
+
+	@Override
+	public RawData readFileTrailer() throws IOException {
+		System.out.println("Writing Trailer");
+//      analyzerUtils.addingBRTle(DataprepLoader.trailerRecs, "FILE_TOTAL_AMOUNT_DUE", "1");
+//      analyzerUtils.addingBRTle(DataprepLoader.trailerRecs, "FILE_TOTAL_AMOUNT_DUE_SIGN", "+");
+		List<AfpRec> trailerTle = new ArrayList<>();
+		// trailerTle.add(analyzerUtils.getTleRec("FILE_STATEMENT_COUNT",
+		// String.valueOf(OutputService.mapPackageCount.get(ifName))));
+		// trailerTle.add(analyzerUtils.getTleRec("FILE_SHEET_COUNT",
+		// String.valueOf(DataprepAnalyzer.totalSheetCount)));
+		// trailerTle.add(analyzerUtils.getTleRec("FILE_IMAGE_COUNT",
+		// String.valueOf(DataprepAnalyzer.totalImageCount)));
+
+		// List<AfpRec> trailerTle = new ArrayList<>();
+		int counter = 0;
+		int EDTPosition = 0;
+
+		// Find EDT position in trailer records
+		for (AfpRec outputRec : DataprepLoader.trailerRecs) {
+			if (outputRec.getTla().equals("EDT")) {
+				EDTPosition = counter;
+			}
+			counter++;
+		}
+
+		try {
+
+			boolean nopsInserted = false;
+			for (AfpRec inputRec : allRecords) {
+				if (this.isRec(inputRec, "EDT")) {
+					if (this.isRec(inputRec, "EDT")) {
+					    if (this.isHeaderBoundaryInclude) {
+					        trailerTle.add(inputRec);
+					        for (AfpRec afpRec : trailerTle) {
+					            DataprepUnloader.afpWriter.write(afpRec);
+					        }
+					    }
+
+					 
+					    String metaDataString = this.cmdLine.getMailPieceMetadataFile();
+
+					    String jsonContent = new String(Files.readAllBytes(Paths.get(metaDataString)));
+					    JSONObject metaObject = new JSONObject(jsonContent);
+					    JSONArray mailPieces = metaObject.getJSONArray("MAIL_PIECES");
+					
+					    int totalPageCount = 0;
+					    int totalMailPieces = mailPieces.length();
+					    int totalSheetCount = 0;
+					    JSONObject mailPiece = null;
+				
+					    for (int i = 0; i < mailPieces.length(); i++) {
+					        mailPiece = mailPieces.getJSONObject(i);
+					        int pageCount = 0;
+
+					        JSONArray pdfDocuments = mailPiece.getJSONArray("pdf_documents");
+					        
+					        for (int j = 0; j < pdfDocuments.length(); j++) {
+					            JSONObject pdfDoc = pdfDocuments.getJSONObject(j);
+					            pageCount += pdfDoc.getInt("page_count");
+					        }
+
+					        totalPageCount += pageCount; 
+					    }
+				        int sheetCount = (int) Math.ceil((double) totalPageCount / 2);
+				        totalSheetCount += sheetCount;
+					    if (totalSheetCount % 2 != 0) {
+					        totalSheetCount += 1;
+					    }
+					     
+					    if (!nopsInserted) {
+					        String sheetCountStr = String.valueOf(totalSheetCount);
+					        String pageCountStr = String.valueOf(totalPageCount);
+					        MasterDataPrepConfigFile config = LoadMasterDataPrepConfig.getConfig();
+					        
+					        trailerRecords = dataPrepAnalyzer.insertTrailerNamedNops(
+					                trailerTle, 
+					                insertedNops,
+					                config.getINSERT_FILE_TRAILER_NAMED_NOPS(), 
+					                totalSheetCount, 
+					                totalPageCount,
+					                mailPiece,
+					                totalMailPieces 
+					        );
+
+					        nopsInserted = true;
+					    }
+					}
+
+				}
+
+			}
+
+			Iterator<AfpRec> iterator = trailerRecords.iterator();
+			while (iterator.hasNext()) {
+				AfpRec afpRec = iterator.next();
+				if ("EDT".equals(afpRec.getTla())) {
+					iterator.remove();
+				} else {
+
+					DataprepUnloader.afpWriter.write(afpRec);
+				}
+			}
+
+		} catch (Exception e) {			
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return null;
+	}
+
+	private boolean isRec(AfpRec rec, String boundary) {
+		if (rec.getTla().equals(boundary)) {
+			return true;
+		} else {
+			return rec.isNop() ? rec.getNopName().equals(boundary) : false;
+		}
+	}
+
+	private RawStmt getNextStatement() throws IOException, ParseException, JSONException, Exception {
+		AfpRec inpRec;
+		RawStmt rawStmt = null;
+		boolean isInStmt = false;
+		boolean isInStmtHeader = false;
+		boolean isInStmtPage = false;
+		boolean isInStmtTrailer = false;
+
+		List<AfpRec> stmtHdrRecs = new ArrayList<>();
+		List<AfpRec> stmtPageRecs = new ArrayList<>();
+		List<List<AfpRec>> stmtPages = new ArrayList<>();
+		List<AfpRec> stmtTrailer = new ArrayList<>();
+		int index = 0;
+		int bngCount = 0;
+		int stmtPageCount = 0;
+
+		if (allRecords.size() == 0) {
+			while ((inpRec = readRecord()) != null) {
+				index++;
+				allRecords.add(inpRec);
+			}
+		}
+		String metaDataString = this.cmdLine.getMailPieceMetadataFile();
+
+		int bpgCounter = 0;
+		int prevStmtCnt = 0;
+		int expectedPgCnt = 0;
+
+		for (int i = skipIndex; i < allRecords.size(); i++) {
+
+			AfpRec inputRec = allRecords.get(i);
+
+			if (skipIndex == allRecords.size() - 1) {
+				DataprepLoader.trailerRecs.add(inputRec);
+				return null;
+			}
+
+			if ((isRec(inputRec, "BPG"))) {
+				isInStmtPage = true;
+				isInStmt = true;
+				isInStmtTrailer = false;
+				isInStmtHeader = false;
+				bpgCounter++;
+				if (afpMap.containsKey(String.valueOf(bpgCounter))) {
+					Iterator<Map.Entry<String, AfpRec>> iterator = afpMap.entrySet().iterator();
+					while (iterator.hasNext()) {
+						Map.Entry<String, AfpRec> entry = iterator.next();
+						String key = entry.getKey();
+
+						if (key.equals(String.valueOf(bpgCounter))) {
+							stmtPageRecs.add(entry.getValue());
+						}
+					}
+
+				}
+			} else if (isRec(inputRec, "EPG")) {
+				isInStmtPage = false;
+				stmtPageRecs.add(inputRec);
+				stmtPages.add(new ArrayList<>(stmtPageRecs));
+				stmtPageRecs.clear();
+			} else if (isInStmt && isRec(inputRec, "EDT")) {
+				DataprepLoader.trailerRecs.add(inputRec);
+			}
+
+			// Add unique TLEs to stmtPageRecs
+			if (isInStmt && isInStmtHeader) {
+				// stmtHdrRecs.add(inputRec);
+			} else if (!isInStmt && isRec(inputRec, "IMM")) {
+				// Ensure TLEs and NOPs are unique before adding
+				Set<AfpRec> uniqueTleRecords = new HashSet<>(tleRecords);
+				uniqueTleRecords.stream().forEach(System.out::println);
+				stmtPageRecs.addAll(uniqueTleRecords);
+				Set<AfpRec> uniqueNopRecords = new HashSet<>(nopRecords);
+				stmtPageRecs.addAll(uniqueNopRecords);
+				// stmtPageRecs.add(inputRec); //IMM from inout is not written as
+			} else if (isInStmt && isInStmtPage) {
+
+				stmtPageRecs.add(inputRec);
+				isNewStmt = false;
+			} else if (isInStmt && isInStmtTrailer) {
+				stmtTrailer.add(inputRec);
+			}
+
+			if (isRec(inputRec, "EPG")) {
+				isInStmtTrailer = true;
+				stmtPageCount++;
+				isInStmt = true;
+				isInStmtHeader = false;
+				String insertBngEngRecs = config.getINSERT_BNG_ENG_RECS();
+
+				if ("Y".equals(insertBngEngRecs)) {
+					if (stmtPageCount == 1) { // This is statement 1
+						stmtCounter++;
+						isNewStmt = true;
+						prevStmtCnt = (int) stmtCounter;
+						expectedPgCnt = getExpectedPageCountForStmt((int) stmtCounter);
+						setBNGRec(stmtHdrRecs);
+						isInStmtHeader = true;
+						// System.out.println("Added BNG to page");
+					} if (stmtPageCount == expectedPgCnt) {
+						// stmtCounter++;
+						expectedPgCnt = getExpectedPageCountForStmt((int) stmtCounter);//
+						if (stmtCounter == prevStmtCnt) {
+							setENGRec(stmtTrailer);
+							prevStmtCnt = (int) stmtCounter;
+							skipIndex = i + 1;
+							System.out.println("stmtHdrRecs:" + stmtHdrRecs.size());
+							System.out.println("stmtPages:" + stmtPages.size());
+							System.out.println("stmtTrailer:" + stmtTrailer.size());
+							System.out.println("stmt counter:" + stmtCounter);
+							JSONObject metaData = this.parse(Paths.get(metaDataString).toString(), (int) stmtCounter);
+							System.out.println("Meta Data:" + metaData.toString());
+
+							rawStmt = new RawStmt(stmtHdrRecs, stmtPages, stmtTrailer, metaData);
+							DataprepLoader.trailerRecs.clear();
+							return rawStmt;
+
+						}
+					}
+				}
+
+			}
+
+		}
+
+		return rawStmt;
+	}
+
+	public JSONObject parse(String jsonFilePath, int stmtCounter) {
+		System.out.println("stmtCounter in parse:" + stmtCounter);
+		Object header = new JSONObject();
+		Map<String, String> obj = new HashMap<>();
+		int readIndex = 0;
+		try (JsonReader jsonReader = new JsonReader(
+				new InputStreamReader(new FileInputStream(jsonFilePath), StandardCharsets.UTF_8))) {
+			Gson gson = new GsonBuilder().create();
+			jsonReader.beginObject();
+
+			int numberOfRecords = 0;
+			while (jsonReader.hasNext()) {
+				String name = jsonReader.nextName();
+				System.out.println("name:" + name);
+				if (name.equals("MAIL_PIECES")) {
+
+					jsonReader.beginArray();
+
+					while (jsonReader.hasNext()) {
+						readIndex++;
+						System.out.println("Inside read array " + readIndex);
+						Object jsonElement = gson.fromJson(jsonReader, Object.class);
+						String data = gson.toJson(jsonElement);
+						System.out.println(data);
+						if (readIndex == stmtCounter) {
+							System.out.println("header:" + data);
+							header = jsonElement;
+							obj = gson.fromJson(data, Map.class);
+
+						}
+
+					}
+					jsonReader.endArray();
+				} else {
+					jsonReader.skipValue();
+				}
+			}
+
+			jsonReader.endObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new JSONObject(obj);
+	}
+
+	private RawStmt appendStatement(RawStmt currentStmt, RawStmt nextStmt) {
+		if (currentStmt == null && nextStmt == null) {
+			return null;
+		} else if (currentStmt == null) {
+			return nextStmt;
+		} else if (nextStmt == null) {
+			return currentStmt;
+		} else {
+			currentStmt.getPages().addAll(nextStmt.getPages());
+			return currentStmt;
+		}
+	}
+
+	private int getExpectedPageCountForStmt(int stmtCount) throws IOException {
+		int totalPageCount = 0;
+		try {
+			String metaDataString = this.cmdLine.getMailPieceMetadataFile();
+			;
+			JSONObject metaObject = this.parse(Paths.get(metaDataString).toString(), stmtCount);
+			JSONArray pdfDocuments = metaObject.getJSONArray("pdf_documents");
+			System.out.println("Total PDF documents" + pdfDocuments.length());
+
+			for (int j = 0; j < pdfDocuments.length(); j++) {
+				JSONObject pdfDocument = pdfDocuments.getJSONObject(j);
+				int pageCount = pdfDocument.getInt("page_count");
+				totalPageCount += pageCount;
+			}
+
+		} catch (JSONException e) {
+			System.err.println("Error processing JSON: " + e.getMessage());
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return totalPageCount;
+	}
+
+	private void setBNGRec(List<AfpRec> stmtHdrRecs) throws IOException, ParseException {
+		String bng = String.format("%-8s", stmtCounter);
+		AfpRec bngRec = new AfpCmdBNG(bng).toAfpRec((short) 0, 0);
+		// System.out.println("create first BNG" +bngRec.getTla());
+		stmtHdrRecs.add(bngRec);
+	}
+
+	private void setENGRec(List<AfpRec> stmtTrailer) throws IOException, ParseException {
+		String eng = String.format("%-8s", stmtCounter - 1);
+		AfpRec engRec = new AfpCmdENG(eng).toAfpRec((short) 0, 0);
+		// System.out.println("create ENG" +engRec.getTla());
+		// System.out.println("Added ENG to page");
+		stmtTrailer.add(engRec);
+	}
+
+}
