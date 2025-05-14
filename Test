@@ -65,11 +65,8 @@ import com.dstoutput.custsys.jafp.AfpCmdEPG;
 import com.dstoutput.custsys.jafp.AfpCmdEPT;
 import com.dstoutput.custsys.jafp.AfpCmdIMM;
 import com.dstoutput.custsys.jafp.AfpCmdIPS;
-import com.dstoutput.custsys.jafp.AfpCmdMCF;
-import com.dstoutput.custsys.jafp.AfpCmdMCF1;
 import com.dstoutput.custsys.jafp.AfpCmdPGD;
 import com.dstoutput.custsys.jafp.AfpCmdPTD;
-import com.dstoutput.custsys.jafp.AfpCmdPTX;
 import com.dstoutput.custsys.jafp.AfpCmdRaw;
 import com.dstoutput.custsys.jafp.AfpCmdTLE;
 import com.dstoutput.custsys.jafp.AfpCmdType;
@@ -150,7 +147,7 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 	private static final Set<String> unresolvedFields = new HashSet<>();
 	private static final Set<String> requiredMetadataFields = new HashSet<>();
 	private final List<JSONObject> allMailPiecesSeen = new ArrayList<>();
-
+	
 	@Override
 	public DerivedData validate(Messenger messenger, RawData rawDataIn) throws StatementSchemaException,
 			StatementFormatException, StatementCustomException, StatementNonFatalException, IOException {
@@ -340,13 +337,13 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 		}
 
 		rawStmt.setPages(updatedStmtPages);
-
+	
 		// Add IPS Record
 		int bpgCounterForPSegs = 0;
 		Map<String, AfpRec> pSegs = insertPageSegs(rawStmt.getPages(), pSegsSettings, pSegsRecords);
 		List<List<AfpRec>> updatedStmtIPS = processPageSegments(rawStmt.getPages(), pSegs, bpgCounterForPSegs);
 		rawStmt.setPages(updatedStmtIPS);
-
+		
 		// EACH_PDF_DOCUMENT_STARTS_NEW_SHEET
 		String eachPdfNewSheet = config.getEACH_PDF_DOCUMENT_STARTS_NEW_SHEET();
 		if (null != eachPdfNewSheet && eachPdfNewSheet.equalsIgnoreCase("Y")) {
@@ -357,6 +354,9 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 			rawStmt.setPages(modifiedStmtPages);
 		}
 
+		
+		
+	
 		String filename = rawData.inputFileName;
 		if (reconStats.containsKey(filename)) {
 			FileStats fs = reconStats.get(filename);
@@ -498,12 +498,6 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 			}
 		}
 
-		// ADD Text
-		List<Map<String, Object>> addTextToPagesConfig = config.getADD_TEXT_TO_PAGES();
-		if (addTextToPagesConfig != null && !addTextToPagesConfig.isEmpty()) {
-			textService.insertTextBlocksIntoPages(rawStmt, addTextToPagesConfig);
-		}
-
 		insertNewPages(rawStmt, config);
 
 		// removing the IMM record from input file.
@@ -511,10 +505,8 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 		// !DataprepLoader.checkIMMConfig.has(jobName)) {
 		// analyzerUtils.removeIMMRecordFromInput(rawData);
 		// }
-		
 		return rawStmt;
 	}
-
 
 	private boolean getAddressFromCsv(String ncoaAccNum, String jobName) {
 		// TODO Auto-generated method stub
@@ -774,7 +766,7 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 		List<AfpRec> docAddress;
 		HashMap<String, String> addressMap;
 		Integer orientationFromMap = null;
-
+		
 		for (Map.Entry<String, Object> entry : sendAddressMap.entrySet()) {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("key", entry.getKey());
@@ -793,19 +785,19 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 
 			sendAddressArray.put(jsonObject);
 		}
+		
+	    if (orientationFromMap != null) {
+	        iOrientations = orientationFromMap;
+	    }
 
-		if (orientationFromMap != null) {
-			iOrientations = orientationFromMap;
-		}
-
-		// Orientation value validation before using it
-		List<Integer> validOrientations = Arrays.asList(0, 90, 180, 270);
-		if (!validOrientations.contains(iOrientations)) {
-			System.err.println("Invalid orientation value for Address Scraping in configuration: " + iOrientations
-					+ ". Valid values are: 0, 90, 180, 270.");
-			System.exit(1);
-		}
-
+	    // Orientation value validation before using it
+	    List<Integer> validOrientations = Arrays.asList(0, 90, 180, 270);
+	    if (!validOrientations.contains(iOrientations)) {
+	        System.err.println("Invalid orientation value for Address Scraping in configuration: " + iOrientations
+	                + ". Valid values are: 0, 90, 180, 270.");
+	        System.exit(1);
+	    }
+		
 		fileCoordinatesList.add(new FileCoordinate(sx1, sy1, sx2, sy2, iOrientations));
 
 		try {
@@ -1005,311 +997,307 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 	}
 
 	public List<AfpRec> insertMailPieceLevelTles(List<AfpRec> afpRecList, List<AfpRec> tleRecords, JSONObject mailPiece,
-			Set<String> insertedTles, List<Map<String, String>> tle, List<HashMap<String, String>> addressList,
-			List<Map<String, Object>> shippingSHCodeLookupConfig) {
+	        Set<String> insertedTles, List<Map<String, String>> tle, List<HashMap<String, String>> addressList,
+	        List<Map<String, Object>> shippingSHCodeLookupConfig) {
 
-		try {
-			if (afpRecList == null || tleRecords == null || insertedTles == null || mailPiece == null || tle == null) {
-				return tleRecords;
-			}
+	    try {
+	        if (afpRecList == null || tleRecords == null || insertedTles == null || mailPiece == null || tle == null) {
+	            return tleRecords;
+	        }
 
-			insertedTles.clear();
-			List<Map<String, String>> tleConfig = getDynamicConfig(mailPiece, tle, "FROM_METADATA:");
-			List<AfpRec> currentMailPieceTleRecords = new ArrayList<>();
-			boolean hasSHCodeTLE = false;
+	        insertedTles.clear();
+	        List<Map<String, String>> tleConfig = getDynamicConfig(mailPiece, tle, "FROM_METADATA:");
+	        List<AfpRec> currentMailPieceTleRecords = new ArrayList<>();
+	        boolean hasSHCodeTLE = false;
 
-			for (Map<String, String> tleEntry : tleConfig) {
-				for (Map.Entry<String, String> entry : tleEntry.entrySet()) {
-					String key = entry.getKey();
-					Object rawValue = entry.getValue();
+	        for (Map<String, String> tleEntry : tleConfig) {
+	            for (Map.Entry<String, String> entry : tleEntry.entrySet()) {
+	                String key = entry.getKey();
+	                Object rawValue = entry.getValue();
 
-					String formattedValue;
-					if (rawValue instanceof Number) {
-						double val = ((Number) rawValue).doubleValue();
-						formattedValue = (val == Math.floor(val)) ? String.valueOf((long) val) : String.valueOf(val);
-					} else {
-						formattedValue = String.valueOf(rawValue);
-					}
+	                String formattedValue;
+	                if (rawValue instanceof Number) {
+	                    double val = ((Number) rawValue).doubleValue();
+	                    formattedValue = (val == Math.floor(val)) ? String.valueOf((long) val) : String.valueOf(val);
+	                } else {
+	                    formattedValue = String.valueOf(rawValue);
+	                }
 
-					// Replace FROM_DERIVEDDATA^ and FROM_METADATA^ in the value
-					Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
-					Matcher derivedMatcher = derivedPattern.matcher(formattedValue);
-					StringBuffer derivedBuffer = new StringBuffer();
-					while (derivedMatcher.find()) {
-						String varName = derivedMatcher.group(1);
-						String replacement = (String) getDynamicCmdLineValue(varName);
-						if (replacement == null)
-							System.exit(1);
-						derivedMatcher.appendReplacement(derivedBuffer, Matcher.quoteReplacement(replacement));
-					}
-					derivedMatcher.appendTail(derivedBuffer);
-					formattedValue = derivedBuffer.toString();
+	                // Replace FROM_DERIVEDDATA^ and FROM_METADATA^ in the value
+	                Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
+	                Matcher derivedMatcher = derivedPattern.matcher(formattedValue);
+	                StringBuffer derivedBuffer = new StringBuffer();
+	                while (derivedMatcher.find()) {
+	                    String varName = derivedMatcher.group(1);
+	                    String replacement = (String) getDynamicCmdLineValue(varName);
+	                    if (replacement == null) System.exit(1);
+	                    derivedMatcher.appendReplacement(derivedBuffer, Matcher.quoteReplacement(replacement));
+	                }
+	                derivedMatcher.appendTail(derivedBuffer);
+	                formattedValue = derivedBuffer.toString();
 
-					Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
-					Matcher metaMatcher = metaPattern.matcher(formattedValue);
-					StringBuffer metaBuffer = new StringBuffer();
-					while (metaMatcher.find()) {
-						String varName = metaMatcher.group(1);
-						Object val = getValueFromMailPiece(mailPiece, varName);
-						String resolved;
-						if (val instanceof Number) {
-							double d = ((Number) val).doubleValue();
-							resolved = (d == Math.floor(d)) ? String.valueOf((long) d) : String.valueOf(d);
-						} else {
-							resolved = String.valueOf(val);
-						}
-						if (resolved == null)
-							resolved = "";
-						metaMatcher.appendReplacement(metaBuffer, Matcher.quoteReplacement(resolved));
-					}
-					metaMatcher.appendTail(metaBuffer);
-					formattedValue = metaBuffer.toString();
+	                Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
+	                Matcher metaMatcher = metaPattern.matcher(formattedValue);
+	                StringBuffer metaBuffer = new StringBuffer();
+	                while (metaMatcher.find()) {
+	                    String varName = metaMatcher.group(1);
+	                    Object val = getValueFromMailPiece(mailPiece, varName);
+	                    String resolved;
+	                    if (val instanceof Number) {
+	                        double d = ((Number) val).doubleValue();
+	                        resolved = (d == Math.floor(d)) ? String.valueOf((long) d) : String.valueOf(d);
+	                    } else {
+	                        resolved = String.valueOf(val);
+	                    }
+	                    if (resolved == null) resolved = "";
+	                    metaMatcher.appendReplacement(metaBuffer, Matcher.quoteReplacement(resolved));
+	                }
+	                metaMatcher.appendTail(metaBuffer);
+	                formattedValue = metaBuffer.toString();
 
-					String resolvedValue = resolveDynamicPlaceholdersWithSendAddressOverride(formattedValue, mailPiece);
-					String tleKey = key + ":" + resolvedValue;
-					boolean isSHCodeTLE = false;
+	                String resolvedValue = resolveDynamicPlaceholdersWithSendAddressOverride(formattedValue, mailPiece);
+	                String tleKey = key + ":" + resolvedValue;
+	                boolean isSHCodeTLE = false;
 
-					for (HashMap<String, String> scrapeAddressMap : addressList) {
-						if (key.equals("DOC_SPECIAL_HANDLING_CODE")
-								&& scrapeAddressMap.containsKey("DOC_SPECIAL_HANDLING_CODE")) {
-							isSHCodeTLE = true;
-						}
-					}
+	                for (HashMap<String, String> scrapeAddressMap : addressList) {
+	                    if (key.equals("DOC_SPECIAL_HANDLING_CODE") &&
+	                            scrapeAddressMap.containsKey("DOC_SPECIAL_HANDLING_CODE")) {
+	                        isSHCodeTLE = true;
+	                    }
+	                }
 
-					if (!insertedTles.contains(tleKey) && !isSHCodeTLE) {
-						AfpRec newRec = new AfpCmdTLE(key, resolvedValue).toAfpRec((short) 0, 0);
-						currentMailPieceTleRecords.add(newRec);
-						insertedTles.add(tleKey);
-					}
-				}
-			}
+	                if (!insertedTles.contains(tleKey) && !isSHCodeTLE) {
+	                    AfpRec newRec = new AfpCmdTLE(key, resolvedValue).toAfpRec((short) 0, 0);
+	                    currentMailPieceTleRecords.add(newRec);
+	                    insertedTles.add(tleKey);
+	                }
+	            }
+	        }
 
-			String derivedSHCode = lookupSpecialHandlingCode(mailPiece, shippingSHCodeLookupConfig);
-			if (derivedSHCode != null) {
-				String tleKey = "DOC_SPECIAL_HANDLING_CODE:" + derivedSHCode;
-				if (!insertedTles.contains(tleKey)) {
-					AfpRec shRec = new AfpCmdTLE("DOC_SPECIAL_HANDLING_CODE", derivedSHCode).toAfpRec((short) 0, 0);
-					currentMailPieceTleRecords.add(shRec);
-					insertedTles.add(tleKey);
-				}
-			}
+	        String derivedSHCode = lookupSpecialHandlingCode(mailPiece, shippingSHCodeLookupConfig);
+	        if (derivedSHCode != null) {
+	            String tleKey = "DOC_SPECIAL_HANDLING_CODE:" + derivedSHCode;
+	            if (!insertedTles.contains(tleKey)) {
+	                AfpRec shRec = new AfpCmdTLE("DOC_SPECIAL_HANDLING_CODE", derivedSHCode).toAfpRec((short) 0, 0);
+	                currentMailPieceTleRecords.add(shRec);
+	                insertedTles.add(tleKey);
+	            }
+	        }
 
-			tleRecords.addAll(currentMailPieceTleRecords);
+	        tleRecords.addAll(currentMailPieceTleRecords);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    }
 
-		return tleRecords;
+	    return tleRecords;
 	}
-
+	
 	public List<AfpRec> insertMailPieceLevelNamedNops(List<AfpRec> afpRecList, List<AfpRec> nopRecords,
-			JSONObject mailPiece, Set<String> insertedNops, List<Map<String, String>> nop,
-			List<HashMap<String, String>> addressList) {
+	        JSONObject mailPiece, Set<String> insertedNops, List<Map<String, String>> nop,
+	        List<HashMap<String, String>> addressList) {
 
-		try {
-			if (afpRecList == null || nopRecords == null || insertedNops == null || mailPiece == null || nop == null) {
-				return nopRecords;
-			}
+	    try {
+	        if (afpRecList == null || nopRecords == null || insertedNops == null || mailPiece == null || nop == null) {
+	            return nopRecords;
+	        }
 
-			insertedNops.clear();
-			List<Map<String, String>> nopConfig = getDynamicConfig(mailPiece, nop, "FROM_METADATA:");
-			List<AfpRec> currentMailPieceNopRecords = new ArrayList<>();
+	        insertedNops.clear();
+	        List<Map<String, String>> nopConfig = getDynamicConfig(mailPiece, nop, "FROM_METADATA:");
+	        List<AfpRec> currentMailPieceNopRecords = new ArrayList<>();
 
-			for (Map<String, String> nopEntry : nopConfig) {
-				for (Map.Entry<String, String> entry : nopEntry.entrySet()) {
-					String key = entry.getKey();
-					Object rawValue = entry.getValue();
+	        for (Map<String, String> nopEntry : nopConfig) {
+	            for (Map.Entry<String, String> entry : nopEntry.entrySet()) {
+	                String key = entry.getKey();
+	                Object rawValue = entry.getValue();
 
-					String formattedValue;
-					if (rawValue instanceof Number) {
-						double val = ((Number) rawValue).doubleValue();
-						formattedValue = (val == Math.floor(val)) ? String.valueOf((long) val) : String.valueOf(val);
-					} else {
-						formattedValue = String.valueOf(rawValue);
-					}
+	                String formattedValue;
+	                if (rawValue instanceof Number) {
+	                    double val = ((Number) rawValue).doubleValue();
+	                    formattedValue = (val == Math.floor(val)) ? String.valueOf((long) val) : String.valueOf(val);
+	                } else {
+	                    formattedValue = String.valueOf(rawValue);
+	                }
 
-					// Replace FROM_DERIVEDDATA^ and FROM_METADATA^
-					Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
-					Matcher derivedMatcher = derivedPattern.matcher(formattedValue);
-					StringBuffer derivedBuffer = new StringBuffer();
-					while (derivedMatcher.find()) {
-						String varName = derivedMatcher.group(1);
-						String replacement = (String) getDynamicCmdLineValue(varName);
-						if (replacement == null)
-							System.exit(1);
-						derivedMatcher.appendReplacement(derivedBuffer, Matcher.quoteReplacement(replacement));
-					}
-					derivedMatcher.appendTail(derivedBuffer);
-					formattedValue = derivedBuffer.toString();
+	                // Replace FROM_DERIVEDDATA^ and FROM_METADATA^
+	                Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
+	                Matcher derivedMatcher = derivedPattern.matcher(formattedValue);
+	                StringBuffer derivedBuffer = new StringBuffer();
+	                while (derivedMatcher.find()) {
+	                    String varName = derivedMatcher.group(1);
+	                    String replacement = (String) getDynamicCmdLineValue(varName);
+	                    if (replacement == null) System.exit(1);
+	                    derivedMatcher.appendReplacement(derivedBuffer, Matcher.quoteReplacement(replacement));
+	                }
+	                derivedMatcher.appendTail(derivedBuffer);
+	                formattedValue = derivedBuffer.toString();
 
-					Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
-					Matcher metaMatcher = metaPattern.matcher(formattedValue);
-					StringBuffer metaBuffer = new StringBuffer();
-					while (metaMatcher.find()) {
-						String varName = metaMatcher.group(1);
-						Object val = getValueFromMailPiece(mailPiece, varName);
-						String resolved;
-						if (val instanceof Number) {
-							double d = ((Number) val).doubleValue();
-							resolved = (d == Math.floor(d)) ? String.valueOf((long) d) : String.valueOf(d);
-						} else {
-							resolved = String.valueOf(val);
-						}
-						if (resolved == null)
-							resolved = "";
-						metaMatcher.appendReplacement(metaBuffer, Matcher.quoteReplacement(resolved));
-					}
-					metaMatcher.appendTail(metaBuffer);
-					formattedValue = metaBuffer.toString();
+	                Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
+	                Matcher metaMatcher = metaPattern.matcher(formattedValue);
+	                StringBuffer metaBuffer = new StringBuffer();
+	                while (metaMatcher.find()) {
+	                    String varName = metaMatcher.group(1);
+	                    Object val = getValueFromMailPiece(mailPiece, varName);
+	                    String resolved;
+	                    if (val instanceof Number) {
+	                        double d = ((Number) val).doubleValue();
+	                        resolved = (d == Math.floor(d)) ? String.valueOf((long) d) : String.valueOf(d);
+	                    } else {
+	                        resolved = String.valueOf(val);
+	                    }
+	                    if (resolved == null) resolved = "";
+	                    metaMatcher.appendReplacement(metaBuffer, Matcher.quoteReplacement(resolved));
+	                }
+	                metaMatcher.appendTail(metaBuffer);
+	                formattedValue = metaBuffer.toString();
 
-					String resolvedValue = resolveDynamicPlaceholdersWithSendAddressOverride(formattedValue, mailPiece);
-					String nopKey = key + ":" + resolvedValue;
+	                String resolvedValue = resolveDynamicPlaceholdersWithSendAddressOverride(formattedValue, mailPiece);
+	                String nopKey = key + ":" + resolvedValue;
 
-					for (HashMap<String, String> scrapeAddressMap : addressList) {
-						if (key.equals("DOC_SPECIAL_HANDLING_CODE")
-								&& scrapeAddressMap.containsKey("DOC_SPECIAL_HANDLING_CODE")) {
-							for (Map.Entry<String, String> scrapeEntry : scrapeAddressMap.entrySet()) {
-								String scrapeKey = scrapeEntry.getKey();
-								String scrapeValue = scrapeEntry.getValue();
+	                for (HashMap<String, String> scrapeAddressMap : addressList) {
+	                    if (key.equals("DOC_SPECIAL_HANDLING_CODE")
+	                            && scrapeAddressMap.containsKey("DOC_SPECIAL_HANDLING_CODE")) {
+	                        for (Map.Entry<String, String> scrapeEntry : scrapeAddressMap.entrySet()) {
+	                            String scrapeKey = scrapeEntry.getKey();
+	                            String scrapeValue = scrapeEntry.getValue();
 
-								if (scrapeKey.equals("DOC_SPECIAL_HANDLING_CODE")) {
-									AfpRec newRec = new AfpNopGenericZD(scrapeKey, scrapeValue).toAfpRec((short) 0, 0);
-									currentMailPieceNopRecords.add(newRec);
-									insertedNops.add(scrapeKey + ":" + scrapeValue);
-								}
-							}
-						}
-					}
+	                            if (scrapeKey.equals("DOC_SPECIAL_HANDLING_CODE")) {
+	                                AfpRec newRec = new AfpNopGenericZD(scrapeKey, scrapeValue).toAfpRec((short) 0, 0);
+	                                currentMailPieceNopRecords.add(newRec);
+	                                insertedNops.add(scrapeKey + ":" + scrapeValue);
+	                            }
+	                        }
+	                    }
+	                }
 
-					if (!insertedNops.contains(nopKey)) {
-						AfpRec newRec = new AfpNopGenericZD(key, resolvedValue).toAfpRec((short) 0, 0);
-						currentMailPieceNopRecords.add(newRec);
-						insertedNops.add(nopKey);
-					}
-				}
-			}
+	                if (!insertedNops.contains(nopKey)) {
+	                    AfpRec newRec = new AfpNopGenericZD(key, resolvedValue).toAfpRec((short) 0, 0);
+	                    currentMailPieceNopRecords.add(newRec);
+	                    insertedNops.add(nopKey);
+	                }
+	            }
+	        }
 
-			nopRecords.addAll(currentMailPieceNopRecords);
+	        nopRecords.addAll(currentMailPieceNopRecords);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    }
 
-		return nopRecords;
+	    return nopRecords;
 	}
 
-	public List<AfpRec> insertFileLevelNamedNops(List<AfpRec> afpRecList, Set<String> insertedNops,
-			List<Map<String, String>> insertFileLevelNamedNopsL, JSONObject mailPiece) {
+	public List<AfpRec> insertFileLevelNamedNops(
+	        List<AfpRec> afpRecList,
+	        Set<String> insertedNops,
+	        List<Map<String, String>> insertFileLevelNamedNopsL,
+	        JSONObject mailPiece) {
 
-		try {
-			if (this.cmdLine == null) {
-				throw new IllegalStateException("cmdLine is null");
-			}
+	    try {
+	        if (this.cmdLine == null) {
+	            throw new IllegalStateException("cmdLine is null");
+	        }
 
-			String configFile = this.cmdLine.getConfigFile();
-			if (configFile == null || configFile.isEmpty()) {
-				throw new IllegalArgumentException("Config file path is null or empty");
-			}
+	        String configFile = this.cmdLine.getConfigFile();
+	        if (configFile == null || configFile.isEmpty()) {
+	            throw new IllegalArgumentException("Config file path is null or empty");
+	        }
 
-			String jsonString = new String(Files.readAllBytes(Paths.get(configFile)));
-			if (jsonString.isEmpty()) {
-				throw new IllegalArgumentException("JSON string is empty");
-			}
+	        String jsonString = new String(Files.readAllBytes(Paths.get(configFile)));
+	        if (jsonString.isEmpty()) {
+	            throw new IllegalArgumentException("JSON string is empty");
+	        }
 
-			JSONObject jsonObject = new JSONObject(jsonString);
+	        JSONObject jsonObject = new JSONObject(jsonString);
 
-			if (insertFileLevelNamedNopsL == null || insertFileLevelNamedNopsL.isEmpty()) {
-				return afpRecList;
-			}
+	        if (insertFileLevelNamedNopsL == null || insertFileLevelNamedNopsL.isEmpty()) {
+	            return afpRecList;
+	        }
 
-			JSONArray sendAddressLines = mailPiece.optJSONArray("send_address_lines");
-			if (sendAddressLines == null) {
-				sendAddressLines = new JSONArray();
-			}
+	        JSONArray sendAddressLines = mailPiece.optJSONArray("send_address_lines");
+	        if (sendAddressLines == null) {
+	            sendAddressLines = new JSONArray();
+	        }
 
-			for (Map<String, String> map : insertFileLevelNamedNopsL) {
-				JSONObject item = analyzerUtils.convertMapToJson(map);
-				if (item == null)
-					continue;
+	        for (Map<String, String> map : insertFileLevelNamedNopsL) {
+	            JSONObject item = analyzerUtils.convertMapToJson(map);
+	            if (item == null) continue;
 
-				Iterator<String> keys = item.keys();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					Object value = item.opt(key);
-					if (value == null)
-						value = "";
+	            Iterator<String> keys = item.keys();
+	            while (keys.hasNext()) {
+	                String key = keys.next();
+	                Object value = item.opt(key);
+	                if (value == null) value = "";
 
-					boolean addedNopBeforeBrg = false;
+	                boolean addedNopBeforeBrg = false;
 
-					if (afpRecList != null && !afpRecList.isEmpty()) {
-						for (int j = 0; j < afpRecList.size(); j++) {
-							AfpRec afpRec1 = afpRecList.get(j);
-							if (afpRec1 != null && "BRG".equalsIgnoreCase(afpRec1.getTla().trim())) {
-								if (!addedNopBeforeBrg) {
-									String nopValue = "";
+	                if (afpRecList != null && !afpRecList.isEmpty()) {
+	                    for (int j = 0; j < afpRecList.size(); j++) {
+	                        AfpRec afpRec1 = afpRecList.get(j);
+	                        if (afpRec1 != null && "BRG".equalsIgnoreCase(afpRec1.getTla().trim())) {
+	                            if (!addedNopBeforeBrg) {
+	                                String nopValue = "";
 
-									if (value instanceof String) {
-										String valueStr = (String) value;
-										nopValue = valueStr;
+	                                if (value instanceof String) {
+	                                    String valueStr = (String) value;
+	                                    nopValue = valueStr;
 
-										Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
-										Matcher derivedMatcher = derivedPattern.matcher(nopValue);
-										StringBuffer derivedBuffer = new StringBuffer();
-										while (derivedMatcher.find()) {
-											String varName = derivedMatcher.group(1);
-											String replacement = (String) getDynamicCmdLineValue(varName);
-											if (replacement == null) {
-												System.exit(1);
-											}
-											derivedMatcher.appendReplacement(derivedBuffer,
-													Matcher.quoteReplacement(replacement));
-										}
-										derivedMatcher.appendTail(derivedBuffer);
-										nopValue = derivedBuffer.toString();
+	                                    Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
+	                                    Matcher derivedMatcher = derivedPattern.matcher(nopValue);
+	                                    StringBuffer derivedBuffer = new StringBuffer();
+	                                    while (derivedMatcher.find()) {
+	                                        String varName = derivedMatcher.group(1);
+	                                        String replacement = (String) getDynamicCmdLineValue(varName);
+	                                        if (replacement == null) {
+	                                            System.exit(1);
+	                                        }
+	                                        derivedMatcher.appendReplacement(derivedBuffer,
+	                                                Matcher.quoteReplacement(replacement));
+	                                    }
+	                                    derivedMatcher.appendTail(derivedBuffer);
+	                                    nopValue = derivedBuffer.toString();
 
-										nopValue = getAddressLineFromMetadata(sendAddressLines, nopValue);
+	                                    nopValue = getAddressLineFromMetadata(sendAddressLines, nopValue);
 
-										Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
-										Matcher metaMatcher = metaPattern.matcher(nopValue);
-										StringBuffer metaBuffer = new StringBuffer();
-										while (metaMatcher.find()) {
-											String varName = metaMatcher.group(1);
-											String replacement = getValueFromMailPiece(mailPiece, varName);
-											if (replacement == null)
-												replacement = "";
-											metaMatcher.appendReplacement(metaBuffer,
-													Matcher.quoteReplacement(replacement));
-										}
-										metaMatcher.appendTail(metaBuffer);
-										nopValue = metaBuffer.toString();
-									}
+	                                    Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
+	                                    Matcher metaMatcher = metaPattern.matcher(nopValue);
+	                                    StringBuffer metaBuffer = new StringBuffer();
+	                                    while (metaMatcher.find()) {
+	                                        String varName = metaMatcher.group(1);
+	                                        String replacement = getValueFromMailPiece(mailPiece, varName);
+	                                        if (replacement == null) replacement = "";
+	                                        metaMatcher.appendReplacement(metaBuffer,
+	                                                Matcher.quoteReplacement(replacement));
+	                                    }
+	                                    metaMatcher.appendTail(metaBuffer);
+	                                    nopValue = metaBuffer.toString();
+	                                }
 
-									String nopKey = key + ":" + nopValue;
-									if (!insertedNops.contains(nopKey)) {
-										AfpRec newRec = new AfpNopGenericZD(key, nopValue).toAfpRec((short) 0, 0);
-										afpRecList.add(j, newRec);
-										insertedNops.add(nopKey);
-									}
+	                                String nopKey = key + ":" + nopValue;
+	                                if (!insertedNops.contains(nopKey)) {
+	                                    AfpRec newRec = new AfpNopGenericZD(key, nopValue).toAfpRec((short) 0, 0);
+	                                    afpRecList.add(j, newRec);
+	                                    insertedNops.add(nopKey);
+	                                }
 
-									addedNopBeforeBrg = true;
-								}
-							}
-						}
-					}
-				}
-			}
+	                                addedNopBeforeBrg = true;
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    }
 
-		return afpRecList;
+	    return afpRecList;
 	}
-
+	
 	private String resolveDynamicPlaceholders(String input, JSONObject mailPiece) {
 		if (input == null)
 			return null;
@@ -1375,157 +1363,164 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 	}
 
 	public String getValueFromMailPiece(JSONObject mailPiece, String fieldName) {
-		try {
-			if (fieldName == null) {
-				return "";
-			}
+	    try {
+	        if (fieldName == null) {
+	            return "";
+	        }
 
-			if (mailPiece == null) {
-				throw new IllegalArgumentException("Error: mailPiece is null.");
-			}
+	        if (mailPiece == null) {
+	            throw new IllegalArgumentException("Error: mailPiece is null.");
+	        }
 
-			// Keep track of all mail pieces we've seen
-			allMailPiecesSeen.add(mailPiece);
+	        // Keep track of all mail pieces we've seen
+	        allMailPiecesSeen.add(mailPiece);
 
-			// Handle "send_address_line_[1-6]" fields
-			if (fieldName.matches("send_address_line_[1-6]")) {
-				int index = Integer.parseInt(fieldName.substring("send_address_line_".length())) - 1;
-				if (mailPiece.has("send_address_lines")) {
-					JSONArray addressLines = mailPiece.optJSONArray("send_address_lines");
-					if (addressLines != null && index < addressLines.length()) {
-						return addressLines.optString(index, "");
-					}
-				}
-				return "";
-			}
+	        // Handle "send_address_line_[1-6]" fields
+	        if (fieldName.matches("send_address_line_[1-6]")) {
+	            int index = Integer.parseInt(fieldName.substring("send_address_line_".length())) - 1;
+	            if (mailPiece.has("send_address_lines")) {
+	                JSONArray addressLines = mailPiece.optJSONArray("send_address_lines");
+	                if (addressLines != null && index < addressLines.length()) {
+	                    return addressLines.optString(index, "");
+	                }
+	            }
+	            return "";
+	        }
 
-			// Check current mailPiece first
-			if (mailPiece.has(fieldName)) {
-				Object value = mailPiece.get(fieldName);
-				return (value == null || value.equals(JSONObject.NULL)) ? "" : value.toString();
-			}
+	        // Check current mailPiece first
+	        if (mailPiece.has(fieldName)) {
+	            Object value = mailPiece.get(fieldName);
+	            return (value == null || value.equals(JSONObject.NULL)) ? "" : value.toString();
+	        }
 
-			// If not in current, check all previously seen mail pieces
-			for (JSONObject seenMail : allMailPiecesSeen) {
-				if (seenMail != null && seenMail.has(fieldName)) {
-					Object value = seenMail.get(fieldName);
-					return (value == null || value.equals(JSONObject.NULL)) ? "" : value.toString();
-				}
-			}
+	        // If not in current, check all previously seen mail pieces
+	        for (JSONObject seenMail : allMailPiecesSeen) {
+	            if (seenMail != null && seenMail.has(fieldName)) {
+	                Object value = seenMail.get(fieldName);
+	                return (value == null || value.equals(JSONObject.NULL)) ? "" : value.toString();
+	            }
+	        }
 
-			// Field not found anywhere â€” throw exception
-			throw new RuntimeException("Field '" + fieldName + "' not found in any mail piece.");
+	        // Field not found anywhere â€” throw exception
+	        throw new RuntimeException("Field '" + fieldName + "' not found in any mail piece.");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error retrieving value for field '" + fieldName + "': " + e.getMessage(), e);
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Error retrieving value for field '" + fieldName + "': " + e.getMessage(), e);
+	    }
 	}
 
-	public List<AfpRec> insertTrailerNamedNops(List<AfpRec> afpRecList, Set<String> insertedNops,
-			List<Map<String, String>> insertTrailerNamedNopsL, int sheetCount, int pageCount, JSONObject mailPiece,
-			int packages) {
+	public List<AfpRec> insertTrailerNamedNops(
+	        List<AfpRec> afpRecList,
+	        Set<String> insertedNops,
+	        List<Map<String, String>> insertTrailerNamedNopsL,
+	        int sheetCount,
+	        int pageCount,
+	        JSONObject mailPiece,
+	        int packages) {
 
-		try {
-			if (afpRecList == null || insertedNops == null || insertTrailerNamedNopsL == null
-					|| insertTrailerNamedNopsL.isEmpty()) {
-				return afpRecList;
-			}
+	    try {
+	        if (afpRecList == null || insertedNops == null || insertTrailerNamedNopsL == null || insertTrailerNamedNopsL.isEmpty()) {
+	            return afpRecList;
+	        }
 
-			JSONArray sendAddressLines = mailPiece.optJSONArray("send_address_lines");
-			if (sendAddressLines == null) {
-				sendAddressLines = new JSONArray();
-			}
-			while (sendAddressLines.length() < 6) {
-				sendAddressLines.put("");
-			}
+	        JSONArray sendAddressLines = mailPiece.optJSONArray("send_address_lines");
+	        if (sendAddressLines == null) {
+	            sendAddressLines = new JSONArray();
+	        }
+	        while (sendAddressLines.length() < 6) {
+	            sendAddressLines.put("");
+	        }
 
-			List<AfpRec> nopsToInsert = new ArrayList<>();
+	        List<AfpRec> nopsToInsert = new ArrayList<>();
 
-			for (Map<String, String> map : insertTrailerNamedNopsL) {
-				JSONObject item = analyzerUtils.convertMapToJson(map);
-				if (item == null)
-					continue;
+	        for (Map<String, String> map : insertTrailerNamedNopsL) {
+	            JSONObject item = analyzerUtils.convertMapToJson(map);
+	            if (item == null) continue;
 
-				Iterator<String> keys = item.keys();
-				while (keys.hasNext()) {
-					String key = keys.next();
-					Object rawValue = item.opt(key);
-					if (rawValue == null)
-						rawValue = "";
+	            Iterator<String> keys = item.keys();
+	            while (keys.hasNext()) {
+	                String key = keys.next();
+	                Object rawValue = item.opt(key);
+	                if (rawValue == null) rawValue = "";
 
-					String metadataValue;
-					if (rawValue instanceof Number) {
-						double val = ((Number) rawValue).doubleValue();
-						metadataValue = (val == Math.floor(val)) ? String.valueOf((long) val) : String.valueOf(val);
-					} else {
-						metadataValue = String.valueOf(rawValue);
-					}
+	                String metadataValue;
+	                if (rawValue instanceof Number) {
+	                    double val = ((Number) rawValue).doubleValue();
+	                    metadataValue = (val == Math.floor(val)) ? String.valueOf((long) val) : String.valueOf(val);
+	                } else {
+	                    metadataValue = String.valueOf(rawValue);
+	                }
 
-					String nopValue = processNopValue(metadataValue, sendAddressLines, mailPiece, sheetCount, pageCount,
-							packages);
+	                String nopValue = processNopValue(
+	                        metadataValue,
+	                        sendAddressLines,
+	                        mailPiece,
+	                        sheetCount,
+	                        pageCount,
+	                        packages
+	                );
 
-					if (!insertedNops.contains(key)) {
-						AfpRec newRec = new AfpNopGenericZD(key, nopValue).toAfpRec((short) 0, 0);
-						nopsToInsert.add(newRec);
-						insertedNops.add(key);
-					}
-				}
-			}
+	                if (!insertedNops.contains(key)) {
+	                    AfpRec newRec = new AfpNopGenericZD(key, nopValue).toAfpRec((short) 0, 0);
+	                    nopsToInsert.add(newRec);
+	                    insertedNops.add(key);
+	                }
+	            }
+	        }
 
-			for (int j = 0; j < afpRecList.size(); j++) {
-				AfpRec rec = afpRecList.get(j);
-				if (rec != null && "EDT".equalsIgnoreCase(rec.getTla().trim())) {
-					for (int k = nopsToInsert.size() - 1; k >= 0; k--) {
-						afpRecList.add(j + 1, nopsToInsert.get(k));
-					}
-					break;
-				}
-			}
+	        for (int j = 0; j < afpRecList.size(); j++) {
+	            AfpRec rec = afpRecList.get(j);
+	            if (rec != null && "EDT".equalsIgnoreCase(rec.getTla().trim())) {
+	                for (int k = nopsToInsert.size() - 1; k >= 0; k--) {
+	                    afpRecList.add(j + 1, nopsToInsert.get(k));
+	                }
+	                break;
+	            }
+	        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    }
 
-		return afpRecList;
+	    return afpRecList;
 	}
 
-	private String processNopValue(String nopValue, JSONArray sendAddressLines, JSONObject mailPiece, int sheetCount,
-			int pageCount, int packages) {
 
-		// Handle FROM_DERIVEDDATA
-		Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
-		Matcher derivedMatcher = derivedPattern.matcher(nopValue);
-		StringBuffer derivedBuffer = new StringBuffer();
-		while (derivedMatcher.find()) {
-			String varName = derivedMatcher.group(1);
-			String replacement = getDynamicDerivedDataValue(varName, sheetCount, pageCount, packages);
-			if (replacement == null)
-				replacement = "";
-			derivedMatcher.appendReplacement(derivedBuffer, Matcher.quoteReplacement(replacement));
+	private String processNopValue(String nopValue, JSONArray sendAddressLines, JSONObject mailPiece,
+		    int sheetCount, int pageCount, int packages) {
+
+		    // Handle FROM_DERIVEDDATA
+		    Pattern derivedPattern = Pattern.compile("FROM_DERIVEDDATA\\^([^\\^]+)\\^");
+		    Matcher derivedMatcher = derivedPattern.matcher(nopValue);
+		    StringBuffer derivedBuffer = new StringBuffer();
+		    while (derivedMatcher.find()) {
+		        String varName = derivedMatcher.group(1);
+		        String replacement = getDynamicDerivedDataValue(varName, sheetCount, pageCount, packages);
+		        if (replacement == null) replacement = "";
+		        derivedMatcher.appendReplacement(derivedBuffer, Matcher.quoteReplacement(replacement));
+		    }
+		    derivedMatcher.appendTail(derivedBuffer);
+		    nopValue = derivedBuffer.toString();
+
+		    // Handle address line replacements
+		    nopValue = getAddressLineFromMetadata(sendAddressLines, nopValue);
+
+		    // Handle FROM_METADATA
+		    Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
+		    Matcher metaMatcher = metaPattern.matcher(nopValue);
+		    StringBuffer metaBuffer = new StringBuffer();
+		    while (metaMatcher.find()) {
+		        String varName = metaMatcher.group(1);
+		        String replacement = getValueFromMailPiece(mailPiece, varName);
+		        if (replacement == null) replacement = "";
+		        metaMatcher.appendReplacement(metaBuffer, Matcher.quoteReplacement(replacement));
+		    }
+		    metaMatcher.appendTail(metaBuffer);
+
+		    return metaBuffer.toString();
 		}
-		derivedMatcher.appendTail(derivedBuffer);
-		nopValue = derivedBuffer.toString();
-
-		// Handle address line replacements
-		nopValue = getAddressLineFromMetadata(sendAddressLines, nopValue);
-
-		// Handle FROM_METADATA
-		Pattern metaPattern = Pattern.compile("FROM_METADATA\\^([^\\^]+)\\^");
-		Matcher metaMatcher = metaPattern.matcher(nopValue);
-		StringBuffer metaBuffer = new StringBuffer();
-		while (metaMatcher.find()) {
-			String varName = metaMatcher.group(1);
-			String replacement = getValueFromMailPiece(mailPiece, varName);
-			if (replacement == null)
-				replacement = "";
-			metaMatcher.appendReplacement(metaBuffer, Matcher.quoteReplacement(replacement));
-		}
-		metaMatcher.appendTail(metaBuffer);
-
-		return metaBuffer.toString();
-	}
 
 	private String resolveDynamicVariablesWithContext(String input, JSONObject mailPiece, int sheetCount, int pageCount,
 			int packages) {
@@ -1699,7 +1694,7 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 						try {
 							pageRec = NEW_PAGE_RECS.valueOf(key.toUpperCase());
 						} catch (Exception e) {
-
+ 
 						}
 						AfpCmd afpCMD = null;
 						Function<JsonElement, String> defaultValue = jsonElm -> {
@@ -1859,16 +1854,16 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 											String metadata_value;
 
 											if (rawValue == null || JSONObject.NULL.equals(rawValue)) {
-												metadata_value = "";
+											    metadata_value = "";
 											} else if (rawValue instanceof Number) {
-												double val = ((Number) rawValue).doubleValue();
-												if (val == Math.floor(val)) {
-													metadata_value = String.valueOf((long) val);
-												} else {
-													metadata_value = String.valueOf(val);
-												}
+											    double val = ((Number) rawValue).doubleValue();
+											    if (val == Math.floor(val)) {
+											        metadata_value = String.valueOf((long) val);
+											    } else {
+											        metadata_value = String.valueOf(val);
+											    }
 											} else {
-												metadata_value = String.valueOf(rawValue);
+											    metadata_value = String.valueOf(rawValue);
 											}
 
 											trn_text = trn_text.replace(extractedKey, metadata_value);
@@ -1899,7 +1894,7 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 			});
 		}
 	}
-
+	
 	public List<AfpRec> insertDocInsertComboTle(JSONObject mailPiece, List<AfpRec> tleRecords,
 			List<Map<String, Integer>> hopperLookup, Set<String> insertedTles) {
 		try {
@@ -2095,31 +2090,26 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 		}
 		return value.equalsIgnoreCase(pattern);
 	}
-
-	private String getAddressLineFromMetadata(JSONArray sendAddressLines, String nopValue) {
-		
-		if (sendAddressLines == null) {
-		    System.err.println("Missing 'send_address_lines' in metadata while processing value: " + nopValue);
-		    System.exit(1);
-		}
-		
-		Pattern pattern = Pattern.compile("FROM_METADATA\\^send_address_line_(\\d+)\\^"); // changed from (\\d)
-		Matcher matcher = pattern.matcher(nopValue);
-		StringBuffer result = new StringBuffer();
-
-		while (matcher.find()) {
-			int lineIndex = Integer.parseInt(matcher.group(1)) - 1;
-			String replacement = "";
-
-			if (lineIndex >= 0 && lineIndex < sendAddressLines.length()) {
-				replacement = sendAddressLines.optString(lineIndex, "");
-			}
-
-			matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
-		}
-
-		matcher.appendTail(result);
-		return result.toString();
-	}
 	
+	private String getAddressLineFromMetadata(JSONArray sendAddressLines, String nopValue) {
+	    Pattern pattern = Pattern.compile("FROM_METADATA\\^send_address_line_(\\d+)\\^");  // changed from (\\d)
+	    Matcher matcher = pattern.matcher(nopValue);
+	    StringBuffer result = new StringBuffer();
+
+	    while (matcher.find()) {
+	        int lineIndex = Integer.parseInt(matcher.group(1)) - 1;
+	        String replacement = "";
+
+	        if (lineIndex >= 0 && lineIndex < sendAddressLines.length()) {
+	            replacement = sendAddressLines.optString(lineIndex, "");
+	        }
+
+	        matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
+	    }
+
+	    matcher.appendTail(result);
+	    return result.toString();
+	}
+
 }
+
