@@ -2092,6 +2092,12 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 	}
 	
 	private String getAddressLineFromMetadata(JSONArray sendAddressLines, String nopValue) {
+		
+		if (sendAddressLines == null) {
+		    System.err.println("Missing 'send_address_lines' in metadata while processing value: " + nopValue);
+		    System.exit(1);
+		}
+		
 	    Pattern pattern = Pattern.compile("FROM_METADATA\\^send_address_line_(\\d+)\\^");  // changed from (\\d)
 	    Matcher matcher = pattern.matcher(nopValue);
 	    StringBuffer result = new StringBuffer();
@@ -2112,4 +2118,3 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 	}
 
 }
-
