@@ -1,0 +1,51 @@
+{
+   "FILE_TRAILER" : {
+      "pdf_count" : 2,
+      "mail_piece_count" : 2
+   },
+   "MAIL_PIECES" : [
+      {
+         "num_pdf_documents" : 1,
+         "some_new_tag" : "some data",
+         "is_foreign_address" : "N",
+         "country_code" : null,
+         "send_address_lines" : null,
+         "pdf_documents" : [
+            {
+               "page_count" : "1",
+               "file_name" : "252804124714_28041247141.pdf",
+               "document_id" : "28041247141"
+            }
+         ],
+         "zip_code" : null,
+         "total_pdf_documents_page_count" : 1,
+         "insert_ids" : null,
+         "is_bulk_shipping" : "N",
+         "total_pdf_documents_sheet_count" : 1,
+         "department_id" : null,
+         "infact_account_number" : "252804124714"
+      },
+      {
+         "num_pdf_documents" : 1,
+         "some_new_tag" : "some data",
+         "is_foreign_address" : "N",
+         "country_code" : null,
+         "send_address_lines" : null,
+         "pdf_documents" : [
+            {
+               "page_count" : "1",
+               "file_name" : "252804124714_28041247142.pdf",
+               "document_id" : "28041247142"
+            }
+         ],
+         "zip_code" : null,
+         "total_pdf_documents_page_count" : 1,
+         "insert_ids" : null,
+         "is_bulk_shipping" : "N",
+         "total_pdf_documents_sheet_count" : 1,
+         "department_id" : null,
+         "infact_account_number" : "28041247142"
+      }
+   ]
+}
+
