@@ -580,6 +580,27 @@ public class AnalyzerUtils {
 		}
 		return null;
 	}
+	
+	public static AfpCmdPTX createPTXRecord(short x_pos, short y_pos, String data, Short mcfCode, int iOrientation) {
+		try {
+			ArrayList<AfpPtxDataItem> newPtxDataItems = new ArrayList();
+			AfpPtxCtrlSeq newCtrlseq = new AfpPtxCtrlSeq();
+			createCtrlSeqPrefix(newPtxDataItems);
+			addPtxCtrlSEC(newCtrlseq);
+			createPtxCtrlSTO(newCtrlseq, iOrientation);
+			createPtxCtrlScfl(newCtrlseq, mcfCode);
+			AfpPtxCtrlAMI secondAMI = new AfpPtxCtrlAMI(x_pos, true);
+			newCtrlseq.addCtrl(secondAMI);
+			AfpPtxCtrlAMB secondAMB = new AfpPtxCtrlAMB(y_pos, true);
+			newCtrlseq.addCtrl(secondAMB);
+			newCtrlseq.addCtrl(new AfpPtxCtrlTRN(data, true));
+			newPtxDataItems.add(newCtrlseq);
+			return new AfpCmdPTX(newPtxDataItems);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static AfpCmdMCF addCmdMCF(String characterSet, String codePage, String codedFont, UBIN1 resID) {
 		try {
@@ -675,6 +696,14 @@ public class AnalyzerUtils {
 		AfpPtxCtrlSTO orination = new AfpPtxCtrlSTO(iorntion, borntion, true);
 		newCtrlseq.addCtrl(orination);
 	}
+	
+	public static void createPtxCtrlSTO(AfpPtxCtrlSeq newCtrlseq, int orientation) {
+		UBIN2 iorntion = new UBIN2(orientation);
+		UBIN2 borntion = new UBIN2(11520);
+		AfpPtxCtrlSTO orination = new AfpPtxCtrlSTO(iorntion, borntion, true);
+		newCtrlseq.addCtrl(orination);
+	}
+
 
 	public static void createPtxCtrlScfl(AfpPtxCtrlSeq newCtrlseq, int lastFontCodeId) {
 		Integer escape = new Integer(lastFontCodeId);
