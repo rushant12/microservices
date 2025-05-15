@@ -497,6 +497,12 @@ public class DataprepAnalyzer extends AnalyzerAdapter implements Analyzer {
 				}
 			}
 		}
+		
+		// ADD Text
+		List<Map<String, Object>> addTextToPagesConfig = config.getADD_TEXT_TO_PAGES();
+		if (addTextToPagesConfig != null && !addTextToPagesConfig.isEmpty()) {
+			textService.insertTextBlocksIntoPages(rawStmt, addTextToPagesConfig);
+		}
 
 		insertNewPages(rawStmt, config);
 
