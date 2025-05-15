@@ -1,6 +1,8 @@
 package com.broadridge.pdf2print.dataprep.service;
 
 import com.broadridge.pdf2print.dataprep.models.FileCoordinate;
+import com.broadridge.pdf2print.dataprep.models.RawStmt;
+import com.broadridge.pdf2print.dataprep.utils.AnalyzerUtils;
 import com.broadridge.pdf2print.dataprep.utils.Constants;
 import com.broadridge.pdf2print.dataprep.utils.TextServiceUtils;
 import com.dstoutput.custsys.jafp.*;
@@ -11,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -565,6 +568,187 @@ public class TextService {
 
         return lines;
     }
+    
+	public void insertTextBlocksIntoPages(RawStmt rawStmt, List<Map<String, Object>> addTextToPagesConfig) {
+	    try {
+	        int bpgCounter = 0;
+	        List<List<AfpRec>> listOfPages = rawStmt.getPages();
+ 
+	        for (List<AfpRec> pageRecs : listOfPages) {
+	            bpgCounter++;
+	            int configPageNum = -1;
+	            List<AfpRec> mcfAfpRecs = new ArrayList<>();
+	            AfpCmdBPT bptRec = null;
+	            int bptInsertIndex = -1;
+ 
+	            for (Map<String, Object> pageConfig : addTextToPagesConfig) {
+	                configPageNum = (int) pageConfig.get("page_num");
+ 
+	                if (configPageNum == bpgCounter) {
+	                    List<Map<String, Object>> mcfRecs = (List<Map<String, Object>>) pageConfig.get("mcf_recs");
+ 
+	                    if (mcfRecs != null && !mcfRecs.isEmpty()) {
+	                        for (Map<String, Object> mcf : mcfRecs) {
+	                            int id = Integer.parseInt(mcf.get("id").toString());
+	                            String codedFontName = trimAndPad(mcf.get("coded_font_name"));
+	                            String characterSet = trimAndPad(mcf.get("character_set"));
+	                            String codePage = trimAndPad(mcf.get("code_page"));
+ 
+	                            AfpCmdMCF mcfRec;
+	                            if (codedFontName != null && !codedFontName.trim().isEmpty()) {
+	                                mcfRec = AnalyzerUtils.addCmdMCF(null, null, codedFontName, new UBIN1(id));
+	                            } else if (characterSet != null && codePage != null &&
+	                                    !characterSet.trim().isEmpty() && !codePage.trim().isEmpty()) {
+	                                mcfRec = AnalyzerUtils.addCmdMCF(characterSet, codePage, null, new UBIN1(id));
+	                            } else {
+	                                throw new IllegalArgumentException(
+	                                    "MCF font record must have either 'coded_font_name' or both 'character_set' and 'code_page'.");
+	                            }
+ 
+	                            AfpRec mcfRecAsAfpRec = mcfRec.toAfpRec((short) 0, 0);
+	                            mcfAfpRecs.add(mcfRecAsAfpRec);
+	                        }
+	                    }
+ 
+	                    int insertIndex = -1;
+	                    for (int i = 0; i < pageRecs.size(); i++) {
+	                        if (pageRecs.get(i).getTla().equalsIgnoreCase("BAG")) {
+	                            insertIndex = i + 1;
+	                            break;
+	                        }
+	                    }
+	                    if (insertIndex != -1) {
+	                        pageRecs.addAll(insertIndex, mcfAfpRecs);
+	                    } else {
+	                        throw new IllegalStateException("BAG record not found on page #" + configPageNum);
+	                    }
+ 
+	                    int epgIndex = -1;
+	                    for (int i = 0; i < pageRecs.size(); i++) {
+	                        if (pageRecs.get(i).getTla().equalsIgnoreCase("EPG")) {
+	                            epgIndex = i;
+	                            break;
+	                        }
+	                    }
+	                    if (epgIndex == -1) {
+	                        throw new IllegalStateException("EPG record not found on page #" + configPageNum);
+	                    }
+ 
+	                    if (pageConfig.containsKey("bpt_rec")) {
+	                        String bptRecText = (String) pageConfig.get("bpt_rec");
+	                        bptRecText = (bptRecText == null) ? "" : bptRecText;
+	                        bptRec = new AfpCmdBPT(trimAndPad(bptRecText));
+	                        bptInsertIndex = epgIndex;
+	                        pageRecs.add(bptInsertIndex, bptRec.toAfpRec((short) 0, 0));
+	                        epgIndex++;
+	                    }
+ 
+	                    List<Map<String, Object>> ptxRecs = (List<Map<String, Object>>) pageConfig.get("ptx_recs");
+	                    if (ptxRecs != null && !ptxRecs.isEmpty()) {
+	                        int ptxInsertIndex = (bptInsertIndex != -1) ? bptInsertIndex + 1 : epgIndex;
+	                        List<AfpRec> newPtxAfpRecs = new ArrayList<>();
+ 
+	                        for (Map<String, Object> ptx : ptxRecs) {
+	                            short x_offset = AnalyzerUtils.numToDP(toShort(ptx.get("x_offset")));
+	                            short y_offset = AnalyzerUtils.numToDP(toShort(ptx.get("y_offset")));
+	                            short font_id = toShort(ptx.get("font_id"));
+	                            int configOrientation = toIntOrDefault(ptx.get("orientation"), 0);
+	                            List<Integer> validOrientations = Arrays.asList(0, 90, 180, 270);
+	                            if (!validOrientations.contains(configOrientation)) {
+	                                System.err.println("Invalid orientation value in configuration: " + configOrientation
+	                                        + ". Valid values are: 0, 90, 180, 270.");
+	                                System.exit(1);
+	                            }
+	                            int orientation = configOrientation;    
+	                            String trn_text = (String) ptx.get("trn_text");
+                                System.out.println("Page: " + configPageNum);
+	                            
+	                            if (trn_text.startsWith("FROM_METADATA^")) {
+	                                String[] parts = trn_text.split("\\^");
+	                                if (parts.length >= 2) {
+	                                    String metadata_key = parts[1].trim();
+	                                    Object rawVal = rawStmt.getMetaData().opt(metadata_key);
+ 
+	                                    if (rawVal == null || JSONObject.NULL.equals(rawVal)) {
+	                                        trn_text = "";
+	                                    } else {
+	                                        System.out.println("Metadata substitution: key='" + metadata_key + "', value='" + rawVal + "'");
+	                                        trn_text = String.valueOf(rawVal);
+	                                    }
+	                                } else {
+	                                    System.out.println("Malformed FROM_METADATA syntax: '" + trn_text + "'");
+	                                }
+	                            }
+                                System.out.println("Adding Text: " + trn_text);
+	                            AfpCmdPTX ptxRec = AnalyzerUtils.createPTXRecord(x_offset, y_offset, trn_text, font_id, orientation);
+	                            AfpRec newPTX = ptxRec.toAfpRec((short) 0, 0);
+	                            newPtxAfpRecs.add(newPTX);
+	                        }
+ 
+	                        pageRecs.addAll(ptxInsertIndex, newPtxAfpRecs);
+	                        epgIndex += newPtxAfpRecs.size();
+	                    }
+ 
+	                    if (pageConfig.containsKey("ept_rec")) {
+	                        String eptRecText = (String) pageConfig.get("ept_rec");
+	                        eptRecText = (eptRecText == null) ? "" : eptRecText;
+	                        AfpCmdEPT eptRec = new AfpCmdEPT(trimAndPad(eptRecText));
+	                        pageRecs.add(epgIndex, eptRec.toAfpRec((short) 0, 0));
+	                    }
+ 
+	                    break;
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    }
+	}
+
+	private int toIntOrDefault(Object val, int defaultVal) {
+	    if (val == null) return defaultVal;
+	    try {
+	        if (val instanceof Number) {
+	            return ((Number) val).intValue();
+	        } else if (val instanceof String) {
+	            return (int) Double.parseDouble((String) val);
+	        }
+	    } catch (Exception e) {
+	    }
+	    return defaultVal;
+	}
+
+	private short toShort(Object val) {
+	    if (val instanceof Number) {
+	        return ((Number) val).shortValue();
+	    } else if (val instanceof String) {
+	        try {
+	            return (short) Double.parseDouble((String) val);
+	        } catch (NumberFormatException e) {
+	            throw new IllegalArgumentException("Invalid short value: " + val, e);
+	        }
+	    } else {
+	        throw new IllegalArgumentException("Expected a numeric value but got: " + val);
+	    }
+	}
+
+
+
+	private String trimAndPad(Object valueObj) {
+	    if (valueObj == null) return "        ";
+	    
+	    String value = valueObj.toString().trim();
+	    if (value.equalsIgnoreCase("null") || value.isEmpty()) {
+	        return "        ";
+	    }
+
+	    if (value.length() > 8) {
+	        throw new IllegalArgumentException("AFP string field too long (max 8 bytes): " + value);
+	    }
+
+	    return String.format("%-8s", value);
+	}
 
 }
 
