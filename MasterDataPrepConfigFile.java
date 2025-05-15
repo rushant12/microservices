@@ -29,9 +29,18 @@ public class MasterDataPrepConfigFile {
 	private Map<String, Integer> INSERT_ID_HOPPER_LOOKUP;
 	private String EACH_PDF_DOCUMENT_STARTS_NEW_SHEET;
 	private List<Map<String, Object>> SHIPPING_SH_CODE_LOOKUP;
+	private List<Map<String, Object>> ADD_TEXT_TO_PAGES;
 
 	// Getters and Setters
 	
+	public List<Map<String, Object>> getADD_TEXT_TO_PAGES() {
+		return ADD_TEXT_TO_PAGES;
+	}
+
+	public void setADD_TEXT_TO_PAGES(List<Map<String, Object>> aDD_TEXT_TO_PAGES) {
+		ADD_TEXT_TO_PAGES = aDD_TEXT_TO_PAGES;
+	}
+
 	public List<Map<String, Object>> getSHIPPING_SH_CODE_LOOKUP() {
 		return SHIPPING_SH_CODE_LOOKUP;
 	}
