@@ -1,0 +1,1135 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "ECP-PriceItem",
+        "description": "This API will be used get the Price Items and List Price from ECP (Ericsson Configuration Portfolio). PriceItem will return price item data for corresponding Price Item Number and Price Item list from particular date. ListPrice will return the price, Stock Item Status for corresponding Product Number.<br><b>Revision hisitory:<br>1.2.0: </b> Change the response parameter for /priceitems/{priceItemNumber} and /priceitems. Attributes marketOffer, optionality and supportSubscriptionPriceObject included.<br><b>1.3.0: </b> Resources priceitems/{priceItemNumber} and /priceitems has been updated attribute optionality has been replaced with mandatory.<br><b> 1.4.0: </b> Added Post method of resource /priceItem to fetch the price Item details for provided priceItem List.",
+        "version": "1.4.0"
+    },
+    "servers": [
+        {
+            "url": "https://apigwy-europe-dev.internal.ericsson.com/ecp-priceitem/v1",
+            "description": "Development Server"
+        },
+        {
+            "url": "https://apigwy-europe-acc.internal.ericsson.com/ecp-priceitem/v1",
+            "description": "Acceptance Server"
+        },
+        {
+            "url": "https://apigwy-europe-qa.internal.ericsson.com/ecp-priceitem/v1",
+            "description": "QA Server"
+        },
+        {
+            "url": "https://apigwy.europe.internal.ericsson.com/ecp-priceitem/v1",
+            "description": "Production Server"
+        },
+        {
+            "url": "https://apigwy-dev.ericsson.net/ecp-priceitem/v1",
+            "description": "Development External server"
+        },
+        {
+            "url": "https://apigwy-acc.ericsson.net/ecp-priceitem/v1",
+            "description": "Acceptance External server"
+        },
+        {
+            "url": "https://apigwy-qa.ericsson.net/ecp-priceitem/v1",
+            "description": "QA External server"
+        },
+        {
+            "url": "https://apigwy.ericsson.net/ecp-priceitem/v1",
+            "description": "Production External server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Price Item"
+        }
+    ],
+    "paths": {
+        "/priceitems/{priceItemNumber}": {
+            "get": {
+                "summary": "To retrieve price item data for given price item number",
+                "description": "It will fetch price item data for given price item number from ECP",
+                "tags": [
+                    "Price Item"
+                ],
+                "operationId": "getPriceItemData",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "priceItemNumber",
+                        "in": "path",
+                        "description": "Provide price item number to fetch the price item data",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PriceItemResp"
+                                },
+                                "example": "{\"productNumber\": \"TESTTRPO2022\",\"description\": \"TESTTRPO2022\",\"referencePriceEur\": \"NULL\",\"referencePriceUsd\": \"NULL\",\"cost\": \"12.00\",\"costCurrency\": \"SEK\",\"unit\": \"Piece\",\"fireCode\": \"\",\"systemPricingCategory\": \"AAB\",\"productPricingCategory\": \"Basic SW\",\"listPriceUsd\": \"20.00\",\"listPriceEur\": \"17.80\",\"businessUnitName\": \"N/A\",\"stockItemProductPortfolio\": \"N\",\"regionalOnly\": \"N\",\"salesStatus\": \"NU\",\"productVersionStatus\": \"PROGRAM\",\"priceProtectionClass\": \"\",\"mode\": \"U\",\"productCategory\": \"CLSS\",\"swusFlag\": \"N\",\"comments\": \"NULL\",\"centrallySupplied\": \"Y\",\"itemShortDescription\": \"TESTTRPO2022\",\"revisionDate\": \"2022-07-06 09:32:40.193\",\"exportControl\": \"\",\"restrictionCode\": \"NULL\",\"factorGroup\": \"NULL\",\"priceType\": \"NET No Factor Group\",\"percentage\": \"NULL\",\"volumeTableName\": \"\",\"volumeTableKey\": \"\",\"editableCost\": \"N\",\"pricePositionClassification\": \"N/A\",\"pricePositionGroup\": \"N/A\",\"recurrentCost\": \"NULL\",\"subGroup\": \"N/A\",\"useCase\": \"N/A\",\"marketOffer\": \"TEST2022\",\"mandatory\": \"Y\",\"supportSubscriptionPriceObject\": \"INF 901 6400/IB,INF 901 7589,INF 901 7603,INF 901 7607/3,INF 901 7611,INF 901 7614,INF 901 7616\"}"
+                            }
+                        },
+                        "links": {}
+                    },
+                    "204": {
+                        "description": "No content"
+                    },
+                    "400": {
+                        "description": "Request is missing required information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ResponseModel"
+                                    }
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 400,
+                                            "responseMessage": "Bad Request",
+                                            "responseMessageDescription": "API Specification validation failed. Error on JSON schema validation for Request payload: [object has missing required properties ([id])]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication information is missing.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 401,
+                                            "responseMessage": "Unauthorized",
+                                            "responseMessageDescription": "Invalid or expired token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access to the requested (valid) URL by the client is forbidden.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 403,
+                                            "responseMessage": "Forbiddden",
+                                            "responseMessageDescription": "Access Forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The server has not found anything matching the URI given.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 404,
+                                            "responseMessage": "Resource Not Found",
+                                            "responseMessageDescription": "The requested resource is not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 405,
+                                            "responseMessage": "Method Not Allowed",
+                                            "responseMessageDescription": ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 500,
+                                            "responseMessage": "Internal Server Error",
+                                            "responseMessageDescription": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/priceitems": {
+            "get": {
+                "summary": "To retrieve batch of price item data from ECP on the basis of fromDate",
+                "description": "It will fetch price item data on the basis of fromDate from ECP",
+                "tags": [
+                    "Price Item"
+                ],
+                "operationId": "getPriceItem",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "Provide date-time from when, to fetch the price item data",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-10-08 09:37:16.490"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PriceItemDataResp"
+                                },
+                                "example": "{\"isLastBatch\":true,\"nextDateAndTime\":\"2022-07-18 15:21:57.22\",\"priceItemMasterDataDelta\":[{ \"productNumber\": \"TESTTRPO2022\",\"description\": \"TESTTRPO2022\",\"referencePriceEur\": \"NULL\",\"referencePriceUsd\": \"NULL\",\"cost\": \"12.00\",\"costCurrency\": \"SEK\",\"unit\": \"Piece\",\"fireCode\": \"\",\"systemPricingCategory\": \"AAB\",\"productPricingCategory\": \"Basic SW\",\"listPriceUsd\": \"20.00\",\"listPriceEur\": \"17.80\",\"businessUnitName\": \"N/A\",\"stockItemProductPortfolio\": \"N\",\"regionalOnly\": \"N\",\"salesStatus\": \"NU\",\"productVersionStatus\": \"PROGRAM\",\"priceProtectionClass\": \"\",\"mode\": \"U\",\"productCategory\": \"CLSS\",\"swusFlag\": \"N\",\"comments\": \"NULL\",\"centrallySupplied\": \"Y\",\"itemShortDescription\": \"TESTTRPO2022\",\"revisionDate\": \"2022-07-06 09:32:40.193\",\"exportControl\": \"\",\"restrictionCode\": \"NULL\",\"factorGroup\": \"NULL\",\"priceType\": \"NET No Factor Group\",\"percentage\": \"NULL\",\"volumeTableName\": \"\",\"volumeTableKey\": \"\",\"editableCost\": \"N\",\"pricePositionClassification\": \"N/A\",\"pricePositionGroup\": \"N/A\",\"recurrentCost\": \"NULL\",\"subGroup\": \"N/A\",\"useCase\": \"N/A\",\"marketOffer\": \"TEST2022\",\"mandatory\": \"Y\",\"supportSubscriptionPriceObject\": \"INF 901 6400/IB,INF 901 7589,INF 901 7603,INF 901 7607/3,INF 901 7611,INF 901 7614,INF 901 7616\"}]}"
+                            }
+                        },
+                        "links": {}
+                    },
+                    "204": {
+                        "description": "No content"
+                    },
+                    "400": {
+                        "description": "Request is missing required information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ResponseModel"
+                                    }
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 400,
+                                            "responseMessage": "Bad Request",
+                                            "responseMessageDescription": "API Specification validation failed. Error on JSON schema validation for Request payload: [object has missing required properties ([id])]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication information is missing.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 401,
+                                            "responseMessage": "Unauthorized",
+                                            "responseMessageDescription": "Invalid or expired token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access to the requested (valid) URL by the client is forbidden.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 403,
+                                            "responseMessage": "Forbiddden",
+                                            "responseMessageDescription": "Access Forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The server has not found anything matching the URI given.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 404,
+                                            "responseMessage": "Resource Not Found",
+                                            "responseMessageDescription": "The requested resource is not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 405,
+                                            "responseMessage": "Method Not Allowed",
+                                            "responseMessageDescription": ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 500,
+                                            "responseMessage": "Internal Server Error",
+                                            "responseMessageDescription": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "To retrieve price item data for given list of priceitem numbers",
+                "description": "It will fetch priceitem data for given  price itemnumbers",
+                "tags": [
+                    "Price Item"
+                ],
+                "operationId": "FetchPriceItemsData",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PriceItemsRequestVO"
+                            },
+                            "example": {
+                                "priceItemNumbersList": [
+                                    "SXK 125 7431/1",
+                                    "TSR 490 0113/3"
+                                ]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "PriceItems list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PriceItemsResponseVO"
+                                },
+                                "example": [
+                                    {
+                                        "productNumber": "SXK 125 7431/1",
+                                        "cost": "10.33",
+                                        "costCurrency": "SEK",
+                                        "listPriceUsd": "41.71",
+                                        "listPriceEur": "37.20"
+                                    },
+                                    {
+                                        "productNumber": "TSR 490 0113/3",
+                                        "cost": "289.61",
+                                        "costCurrency": "SEK",
+                                        "listPriceUsd": "145.00",
+                                        "listPriceEur": "129.00"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request is missing required information(Bad Request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ResponseModel"
+                                    }
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 400,
+                                            "responseMessage": "Bad Request",
+                                            "responseMessageDescription": "API Specification validation failed. Error on JSON schema validation for Request payload: [object has missing required properties ([id])]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication information is missing.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 401,
+                                            "responseMessage": "Unauthorized",
+                                            "responseMessageDescription": "Invalid or expired token"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access to the requested (valid) URL by the client is forbidden.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 403,
+                                            "responseMessage": "Forbiddden",
+                                            "responseMessageDescription": "Access Forbidden"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The server has not found anything matching the URI given.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 404,
+                                            "responseMessage": "Resource Not Found",
+                                            "responseMessageDescription": "The requested resource is not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 405,
+                                            "responseMessage": "Method Not Allowed",
+                                            "responseMessageDescription": "Method Not Allowed"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "413": {
+                        "description": "Payload Too Large",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 413,
+                                            "responseMessage": "Payload Too Large",
+                                            "responseMessageDescription": "Payload Too Large"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition which prevented it from fulfilling the request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseModel"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 500,
+                                            "responseMessage": "Internal Server Error",
+                                            "responseMessageDescription": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/listprice": {
+            "get": {
+                "tags": [
+                    "List Price"
+                ],
+                "summary": "Returns list price and stock item status data on the basis of productNumber",
+                "description": "Returns list price and stock item status data on the basis of productNumber",
+                "operationId": "getListPrice",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "Signum id of the user",
+                        "required": false,
+                        "example": "zvimjuj",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productNumber",
+                        "in": "query",
+                        "description": "Product number number, for which content is required",
+                        "required": true,
+                        "example": "TESTTRPO2022",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "releaseType",
+                        "in": "query",
+                        "description": "Release type whether PREL or PROD",
+                        "required": false,
+                        "example": "PREL",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sessionId",
+                        "in": "query",
+                        "description": "Configuration session id",
+                        "required": false,
+                        "example": "038b44361234",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "country",
+                        "in": "query",
+                        "description": "Country id",
+                        "required": false,
+                        "example": "AD",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListPriceContentRes"
+                                },
+                                "example": {
+                                    "priceListData": [
+                                        {
+                                            "productNumber": "ECP_TEST_PO",
+                                            "denomination": "test upd",
+                                            "price": "87100.00",
+                                            "currency": "EUR",
+                                            "percentage": null,
+                                            "salesStatus": "Pre-PRT",
+                                            "stockItemStatus": "N"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiError"
+                                },
+                                "example": {
+                                    "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                    "responseStatusCode": 400,
+                                    "responseMessage": "Bad Request",
+                                    "responseMessageDescription": "Request is missing required information."
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiError"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 401,
+                                            "responseMessage": "Unauthorized",
+                                            "responseMessageDescription": "APIGW:aa123781-f506-433b-b64f-8d264263d7a1:236058"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiError"
+                                },
+                                "example": {
+                                    "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                    "responseStatusCode": 403,
+                                    "responseMessage": "Forbidden",
+                                    "responseMessageDescription": "Request is Forbidden."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiError"
+                                },
+                                "example": {
+                                    "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                    "responseStatusCode": 404,
+                                    "responseMessage": "Resource Not Found",
+                                    "messageId": "APIGW:2663e662-2f7d-4abc-908d-cea9bc1b9971:165997"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not  allowed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiError"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "value": {
+                                            "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                            "responseStatusCode": 405,
+                                            "responseMessage": "ERROR",
+                                            "responseMessageDescription": "Method not allowed",
+                                            "messageId": "APIGW:aa123781-f506-433b-b64f-8d264263d7a1:236058"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/apiError"
+                                },
+                                "example": {
+                                    "traceID": "bd40e88b-e2c4-4c9e-b889-7a743f2e7121",
+                                    "responseStatusCode": 500,
+                                    "responseMessage": "Internal Server Error",
+                                    "responseMessageDescription": "The server encountered an unexpected condition which prevented it from fulfilling the request.                        "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "apiError": {
+                "description": "Error resonse code",
+                "type": "object",
+                "properties": {
+                    "traceID": {
+                        "description": "Messgae ID",
+                        "type": "string"
+                    },
+                    "responseStatusCode": {
+                        "description": "http error code despription.",
+                        "type": "integer"
+                    },
+                    "responseMessage": {
+                        "description": "Error Response",
+                        "type": "string"
+                    },
+                    "responseMessageDescription": {
+                        "description": "Error Response Details",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "traceID",
+                    "responseStatusCode",
+                    "responseMessage"
+                ]
+            },
+            "ListPriceContentRes": {
+                "type": "object",
+                "properties": {
+                    "ListPriceResultData": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ListPriceResponseVO"
+                        }
+                    }
+                }
+            },
+            "ListPriceResponseVO": {
+                "type": "object",
+                "properties": {
+                    "productNumber": {
+                        "type": "string",
+                        "description": "Product number",
+                        "example": "ECP_TEST_PO"
+                    },
+                    "denomination": {
+                        "type": "string",
+                        "description": "Description",
+                        "example": "test upd"
+                    },
+                    "price": {
+                        "type": "string",
+                        "description": "Price",
+                        "example": 9500
+                    },
+                    "currency": {
+                        "type": "string",
+                        "description": "Currency",
+                        "example": "EUR"
+                    },
+                    "percentage": {
+                        "type": "string",
+                        "description": "Percentage",
+                        "example": null
+                    },
+                    "salesStatus": {
+                        "type": "string",
+                        "description": "Sales status",
+                        "example": "Pre-PRT"
+                    },
+                    "stockItemStatus": {
+                        "type": "string",
+                        "description": "Stock item status",
+                        "example": null
+                    }
+                }
+            },
+            "PriceItemResp": {
+                "type": "object",
+                "properties": {
+                    "productNumber": {
+                        "type": "string",
+                        "description": "Product Number"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Product Description"
+                    },
+                    "referencePriceEur": {
+                        "type": "string",
+                        "description": "Reference Price in EURO"
+                    },
+                    "referencePriceUsd": {
+                        "type": "string",
+                        "description": "Reference Price in USD"
+                    },
+                    "cost": {
+                        "type": "string",
+                        "description": "Cost"
+                    },
+                    "costCurrency": {
+                        "type": "string",
+                        "description": "Cost Currency"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "description": "Price Item unit ID"
+                    },
+                    "fireCode": {
+                        "type": "string",
+                        "description": "Fire Code"
+                    },
+                    "systemPricingCategory": {
+                        "type": "string",
+                        "description": "System Pricing Category"
+                    },
+                    "productPricingCategory": {
+                        "type": "string",
+                        "description": "Product Pricing Category"
+                    },
+                    "listPriceUsd": {
+                        "type": "string",
+                        "description": "List Price USD"
+                    },
+                    "listPriceEur": {
+                        "type": "string",
+                        "description": "List Price EURO"
+                    },
+                    "businessUnitName": {
+                        "type": "string",
+                        "description": "Business Unit Name"
+                    },
+                    "stockItemProductPortfolio": {
+                        "type": "string",
+                        "description": "Stock Item Product Portfolio"
+                    },
+                    "regionalOnly": {
+                        "type": "string",
+                        "description": "Regional Only"
+                    },
+                    "salesStatus": {
+                        "type": "string",
+                        "description": "Material Sales Status Id"
+                    },
+                    "productVersionStatus": {
+                        "type": "string",
+                        "description": "Product version status"
+                    },
+                    "priceProtectionClass": {
+                        "type": "string",
+                        "description": "Price Protection Class"
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "Type of change received from ECP i.e., Update or Insert or Delete"
+                    },
+                    "productCategory": {
+                        "type": "string",
+                        "description": "Product Category"
+                    },
+                    "swusFlag": {
+                        "type": "string",
+                        "description": "Swus Flag"
+                    },
+                    "comments": {
+                        "type": "string",
+                        "description": "Comments"
+                    },
+                    "centrallySupplied": {
+                        "type": "string",
+                        "description": "Orderable flag"
+                    },
+                    "itemShortDescription": {
+                        "type": "string",
+                        "description": "Item short description"
+                    },
+                    "revisionDate": {
+                        "type": "string",
+                        "description": "Last updated date of the product"
+                    },
+                    "exportControl": {
+                        "type": "string",
+                        "description": "Represents how sensitive products are for export"
+                    },
+                    "restrictionCode": {
+                        "type": "string",
+                        "description": "Restriction Code"
+                    },
+                    "factorGroup": {
+                        "type": "string",
+                        "description": "Factor Group"
+                    },
+                    "priceType": {
+                        "type": "string",
+                        "description": "Price Type"
+                    },
+                    "percentage": {
+                        "type": "string",
+                        "description": "Subscription Percentage"
+                    },
+                    "volumeTableName": {
+                        "type": "string",
+                        "description": "Volume Matrix Name"
+                    },
+                    "volumeTableKey": {
+                        "type": "string",
+                        "description": "Volume Matrix Key"
+                    },
+                    "editableCost": {
+                        "type": "string",
+                        "description": "Cost editable flag"
+                    },
+                    "pricePositionClassification": {
+                        "type": "string",
+                        "description": "Price Position Classification"
+                    },
+                    "pricePositionGroup": {
+                        "type": "string",
+                        "description": "Price Position Group"
+                    },
+                    "recurrentCost": {
+                        "type": "string",
+                        "description": "Recurrent Cost Value"
+                    },
+                    "subGroup": {
+                        "type": "string",
+                        "description": "Sub Group"
+                    },
+                    "useCase": {
+                        "type": "string",
+                        "description": "Use Case"
+                    },
+                    "marketOffer": {
+                        "type": "string",
+                        "description": "Market Offer"
+                    },
+                    "mandatory": {
+                        "type": "string",
+                        "description": "field name Optionality changed to Mandatory"
+                    },
+                    "supportSubscriptionPriceObject": {
+                        "type": "string",
+                        "description": "Support Subscription Price Object"
+                    }
+                }
+            },
+            "PriceItemDataResp": {
+                "type": "object",
+                "properties": {
+                    "nextDateAndTime": {
+                        "type": "string",
+                        "description": "Next date and time"
+                    },
+                    "isLastBatch": {
+                        "type": "boolean",
+                        "description": "Is last batch"
+                    },
+                    "priceItemMasterDataDelta": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PriceItemResp"
+                        }
+                    }
+                }
+            },
+            "PriceItemsRequestVO": {
+                "type": "object",
+                "properties": {
+                    "priceItemNumbersList": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "priceitme1",
+                            "priceitme2",
+                            "priceitme3"
+                        ]
+                    }
+                }
+            },
+            "PriceItemsResponseVO": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/PriceItemsResponseDataVO"
+                }
+            },
+            "PriceItemsResponseDataVO": {
+                "type": "object",
+                "properties": {
+                    "productNumber": {
+                        "type": "string",
+                        "description": "Product Number"
+                    },
+                    "cost": {
+                        "type": "string",
+                        "description": "Cost"
+                    },
+                    "costCurrency": {
+                        "type": "string",
+                        "description": "Cost Currency"
+                    },
+                    "listPriceUsd": {
+                        "type": "string",
+                        "description": "Price in USD"
+                    },
+                    "listPriceEur": {
+                        "type": "string",
+                        "description": "Price in EURO"
+                    }
+                }
+            },
+            "ResponseModel": {
+                "title": "Response Model",
+                "type": "object",
+                "required": [
+                    "traceID",
+                    "responseStatusCode",
+                    "responseMessage"
+                ],
+                "properties": {
+                    "traceID": {
+                        "type": "string"
+                    },
+                    "responseStatusCode": {
+                        "type": "integer"
+                    },
+                    "responseMessage": {
+                        "type": "string"
+                    },
+                    "responseMessageDescription": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "`OAuth 2.0` JWT token required.\n"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
+}
